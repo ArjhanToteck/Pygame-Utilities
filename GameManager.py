@@ -2,21 +2,10 @@ import pygame
 
 class GameManager:
 
-    running = None
+    running = True
     screen = None
     clock = None
     
-    @staticmethod
-    def initialize():
-        # pygame setup
-        pygame.init()
-        screen = pygame.display.set_mode((1280, 720))
-        clock = pygame.time.Clock()
-        running = True
-
-        gameLoop()
-
-
     @staticmethod
     def gameLoop():
         while running:
@@ -37,6 +26,16 @@ class GameManager:
             clock.tick(60)  # limits FPS to 60
 
         pygame.quit()
+
+    @staticmethod
+    def setUpGame():
+        # pygame setup
+        pygame.init()
+        screen = pygame.display.set_mode((1280, 720))
+        clock = pygame.time.Clock()
+        running = True
+
+        GameManager.gameLoop()
 
 
     
