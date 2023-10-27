@@ -1,6 +1,7 @@
 import pygame
 import threading
 import warnings
+import sys
 
 from Vector2 import Vector2
 
@@ -10,28 +11,31 @@ class GameManager:
     screen = None
     clock = None
     gameLoopThread = None
+    deltaTime = 0
     worldUnitSize = Vector2(25, 25) # number of pixels per world unit
 
-    # store functions that will be called every frame
+    # stores functions that will be called every frame
     updateEvents = []
 
-    # store functions to render stuff here, the key being the render layer
+    # stores functions to render stuff here, the key being the render layer
     renderQueue = {}
     
     @staticmethod
     def quit():
         GameManager.running = False
         pygame.quit()
+        sys.exit()
 
     @staticmethod
     def gameLoop():
-        while GameManager.running:
+        while GameManager.running == True:
             # event queue
             for event in pygame.event.get():
                 # on window closing
                 if event.type == pygame.QUIT:
+                    GameManager.running = False
                     GameManager.quit()
-
+                    
             # call update event
             for event in GameManager.updateEvents:
                 event()
@@ -44,9 +48,9 @@ class GameManager:
 
             # flip display for screen
             pygame.display.flip()
-
-            # limits FPS to 60
-            GameManager.clock.tick(60)
+            
+            # next frame
+            GameManager.deltaTime = GameManager.clock.tick() / 1000
 
     @staticmethod
     def setUpGame():
@@ -57,9 +61,8 @@ class GameManager:
         GameManager.running = True
 
         # start game loop
-        gameLoopThread = threading.Thread(target=GameManager.gameLoop)
+        gameLoopThread = threading.Thread(target = GameManager.gameLoop)
         gameLoopThread.start()
-
 
     @staticmethod
     def addToRenderQueue(renderer, layer):
@@ -73,7 +76,7 @@ class GameManager:
             print("added to queue")
 
         # make sure to sort it after changing
-        GameManager.renderQueue = dict(sorted(GameManager.renderQueue))
+        GameManager.renderQueue = dict(sorted(GameManager.renderQueue.items()))
 
     @staticmethod
     def removeFromRenderQueue(renderer, layer):
