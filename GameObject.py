@@ -13,7 +13,7 @@ class GameObject:
 
         # set default for image with path
         if imagePath != None:
-            self.image = pygame.image.load(imagePath)            
+            self.image = pygame.image.load(imagePath)
 
         # set default for position (world units)
         if position == None:
@@ -22,14 +22,20 @@ class GameObject:
             self.position = position
         
         # set default for size (world units)
+        # while this can be set at instantiation, helper functions should be used to set the size of the object afterwards
         if size == None:
-            self.size = Vector2(1, 1)
+            self.setSize(Vector2(1, 1))
         else:
-            self.size = size
+            self.setSize(size)
 
         # show gameObject if visible (in renderQueue, of course)
         if self.visible:
             self.show()
+
+
+    def setSize(self, size):
+        self.size = size
+        self.image = pygame.transform.scale(self.image, (self.size * GameManager.worldUnitSize).toArray())
 
 
     def show(self):
@@ -43,4 +49,4 @@ class GameObject:
 
     # by default, game objects will render self.image in self.position with self.size
     def onRender(self):
-        GameManager.screen.blit(self.image, self.position.toArray())
+        GameManager.screen.blit(self.image, (self.position * GameManager.worldUnitSize).toArray())
