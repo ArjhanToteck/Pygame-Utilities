@@ -15,6 +15,7 @@ class GameManager:
 	worldUnitSize = Vector2(50, 50) # number of pixels per world unit
 
 	gameObjects = []
+	colliders = []
 
 	# stores pygame events on a given frame
 	pygameEvents = []
