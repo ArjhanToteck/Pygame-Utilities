@@ -35,6 +35,14 @@ class Sprite(GameObject):
 		self.image = pygame.transform.scale(self.image, (self.size * GameManager.worldUnitSize).toArray())
 
 
+	def setImage(self, image):
+		self.image = pygame.image.load(image)
+
+
+	def setImageFromPath(self, imagePath):
+		self.image = pygame.image.load(imagePath)
+
+
 	# by default, game objects will render self.image in self.position with self.size
 	def onRender(self):
 		GameManager.screen.blit(self.image, (self.position * GameManager.worldUnitSize).toArray())
