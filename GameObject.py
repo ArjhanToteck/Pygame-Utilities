@@ -6,6 +6,8 @@ from Vector2 import Vector2
 # this is the barebones template required for gameObjects. more often than not, sprites will be of better use unless you want to make something like a background.
 class GameObject:
 	def __init__(self, visible = True, layer = 1):
+		self.colliders = []
+
 		self.layer = layer
 
 		# while this can be set at instantiation, helper functions should be used to hide and show the object afterwards
@@ -38,7 +40,22 @@ class GameObject:
 		pass
 
 
-	def destroy(self):
+	def onCollision(self, localCollider, otherCollider):
+		pass
+
+	
+	def onTrigger(self, localCollider, otherCollider):
+		pass
+
+
+	def destroy(self):		
+		# destroy colliders
+		if(self.colliders != None):
+			for collider in self.colliders:
+				collider.destroy()
+
+		# remove self from global record
 		GameManager.gameObjects.remove(self)
-		GameManager.onUpdate.remove(self.onUpdate)
+
+		# make sure not to be rendered
 		self.hide()

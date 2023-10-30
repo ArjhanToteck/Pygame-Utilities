@@ -2,6 +2,7 @@ from GameManager import GameManager
 from GameObject import GameObject
 from Sprite import Sprite
 from Vector2 import Vector2
+import Collider
 
 import pygame
 
@@ -13,6 +14,7 @@ class Scene1:
 	def start():
 		background = Scene1.Background()
 		player = Scene1.Player(imagePath = "test.png")
+		player.colliders.append(Collider.Collider(player))
 
 
 	# background class

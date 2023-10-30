@@ -2,13 +2,20 @@ from GameManager import GameManager
 from Vector2 import Vector2
 
 # TODO: implement actual collision, allow colliders to be added to GameObjects, create subclasses for different collider types
+
+# this is a default collider class not meant for actual use outside of being inherited by the real types of colliders
 class Collider:
-    def __init__(self, parent, offset = None, position = None, isTrigger = False, followParent = True, visible = False):
+    def __init__(self, parent, offset = None, position = None, enabled = True, isTrigger = False, followParent = True, visible = False):
         # parent gameObject
         self.parent = parent
+        self.enabled = enabled
         self.isTrigger = isTrigger
         self.followParent = followParent
-        self.visible = visible # TODO: add a way to render colliders for debug
+
+        self.visible = visible # TODO: add a way to render colliders for debug (in non-default colliders)
+
+        if(visible):
+            self.show()
 
         # default offset
         if offset == None:
@@ -20,3 +27,45 @@ class Collider:
             
         # add self to global collider list
         GameManager.colliders.append(self)
+
+
+    def show(self):
+        pass
+
+
+    def hide(self):
+        pass
+
+
+    def destroy(self):
+        # remove self from global collider list
+        GameManager.colliders.remove(self)
+
+        # remove self from parent
+        self.parent.colliders.remove(self)
+        
+		# make sure not to be rendered
+        self.hide()
+
+    def checkCollisions(self):
+        pass
+
+
+
+class SquareCollider(Collider):
+    def checkCollisions(self):
+        pass
+
+    def show(self):
+        pass
+
+    def hide(self):
+        pass
+
+
+class CircleCollider(Collider):
+    pass
+
+
+class ImageCollider(Collider):
+    pass
