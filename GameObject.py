@@ -3,6 +3,7 @@ import pygame
 from GameManager import GameManager
 from Vector2 import Vector2
 
+# this is the barebones template required for gameObjects. more often than not, sprites will be of better use unless you want to make something like a background.
 class GameObject:
 	def __init__(self, visible = True, layer = 1):
 		self.layer = layer
@@ -32,8 +33,10 @@ class GameObject:
 	def onRender(self):
 		pass
 
+
 	def onUpdate(self):
 		pass
+
 
 	def destroy(self):
 		GameManager.gameObjects.remove(self)

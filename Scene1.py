@@ -5,27 +5,31 @@ from Vector2 import Vector2
 
 import pygame
 
-# this class contains all the game objects and stuff it needs
+# this class contains all the game objects and stuff for the scene
 class Scene1:
 
+	# this is called when the scene is opened. creates all the gameObjects it needs.
 	@staticmethod
 	def start():
 		background = Scene1.Background()
 		player = Scene1.Player(imagePath = "test.png")
 
 
+	# background class
 	class Background(GameObject):
 		def onRender(self):
 			# clear game
 			GameManager.screen.fill("black")
 
 
+	# player class
 	class Player(Sprite):
 		def __init__(self, position=None, size=None, visible=True, layer=1, imagePath=None, image=None):
 			self.speed = 5
 
 			# do regular sprite init
 			super().__init__(position, size, visible, layer, imagePath, image)
+
 
 		def onUpdate(self):
 

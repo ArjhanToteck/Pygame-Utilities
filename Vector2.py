@@ -6,6 +6,7 @@ class Vector2:
 		self.x = x
 		self.y = y
 
+
 	def toArray(self):
 		return [self.x, self.y]
 	
