@@ -49,9 +49,9 @@ class GameManager:
 			# get key presses
 			GameManager.keysDown = pygame.key.get_pressed()
 
-			# detect collisions
+			"""# detect collisions
 			for collider in GameManager.colliders:
-				collider.checkCollisions()
+				collider.checkCollisions()"""
 
 			# call update events on gameObjects
 			for gameObject in GameManager.gameObjects:

@@ -37,10 +37,10 @@ class Scene1:
 
 			# movement
 			if GameManager.keysDown[pygame.K_LEFT]:
-				self.position.x -= self.speed * GameManager.deltaTime
+				self.move(Vector2(-self.speed * GameManager.deltaTime, 0))
 			if GameManager.keysDown[pygame.K_RIGHT]:
-				self.position.x += self.speed * GameManager.deltaTime
+				self.move(Vector2(self.speed * GameManager.deltaTime, 0))
 			if GameManager.keysDown[pygame.K_UP]:
-				self.position.y -= self.speed * GameManager.deltaTime
+				self.move(Vector2(0, -self.speed * GameManager.deltaTime))
 			if GameManager.keysDown[pygame.K_DOWN]:
-				self.position.y += self.speed * GameManager.deltaTime
+				self.move(Vector2(0, self.speed * GameManager.deltaTime))

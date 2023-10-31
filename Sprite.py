@@ -35,6 +35,12 @@ class Sprite(GameObject):
 		self.image = pygame.transform.scale(self.image, (self.size * GameManager.worldUnitSize).toArray())
 
 
+	def move(self, movement):
+		self.position += movement
+
+		# TODO: implement collisions here
+
+
 	def setImage(self, image):
 		self.image = pygame.image.load(image)
 

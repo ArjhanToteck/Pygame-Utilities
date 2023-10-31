@@ -50,7 +50,12 @@ class Collider:
     def checkCollisions(self):
         pass
 
-
+class CollisionData:
+    # enum for collision types
+    class CollisionType:
+        none = 0
+        trigger = 1
+        collision = 2
 
 class SquareCollider(Collider):
     def checkCollisions(self):
