@@ -13,6 +13,8 @@ class GameManager:
 	gameLoopThread = None
 	deltaTime = 0
 	worldUnitSize = Vector2(50, 50) # number of pixels per world unit
+	screenSizePixels = Vector2(1280, 720)
+	screenSizeWorldUnits = screenSizePixels / worldUnitSize
 
 	gameObjects = []
 	colliders = []
@@ -73,7 +75,7 @@ class GameManager:
 	def setUpGame(callback = None):
 		# pygame setup
 		pygame.init()
-		GameManager.screen = pygame.display.set_mode((1280, 720))
+		GameManager.screen = pygame.display.set_mode(GameManager.screenSizePixels.toArray())
 		GameManager.clock = pygame.time.Clock()
 		GameManager.running = True
 

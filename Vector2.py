@@ -45,7 +45,7 @@ class Vector2:
 			warnings.warn("This operation is not implemented.")
 			
 
-	def __sub__(self, other):
+	def __truediv__(self, other):
 		# check if divided by another Vector2
 		if isinstance(other, Vector2):
 			return Vector2(self.x / other.x, self.y / other.y)

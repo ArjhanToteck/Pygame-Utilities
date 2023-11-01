@@ -7,22 +7,14 @@ import Collider
 import pygame
 
 # this class contains all the game objects and stuff for the scene
-class Scene1:
+class StoreView:
 
 	# this is called when the scene is opened. creates all the gameObjects it needs.
 	@staticmethod
 	def start():
-		background = Scene1.Background()
-		player = Scene1.Player(imagePath = "test.png")
+		background = Sprite(imagePath = "Images/FloorAndWalls.png", size = GameManager.screenSizeWorldUnits)
+		player = StoreView.Player(imagePath = "test.png")
 		player.colliders.append(Collider.Collider(player))
-
-
-	# background class
-	class Background(GameObject):
-		def onRender(self):
-			# clear game
-			GameManager.screen.fill("black")
-
 
 	# player class
 	class Player(Sprite):

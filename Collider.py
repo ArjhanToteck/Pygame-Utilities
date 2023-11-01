@@ -57,7 +57,19 @@ class CollisionData:
         trigger = 1
         collision = 2
 
-class SquareCollider(Collider):
+class RectangleCollider(Collider):
+    def __init__(self, parent, offset=None, size = None, position=None, enabled=True, isTrigger=False, followParent=True, visible=False):
+        
+        # set default size
+        if size == None:
+            # by default, match parent size
+            self.size = Vector2(parent.size.x, parent.size.y)
+        else:
+            self.size = size
+
+        # call base init
+        super().__init__(parent, offset, position, enabled, isTrigger, followParent, visible)
+
     def checkCollisions(self):
         pass
 

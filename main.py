@@ -1,9 +1,9 @@
 from GameManager import GameManager
-from Scene1 import Scene1
+from StoreView import StoreView
 
 def main():
 	# open first scene
-	Scene1.start()
+	StoreView.start()
 
 	# set game up
 	GameManager.setUpGame()
