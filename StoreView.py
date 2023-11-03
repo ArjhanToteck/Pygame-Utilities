@@ -1,7 +1,10 @@
+from ssl import VERIFY_ALLOW_PROXY_CERTS
 from GameManager import GameManager
 from GameObject import GameObject
 from Sprite import Sprite
 from Vector2 import Vector2
+from Player import Player
+
 import Collider
 
 import pygame
@@ -12,27 +15,15 @@ class StoreView:
 	# this is called when the scene is opened. creates all the gameObjects it needs.
 	@staticmethod
 	def start():
-		background = Sprite(imagePath = "Images/FloorAndWalls.png", size = GameManager.screenSizeWorldUnits)
-		player = StoreView.Player(imagePath = "test.png")
-		player.colliders.append(Collider.Collider(player))
+		# store
+		background = Sprite(imagePath = "Images/FloorAndWalls.png", size = GameManager.screenSizeWorldUnits, layer = 0)
 
-	# player class
-	class Player(Sprite):
-		def __init__(self, position=None, size=None, visible=True, layer=1, imagePath=None, image=None):
-			self.speed = 5
+		salesTable = Sprite(imagePath = "Images/SalesTable.png", position = Vector2(10, 2), layer = 2)
+		clock = Sprite(imagePath = "Images/Clock.png", position = Vector2(7, 1), layer = 2)
+		lamp = Sprite(imagePath = "Images/Lamp.png", position = Vector2(18, 1), layer = 2)
+		rug = Sprite(imagePath = "Images/Rug.png", position = Vector2(12, 5), layer = 0)
+		couches = Sprite(imagePath = "Images/Couches.png", position = Vector2(0.5, 4), layer = 2)
+		tablesAndChairs = Sprite(imagePath = "Images/TablesAndChairs.png", position = Vector2(20, 4), layer = 2)
 
-			# do regular sprite init
-			super().__init__(position, size, visible, layer, imagePath, image)
-
-
-		def onUpdate(self):
-
-			# movement
-			if GameManager.keysDown[pygame.K_LEFT]:
-				self.move(Vector2(-self.speed * GameManager.deltaTime, 0))
-			if GameManager.keysDown[pygame.K_RIGHT]:
-				self.move(Vector2(self.speed * GameManager.deltaTime, 0))
-			if GameManager.keysDown[pygame.K_UP]:
-				self.move(Vector2(0, -self.speed * GameManager.deltaTime))
-			if GameManager.keysDown[pygame.K_DOWN]:
-				self.move(Vector2(0, self.speed * GameManager.deltaTime))
+		# create player
+		player = Player(imagePath = "Images/Player.png", size = Vector2(2, 2))

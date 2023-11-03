@@ -8,5 +8,9 @@ def main():
 	# set game up
 	GameManager.setUpGame()
 
+	# game loop
+	while GameManager.running == True:
+		GameManager.nextFrame()
+
 if __name__ == '__main__':
 	main()

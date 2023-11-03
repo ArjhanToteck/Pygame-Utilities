@@ -12,7 +12,7 @@ class Sprite(GameObject):
 		# set default for image with path
 		if imagePath != None:
 			self.image = pygame.image.load(imagePath)
-
+			
 		# set default for position (world units)
 		if position == None:
 			self.position = Vector2(0, 0)
@@ -22,7 +22,11 @@ class Sprite(GameObject):
 		# set default for size (world units)
 		# while this can be set at instantiation, helper functions should be used to set the size of the object afterwards
 		if size == None:
-			self.setSize(Vector2(1, 1))
+			# set size based on image
+			if self.image != None:
+				self.setSizePixels(Vector2(self.image.get_width(), self.image.get_height()))
+			else:
+				self.setSize(Vector2(1, 1))
 		else:
 			self.setSize(size)
 
@@ -35,11 +39,26 @@ class Sprite(GameObject):
 		self.image = pygame.transform.scale(self.image, (self.size * GameManager.worldUnitSize).toArray())
 
 
+	def setSizePixels(self, size):
+		self.setSize(size / GameManager.worldUnitSize)
+
+
+	def scale(self, factor):
+		self.setSize(self.size * factor)
+
+
 	def move(self, movement):
 		self.position += movement
 
 		# TODO: implement collisions here
 
+
+	def setPosition(self, position):
+		self.position = position
+
+	
+	def setPositionInPixels(self, position):
+		self.setPosition(position / GameManager.worldUnitSize)
 
 	def setImage(self, image):
 		self.image = pygame.image.load(image)

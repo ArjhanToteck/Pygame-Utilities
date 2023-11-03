@@ -25,6 +25,9 @@ class Vector2:
 		# check if multiplied by another Vector2
 		if isinstance(other, Vector2):
 			return Vector2(self.x * other.x, self.y * other.y)
+		# check if multiplied by number
+		elif isinstance(other, int) or isinstance(other, float):
+			return Vector2(self.x * other, self.y * other)
 		else:
 			warnings.warn("This operation is not implemented.")
 
@@ -33,6 +36,9 @@ class Vector2:
 		# check if added to another Vector2
 		if isinstance(other, Vector2):
 			return Vector2(self.x + other.x, self.y + other.y)
+		# check if added to number
+		elif isinstance(other, int) or isinstance(other, float):
+			return Vector2(self.x + other, self.y + other)
 		else:
 			warnings.warn("This operation is not implemented.")
 
@@ -41,6 +47,9 @@ class Vector2:
 		# check if subtracted from another Vector2
 		if isinstance(other, Vector2):
 			return Vector2(self.x - other.x, self.y - other.y)
+		# check if subtracted by number
+		elif isinstance(other, int) or isinstance(other, float):
+			return Vector2(self.x - other, self.y - other)
 		else:
 			warnings.warn("This operation is not implemented.")
 			
@@ -49,5 +58,8 @@ class Vector2:
 		# check if divided by another Vector2
 		if isinstance(other, Vector2):
 			return Vector2(self.x / other.x, self.y / other.y)
+		# check if divided by number
+		elif isinstance(other, int) or isinstance(other, float):
+			return Vector2(self.x / other, self.y / other)
 		else:
 			warnings.warn("This operation is not implemented.")

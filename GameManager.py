@@ -33,7 +33,7 @@ class GameManager:
 		sys.exit()
 
 	@staticmethod
-	def gameLoop():
+	def nextFrame():
 		while GameManager.running == True:
 			# clear events for this frame
 			GameManager.pygameEvents = []
@@ -82,9 +82,6 @@ class GameManager:
 		if(callback != None):
 			callbackThread = threading.Thread(target = callback)
 			callbackThread.start()
-
-		# start game loop
-		GameManager.gameLoop()
 
 	@staticmethod
 	def addToRenderQueue(renderer, layer):
