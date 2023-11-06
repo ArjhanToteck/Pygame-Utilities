@@ -109,3 +109,16 @@ class GameManager:
 
 		else:
 			GameManager.renderQueue[layer].remove(renderer)
+
+	
+	@staticmethod
+	def worldToPixelPosition(worldPosition):
+		pixelCenter = Vector2(GameManager.screenSizePixels.x / 2, GameManager.screenSizePixels.y / 2)
+
+		# scale world units by size in pixels
+		pixelPosition = worldPosition * GameManager.worldUnitSize
+
+		# add offset to account for center of screen
+		pixelPosition += pixelCenter
+
+		return pixelPosition

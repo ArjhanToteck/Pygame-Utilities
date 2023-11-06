@@ -18,12 +18,12 @@ class StoreView:
 		# store
 		background = Sprite(imagePath = "Images/FloorAndWalls.png", size = GameManager.screenSizeWorldUnits, layer = 0)
 
-		salesTable = Sprite(imagePath = "Images/SalesTable.png", position = Vector2(10, 2), layer = 2)
-		clock = Sprite(imagePath = "Images/Clock.png", position = Vector2(7, 1), layer = 2)
-		lamp = Sprite(imagePath = "Images/Lamp.png", position = Vector2(18, 1), layer = 2)
-		rug = Sprite(imagePath = "Images/Rug.png", position = Vector2(12, 5), layer = 0)
-		couches = Sprite(imagePath = "Images/Couches.png", position = Vector2(0.5, 4), layer = 2)
-		tablesAndChairs = Sprite(imagePath = "Images/TablesAndChairs.png", position = Vector2(20, 4), layer = 2)
+		salesTable = Sprite(imagePath = "Images/SalesTable.png", position = Vector2(0, 6), layer = 2)
+		clock = Sprite(imagePath = "Images/Clock.png", position = Vector2(3, 6), layer = 2)
+		lamp = Sprite(imagePath = "Images/Lamp.png", position = Vector2(-3, 6), layer = 2)
+		rug = Sprite(imagePath = "Images/Rug.png", position = Vector2(0, 4), layer = 0)
+		couches = Sprite(imagePath = "Images/Couches.png", position = Vector2(10, 0), layer = 2)
+		tablesAndChairs = Sprite(imagePath = "Images/TablesAndChairs.png", position = Vector2(10, 0), layer = 2)
 
 		# create player
 		player = Player(imagePath = "Images/Player.png", size = Vector2(2, 2))
