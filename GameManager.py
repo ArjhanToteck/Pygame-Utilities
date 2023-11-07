@@ -113,10 +113,13 @@ class GameManager:
 	
 	@staticmethod
 	def worldToPixelPosition(worldPosition):
+		# invert y axis
+		worldPositionYInverted = Vector2(worldPosition.x, -worldPosition.y)
+
 		pixelCenter = Vector2(GameManager.screenSizePixels.x / 2, GameManager.screenSizePixels.y / 2)
 
 		# scale world units by size in pixels
-		pixelPosition = worldPosition * GameManager.worldUnitSize
+		pixelPosition = worldPositionYInverted * GameManager.worldUnitSize
 
 		# add offset to account for center of screen
 		pixelPosition += pixelCenter

@@ -27,6 +27,6 @@ class Player(Sprite):
 		if GameManager.keysDown[pygame.K_RIGHT]:
 			self.move(Vector2(self.speed * GameManager.deltaTime, 0))
 		if GameManager.keysDown[pygame.K_UP]:
-			self.move(Vector2(0, -self.speed * GameManager.deltaTime))
-		if GameManager.keysDown[pygame.K_DOWN]:
 			self.move(Vector2(0, self.speed * GameManager.deltaTime))
+		if GameManager.keysDown[pygame.K_DOWN]:
+			self.move(Vector2(0, -self.speed * GameManager.deltaTime))

@@ -18,11 +18,14 @@ class StoreView:
 		# store
 		background = Sprite(imagePath = "Images/FloorAndWalls.png", size = GameManager.screenSizeWorldUnits, layer = 0)
 
-		salesTable = Sprite(imagePath = "Images/SalesTable.png", position = Vector2(0, 6), layer = 2)
-		clock = Sprite(imagePath = "Images/Clock.png", position = Vector2(3, 6), layer = 2)
-		lamp = Sprite(imagePath = "Images/Lamp.png", position = Vector2(-3, 6), layer = 2)
-		rug = Sprite(imagePath = "Images/Rug.png", position = Vector2(0, 4), layer = 0)
-		couches = Sprite(imagePath = "Images/Couches.png", position = Vector2(10, 0), layer = 2)
+		salesTable = Sprite(imagePath = "Images/SalesTable.png", position = Vector2(0, 4), layer = 2)
+		clock = Sprite(imagePath = "Images/Clock.png", position = Vector2(5, 4), layer = 2)
+		lamp = Sprite(imagePath = "Images/Lamp.png", position = Vector2(-5, 4), layer = 2)
+
+		rug = Sprite(imagePath = "Images/Rug.png", position = Vector2(0, -1), layer = 0)
+
+		# TODO: make these pivot to their edges for symmetry
+		couches = Sprite(imagePath = "Images/Couches.png", position = Vector2(-10, 0), layer = 2)
 		tablesAndChairs = Sprite(imagePath = "Images/TablesAndChairs.png", position = Vector2(10, 0), layer = 2)
 
 		# create player
