@@ -17,7 +17,7 @@ class GameManager:
 	screenSizeWorldUnits = screenSizePixels / worldUnitSize
 
 	gameObjects = []
-	colliders = []
+	#colliders = []
 
 	# stores pygame events on a given frame
 	pygameEvents = []
