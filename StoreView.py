@@ -25,8 +25,8 @@ class StoreView:
 		rug = Sprite(imagePath = "Images/Rug.png", position = Vector2(0, -1), layer = 0)
 
 		# TODO: make these pivot to their edges for symmetry
-		couches = Sprite(imagePath = "Images/Couches.png", position = Vector2(-10, 0), layer = 2)
-		tablesAndChairs = Sprite(imagePath = "Images/TablesAndChairs.png", position = Vector2(10, 0), layer = 2)
+		couches = Sprite(imagePath = "Images/Couches.png", position = Vector2(-12, 3), pivot = Vector2(-1, 1), layer = 2)
+		tablesAndChairs = Sprite(imagePath = "Images/TablesAndChairs.png", position = Vector2(12, 3), pivot = Vector2(1, 1), layer = 2)
 
 		# create player
-		player = Player(imagePath = "Images/Player.png", size = Vector2(2, 2))
+		player = Player(imagePath = "Images/Player.png", size = Vector2(3, 3))

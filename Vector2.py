@@ -14,6 +14,8 @@ class Vector2:
 	def toTuple(self):
 		return (self.x, self.y)
 
+	def clone(self):
+		return Vector2(self.x, self.y)
 
 	def __eq__(self, other):
 		# check if multiplied by another Vector2

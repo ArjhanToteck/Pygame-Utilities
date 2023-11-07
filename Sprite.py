@@ -77,8 +77,21 @@ class Sprite(GameObject):
 
 	# by default, game objects will render self.image in self.position with self.size
 	def onRender(self):
-		# position of sprite (top left corner by default in pygame, center by default using a Sprite instance)
-		pivotPosition = GameManager.worldToPixelPosition(self.position)
-		pivotPosition -= Vector2(self.size.x / 2, self.size.y / 2) * GameManager.worldUnitSize # TODO: make this actually use self.pivot instead of always the center
+		# get screen position of sprite (top left corner)
+		screenPosition = GameManager.worldToScreenPosition(self.position)
 
-		GameManager.screen.blit(self.image, pivotPosition.toArray())
+		# center of sprite (default pivot)
+		pivotOffset = (self.size / 2) * GameManager.worldUnitSize
+
+		# invert y of pivot
+		pivotYInverted = self.pivot.clone()
+		pivotYInverted.y *= -1
+
+		# add pivot to offset (percentage of size)
+		pivotOffset += pivotYInverted * (self.size / 2) * GameManager.worldUnitSize
+
+		# add 
+		screenPosition -= pivotOffset
+
+		# draw image at position
+		GameManager.screen.blit(self.image, screenPosition.toArray())

@@ -112,7 +112,7 @@ class GameManager:
 
 	
 	@staticmethod
-	def worldToPixelPosition(worldPosition):
+	def worldToScreenPosition(worldPosition):
 		# invert y axis
 		worldPositionYInverted = Vector2(worldPosition.x, -worldPosition.y)
 
