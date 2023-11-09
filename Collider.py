@@ -71,7 +71,14 @@ class RectangleCollider(Collider):
         super().__init__(parent, offset, position, enabled, isTrigger, followParent, visible)
 
     def checkCollisions(self):
-        pass
+        for collider in GameManager.colliders:
+            # other rectangle collider
+            if isinstance(collider, RectangleCollider):
+                pass
+
+            else:
+                # TODO: implement collisions with other types
+                pass
 
     def show(self):
         pass
