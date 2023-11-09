@@ -50,12 +50,14 @@ class Collider:
     def checkCollisions(self):
         pass
 
+
 class CollisionData:
     # enum for collision types
     class CollisionType:
         none = 0
         trigger = 1
         collision = 2
+
 
 class RectangleCollider(Collider):
     def __init__(self, parent, offset=None, size = None, position=None, enabled=True, isTrigger=False, followParent=True, visible=False):
@@ -70,6 +72,7 @@ class RectangleCollider(Collider):
         # call base init
         super().__init__(parent, offset, position, enabled, isTrigger, followParent, visible)
 
+
     def checkCollisions(self):
         for collider in GameManager.colliders:
             # other rectangle collider
@@ -80,8 +83,10 @@ class RectangleCollider(Collider):
                 # TODO: implement collisions with other types
                 pass
 
+
     def show(self):
         pass
+
 
     def hide(self):
         pass
