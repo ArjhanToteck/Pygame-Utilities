@@ -54,6 +54,10 @@ class Sprite(GameObject):
 
 
 	def move(self, movement):
+		# remember original position in case of collision
+		originalPosition = self.position.clone()
+
+		# update posittion
 		self.position += movement
 
 		# TODO: implement collisions here

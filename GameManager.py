@@ -26,100 +26,100 @@ class GameManager:
 	# stores functions to render stuff here, the key being the render layer
 	renderQueue = {}
 	
-	@staticmethod
-	def quit():
-		GameManager.running = False
+	@classmethod
+	def quit(cls):
+		cls.running = False
 		pygame.quit()
 		sys.exit()
 
-	@staticmethod
-	def nextFrame():
-		while GameManager.running == True:
+	@classmethod
+	def nextFrame(cls):
+		while cls.running == True:
 			# clear events for this frame
-			GameManager.pygameEvents = []
+			cls.pygameEvents = []
 			
 			# event queue
 			for event in pygame.event.get():
 				# on window closing
 				if event.type == pygame.QUIT:
-					GameManager.running = False
-					GameManager.quit()
+					cls.running = False
+					cls.quit()
 
 				# adds event to list for current frame
-				GameManager.pygameEvents.append(event)
+				cls.pygameEvents.append(event)
 					
 			# get key presses
-			GameManager.keysDown = pygame.key.get_pressed()
+			cls.keysDown = pygame.key.get_pressed()
 
 			"""# detect collisions
 			for collider in GameManager.colliders:
 				collider.checkCollisions()"""
 
 			# call update events on gameObjects
-			for gameObject in GameManager.gameObjects:
+			for gameObject in cls.gameObjects:
 				gameObject.onUpdate()
 
 			# loop through render layers
-			for layer in GameManager.renderQueue:
+			for layer in cls.renderQueue:
 				# render everything in the current layer
-				for event in GameManager.renderQueue[layer]:
+				for event in cls.renderQueue[layer]:
 					event()            
 
 			# flip display for screen
 			pygame.display.flip()
 			
 			# next frame
-			GameManager.deltaTime = GameManager.clock.tick() / 1000
+			cls.deltaTime = cls.clock.tick() / 1000
 
-	@staticmethod
-	def setUpGame(callback = None):
+	@classmethod
+	def setUpGame(cls, callback = None):
 		# pygame setup
 		pygame.init()
-		GameManager.screen = pygame.display.set_mode(GameManager.screenSizePixels.toArray())
-		GameManager.clock = pygame.time.Clock()
-		GameManager.running = True
+		cls.screen = pygame.display.set_mode(cls.screenSizePixels.toArray())
+		cls.clock = pygame.time.Clock()
+		cls.running = True
 
 		if(callback != None):
 			callbackThread = threading.Thread(target = callback)
 			callbackThread.start()
 
-	@staticmethod
-	def addToRenderQueue(renderer, layer):
+	@classmethod
+	def addToRenderQueue(cls, renderer, layer):
 		# checks if layer already exists
-		if(layer in GameManager.renderQueue):
+		if(layer in cls.renderQueue):
 			# add render function to queue
-			GameManager.renderQueue[layer].append(renderer)
+			cls.renderQueue[layer].append(renderer)
 		else:
 			# create new render layer with the renderer
-			GameManager.renderQueue[layer] = [renderer]
+			cls.renderQueue[layer] = [renderer]
 
 		# make sure to sort it after changing
-		GameManager.renderQueue = dict(sorted(GameManager.renderQueue.items()))
+		cls.renderQueue = dict(sorted(cls.renderQueue.items()))
 
-	@staticmethod
-	def removeFromRenderQueue(renderer, layer):
+	@classmethod
+	def removeFromRenderQueue(cls, renderer, layer):
 
 		# checks if the renderqueue doesn't exist
-		if not GameManager.renderQueue[layer]:
+		if not cls.renderQueue[layer]:
 			warnings.warn("The layer of the renderer you are trying to remove is not in the queue.")
 		
 		# checks if renderer is not in the queue/layer
-		elif  renderer not in GameManager.renderQueue[layer]:
+		elif  renderer not in cls.renderQueue[layer]:
 			warnings.warn("The renderer you are trying to remove is not in the queue or is not in the specified layer.")
 
 		else:
-			GameManager.renderQueue[layer].remove(renderer)
+			cls.renderQueue[layer].remove(renderer)
 
 	
-	@staticmethod
-	def worldToScreenPosition(worldPosition):
+	@classmethod
+	def worldToScreenPosition(cls, worldPosition):
 		# invert y axis
 		worldPositionYInverted = Vector2(worldPosition.x, -worldPosition.y)
 
-		pixelCenter = Vector2(GameManager.screenSizePixels.x / 2, GameManager.screenSizePixels.y / 2)
+		pixelCenter = Vector2(cls.screenSizePixels.x / 2, cls.screenSizePixels.y / 2)
 
 		# scale world units by size in pixels
-		pixelPosition = worldPositionYInverted * GameManager.worldUnitSize
+		pixelPosition = worldPositionYInverted * cls.worldUnitSize
 
 		# add offset to account for center of screen
 		pixelPosition += pixelCenter
