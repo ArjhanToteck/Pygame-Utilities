@@ -24,7 +24,6 @@ class StoreView:
 
 		rug = Sprite(imagePath = "Images/Rug.png", position = Vector2(0, -1), layer = 0)
 
-		# TODO: make these pivot to their edges for symmetry
 		couches = Sprite(imagePath = "Images/Couches.png", position = Vector2(-12, 3), pivot = Vector2(-1, 1), layer = 2)
 		tablesAndChairs = Sprite(imagePath = "Images/TablesAndChairs.png", position = Vector2(12, 3), pivot = Vector2(1, 1), layer = 2)
 

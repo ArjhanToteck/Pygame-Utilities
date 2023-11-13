@@ -13,6 +13,8 @@ class Collider:
 		self.isTrigger = isTrigger
 		self.followParent = followParent
 
+		self.currentCollisions = []
+
 		self.visible = visible # TODO: add a way to render colliders for debug (in non-default colliders)
 
 		if(visible):
@@ -48,17 +50,43 @@ class Collider:
 		# make sure not to be rendered
 		self.hide()
 
-	def checkCollisions(self):
+
+	def updateCollisions(self):
+		pass
+
+
+	def onCollisionEnter(self):
+		pass
+
+
+	def onCollisionExit(self):
+		pass
+
+
+	def onCollisionStay(self):
+		pass
+
+
+	def onTriggerEnter(self):
+		pass
+
+
+	def onTriggerExit(self):
+		pass
+
+
+	def onTriggerStay(self):
 		pass
 
 
 class Collision:
 
-	def __init__(self, selfCollider, otherCollider, collisionType, collisionPoint):
+	def __init__(self, selfCollider, otherCollider, collisionType, collisionPoint, justEntered = True):
 		self.collisionType = collisionType
 		self.selfCollider = selfCollider
 		self.otherCollider = otherCollider
 		self.collisionPoint = collisionPoint
+		self.justEntered = justEntered
 
 	# enum for collision types
 	class CollisionType(Enum):
@@ -80,14 +108,17 @@ class RectangleCollider(Collider):
 		super().__init__(parent, offset, position, enabled, isTrigger, followParent, visible)
 
 
-	def checkCollisions(self):
+	def updateCollisions(self, callEvents = True):
 		collisions = []
 
+		# loop through colliders in scene
 		for otherCollider in GameManager.colliders:
 
-			# other rectangle collider
+			collision = None
+
+			# check if other rectangle collider
 			if isinstance(otherCollider, RectangleCollider):
-				# Check for collision between two rectangles based on their bounding boxes
+				# check for collision between two rectangles based on bounding boxes
 				selfLeft = self.parent.position.x + self.offset.x
 				selfRight = selfLeft + self.size.x
 				selfTop = self.parent.position.y + self.offset.y
@@ -98,7 +129,7 @@ class RectangleCollider(Collider):
 				otherTop = otherCollider.parent.position.y + otherCollider.offset.y
 				otherBottom = otherTop + otherCollider.size.y
 
-				# Check for overlap along both axes
+				# check for overlap along both axes
 				xOverlap = selfRight > otherLeft and selfLeft < otherRight
 				yOverlap = selfBottom > otherTop and selfTop < otherBottom
 
@@ -110,27 +141,49 @@ class RectangleCollider(Collider):
 					# get collision data
 					collision = Collision(self, otherCollider, Collision.CollisionType.Collision, collisionPoint)
 
-					# mark collision as trigger event if applicable
-					if self.isTrigger or otherCollider.isTrigger:
-						collision.collisionType = Collision.CollisionType.Trigger
-
-					# add collision to array
-					collisions.append(collision)
-
 			else:
 				# TODO: implement collisions with other types
 				pass
 
+			# check if a collision of any type was detected
+			if collision != None:
+				# mark collision as trigger event if applicable
+				if self.isTrigger or otherCollider.isTrigger:
+					collision.collisionType = Collision.CollisionType.Trigger
+
+				# check if collision is already accounted for
+				for otherCollision in self.currentCollisions:
+
+					# check if the current collision already has the other collider
+					if otherCollision.otherCollider == otherCollider:
+						# make sure the collision knows it isn't new (onCollisionStay instead of onCollisionEnter)
+						collision.justEntered = False
+						break
+
+				# check if we need to call events
+				if callEvents:
+					if collision.isTrigger:
+						# trigger and justEntered
+						if collision.justEntered:
+							self.onTriggerEnter()
+							
+						# trigger and staying
+						else:
+							self.onTriggerStay()
+					else:						
+						# collider and justEntered
+						if collision.justEntered:
+							self.onCollisionEnter()
+
+						# trigger and staying
+						else:
+							self.onCollisionStay()
+
+		# overwrite old collision array
+		self.currentCollisions = collisions
+
 		# return collision array
-		return collisions
-
-
-	def show(self):
-		pass
-
-
-	def hide(self):
-		pass
+		return self.currentCollisions
 
 
 class CircleCollider(Collider):
