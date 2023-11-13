@@ -7,6 +7,9 @@ from GameObject import GameObject
 # sprites are a template for GameObjects that rely on a 2d image
 class Sprite(GameObject):
 	def __init__(self, position = None, size = None, visible = True, layer = 1, pivot = None, imagePath = None, image = None):
+		# do the regular __init__ for gameObjects
+		super().__init__(visible, layer)
+
 		self.image = image
 
 		# set default for image with path
@@ -36,9 +39,6 @@ class Sprite(GameObject):
 		else:
 			self.pivot = pivot
 
-		# do the regular __init__ for gameObjects
-		super().__init__(visible, layer)
-
 
 	def setSize(self, size):
 		self.size = size
@@ -60,10 +60,7 @@ class Sprite(GameObject):
 		# update position
 		self.position += movement
 
-		# loop through all colliders in sprite
-		for collider in self.colliders:
-			pass
-			# TODO: implement collisions here
+		# TODO: implement collisions here
 
 
 	def setPosition(self, position):
@@ -84,21 +81,24 @@ class Sprite(GameObject):
 
 	# by default, game objects will render self.image in self.position with self.size
 	def onRender(self):
-		# get screen position of sprite (top left corner)
-		screenPosition = GameManager.worldToScreenPosition(self.position)
+		if self.visible:
+			# get screen position of sprite (top left corner)
+			screenPosition = GameManager.worldToScreenPosition(self.position)
 
-		# center of sprite (default pivot)
-		pivotOffset = (self.size / 2) * GameManager.worldUnitSize
+			# center of sprite (default pivot)
+			pivotOffset = (self.size / 2) * GameManager.worldUnitSize
 
-		# invert y of pivot
-		pivotYInverted = self.pivot.clone()
-		pivotYInverted.y *= -1
+			# invert y of pivot
+			pivotYInverted = self.pivot.clone()
+			pivotYInverted.y *= -1
 
-		# add pivot to offset (percentage of size)
-		pivotOffset += pivotYInverted * (self.size / 2) * GameManager.worldUnitSize
+			# add pivot to offset (percentage of size)
+			pivotOffset += pivotYInverted * (self.size / 2) * GameManager.worldUnitSize
 
-		# add 
-		screenPosition -= pivotOffset
+			# subtract pivot
+			screenPosition -= pivotOffset
 
-		# draw image at position
-		GameManager.screen.blit(self.image, screenPosition.toArray())
+			# draw image at position
+			GameManager.screen.blit(self.image, screenPosition.toArray())
+
+		# TODO: show colliders if visible

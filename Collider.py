@@ -6,7 +6,7 @@ from enum import Enum
 
 # this is a default collider class not meant for actual use outside of being inherited by the real types of colliders
 class Collider:
-	def __init__(self, parent, offset = None, position = None, enabled = True, isTrigger = False, followParent = True, visible = False):
+	def __init__(self, parent, pivot = None, position = None, enabled = True, isTrigger = False, followParent = True, visible = False):
 		# parent gameObject
 		self.parent = parent
 		self.enabled = enabled
@@ -17,27 +17,16 @@ class Collider:
 
 		self.visible = visible # TODO: add a way to render colliders for debug (in non-default colliders)
 
-		if(visible):
-			self.show()
-
 		# default offset
-		if offset == None:
-			offset = Vector2()
+		if pivot == None:
+			pivot = Vector2(0, 0)
 
 		# default position
 		if position == None:
-			position = parent.position + offset
+			position = parent.position
 			
 		# add self to global collider list
 		GameManager.colliders.append(self)
-
-
-	def show(self):
-		pass
-
-
-	def hide(self):
-		pass
 
 
 	def destroy(self):
@@ -76,6 +65,10 @@ class Collider:
 
 
 	def onTriggerStay(self):
+		pass
+
+
+	def onRender(self):
 		pass
 
 
@@ -175,7 +168,7 @@ class RectangleCollider(Collider):
 						if collision.justEntered:
 							self.onCollisionEnter()
 
-						# trigger and staying
+						# collider and staying
 						else:
 							self.onCollisionStay()
 
@@ -184,6 +177,28 @@ class RectangleCollider(Collider):
 
 		# return collision array
 		return self.currentCollisions
+	
+	def onRender(self):
+		if self.visible:
+			color = (255, 0, 230)
+
+			# get screen position of sprite (top left corner)
+			screenPosition = GameManager.worldToScreenPosition(self.position)
+
+			# center of sprite (default pivot)
+			pivotOffset = (self.size / 2) * GameManager.worldUnitSize
+
+			# invert y of pivot
+			pivotYInverted = self.pivot.clone()
+			pivotYInverted.y *= -1
+
+			# add pivot to offset (percentage of size)
+			pivotOffset += pivotYInverted * (self.size / 2) * GameManager.worldUnitSize
+
+			# subtract pivot
+			screenPosition -= pivotOffset
+
+			GameManager.pygame.draw.rect(GameManager.screen, color, GameManager.pygame.Rect(screenPosition.x, screenPosition.y, self.size.x * GameManager.worldUnitSize, self.size.x * GameManager.worldUnitSize),  2)
 
 
 class CircleCollider(Collider):
