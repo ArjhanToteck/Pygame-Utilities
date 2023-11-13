@@ -57,10 +57,13 @@ class Sprite(GameObject):
 		# remember original position in case of collision
 		originalPosition = self.position.clone()
 
-		# update posittion
+		# update position
 		self.position += movement
 
-		# TODO: implement collisions here
+		# loop through all colliders in sprite
+		for collider in self.colliders:
+			pass
+			# TODO: implement collisions here
 
 
 	def setPosition(self, position):

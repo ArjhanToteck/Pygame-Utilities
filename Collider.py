@@ -54,10 +54,11 @@ class Collider:
 
 class Collision:
 
-	def __init__(self, collisionType, selfCollider, otherCollider):
+	def __init__(self, selfCollider, otherCollider, collisionType, collisionPoint):
 		self.collisionType = collisionType
 		self.selfCollider = selfCollider
 		self.otherCollider = otherCollider
+		self.collisionPoint = collisionPoint
 
 	# enum for collision types
 	class CollisionType(Enum):
@@ -103,8 +104,17 @@ class RectangleCollider(Collider):
 
 				# collision occured
 				if xOverlap and yOverlap:
+					# get collision point
+					collisionPoint = Vector2(max(selfLeft, otherLeft), max(selfTop, otherTop))
+
+					# get collision data
+					collision = Collision(self, otherCollider, Collision.CollisionType.Collision, collisionPoint)
+
+					# mark collision as trigger event if applicable
+					if self.isTrigger or otherCollider.isTrigger:
+						collision.collisionType = Collision.CollisionType.Trigger
+
 					# add collision to array
-					collision = Collision(Collision.CollisionType.none, self, otherCollider)
 					collisions.append(collision)
 
 			else:
