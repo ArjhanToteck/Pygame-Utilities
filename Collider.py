@@ -63,40 +63,29 @@ class Collider:
 	def onRender(self):
 		pass
 
-	def onCollisionEnter(self, collision):		
-		print(self.position)
-		print(collision.otherCollider.position)
-		print(collision.overlap)
+
+	def onCollisionEnter(self, collision):
+		pass
 
 
-	def onCollisionExit(self, collision):		
-		print(self.position)
-		print(collision.otherCollider.position)
-		print(collision.overlap)
+	def onCollisionExit(self, collision):
+		pass
 
 
 	def onCollisionStay(self, collision):
-		print(self.position)
-		print(collision.otherCollider.position)
-		print(collision.overlap)
+		pass
 
 
 	def onTriggerEnter(self, collision):
-		print(self.position)
-		print(collision.otherCollider.position)
-		print(collision.overlap)
+		pass
 
 
 	def onTriggerExit(self, collision):
-		print(self.position)
-		print(collision.otherCollider.position)
-		print(collision.overlap)
+		pass
 
 
 	def onTriggerStay(self, collision):
-		print(self.position)
-		print(collision.otherCollider.position)
-		print(collision.overlap)
+		pass
 
 
 class Collision:
@@ -144,35 +133,45 @@ class RectangleCollider(Collider):
 			# check if other rectangle collider
 			if isinstance(otherCollider, RectangleCollider):
 				# calculate pivot offsets
-				selfPivotOffset = self.pivot * (self.size / 2)
-				otherPivotOffset = otherCollider.pivot * (otherCollider.size / 2)
+				selfPivotOffset = (self.size / 2) * self.pivot
+				otherPivotOffset = (otherCollider.size / 2) * otherCollider.pivot
 
 				# calculate adjusted positions of rectangles
-				selfAdjustedLeft = self.parent.position.x + self.offset.x - selfPivotOffset.x
-				selfAdjustedRight = selfAdjustedLeft + self.size.x
-				selfAdjustedTop = self.parent.position.y + self.offset.y - selfPivotOffset.y
-				selfAdjustedBottom = selfAdjustedTop + self.size.y
+				selfLeft = self.position.x + selfPivotOffset.x + self.offset.x - (self.size.x / 2)
+				selfRight = self.position.x + selfPivotOffset.x + self.offset.x + (self.size.x / 2)
+				selfTop = self.position.y + selfPivotOffset.y + self.offset.y + (self.size.y / 2)
+				selfBottom = self.position.y + selfPivotOffset.y + self.offset.y - (self.size.y / 2)
+				
+				otherLeft = otherCollider.position.x + otherPivotOffset.x + otherCollider.offset.x - (otherCollider.size.x / 2)
+				otherRight = otherCollider.position.x + otherPivotOffset.x + otherCollider.offset.x + (otherCollider.size.x / 2)
+				otherTop = otherCollider.position.y + otherPivotOffset.y + otherCollider.offset.y + (otherCollider.size.y / 2)
+				otherBottom = otherCollider.position.y + otherPivotOffset.y + otherCollider.offset.y - (otherCollider.size.y / 2)
 
-				otherAdjustedLeft = otherCollider.parent.position.x + otherCollider.offset.x - otherPivotOffset.x
-				otherAdjustedRight = otherAdjustedLeft + otherCollider.size.x
-				otherAdjustedTop = otherCollider.parent.position.y + otherCollider.offset.y - otherPivotOffset.y
-				otherAdjustedBottom = otherAdjustedTop + otherCollider.size.y
+				print("selfPosition", self.position)
+				print("selfSize", self.size)
+				print("selfLeft:", selfLeft)
+				print("selfRight:", selfRight)
+				print("selfTop:", selfTop)
+				print("selfBottom:", selfBottom)
 
 				# check for overlap on both axes
 				overlap = Vector2()
 
-				# check overlap on the x
-				if selfAdjustedRight >= otherAdjustedLeft and otherAdjustedRight >= selfAdjustedLeft:
-					overlap.x = min(selfAdjustedRight, otherAdjustedRight) - max(selfAdjustedLeft, otherAdjustedLeft)
+				overlap.x = max(0, min(selfRight, otherRight) - max(selfLeft, otherLeft))
+				overlap.y = max(0, min(selfTop, otherTop) - max(selfBottom, otherBottom))
 
-				# check overlap on the y
-				if selfAdjustedBottom >= otherAdjustedTop and otherAdjustedBottom >= selfAdjustedTop:
-					overlap.y = min(selfAdjustedBottom, otherAdjustedBottom) - max(selfAdjustedTop, otherAdjustedTop)
+				# collision occurred
+				if overlap.x > 0 and overlap.y > 0:
+					# get collision point
+					collisionPoint = Vector2(max(selfLeft, otherLeft), max(selfTop, otherTop))
+
+					# get collision data
+					collision = Collision(self, otherCollider, Collision.CollisionType.Collision, collisionPoint, overlap)
 
 				# collision occured
 				if overlap.x > 0 and overlap.y > 0:
 					# get collision point
-					collisionPoint = Vector2(max(selfAdjustedLeft, otherAdjustedLeft), max(selfAdjustedTop, otherAdjustedTop))
+					collisionPoint = Vector2(max(selfLeft, otherLeft), max(selfTop, otherTop))
 
 					# get collision data
 					collision = Collision(self, otherCollider, Collision.CollisionType.Collision, collisionPoint, overlap)
@@ -259,7 +258,7 @@ class RectangleCollider(Collider):
 			# subtract pivot
 			screenPosition -= pivotOffset
 
-			pygame.draw.rect(GameManager.screen, color, pygame.Rect(screenPosition.x, screenPosition.y, self.size.x * GameManager.worldUnitSize.x, self.size.x * GameManager.worldUnitSize.x),  2)
+			pygame.draw.rect(GameManager.screen, color, pygame.Rect(screenPosition.x, screenPosition.y, self.size.x * GameManager.worldUnitSize.x, self.size.y * GameManager.worldUnitSize.y),  2)
 
 
 class CircleCollider(Collider):
