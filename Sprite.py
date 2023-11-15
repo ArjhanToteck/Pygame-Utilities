@@ -66,9 +66,7 @@ class Sprite(GameObject):
 		for collider in self.colliders:
 			currentPermittedPosition = collider.requestMovement(originalPosition, self.position)
 
-			# check if this collider permits less movement than the permittedPosition
-			if currentPermittedPosition.distanceTo(originalPosition) < permittedPosition.distanceTo(originalPosition):
-				permittedPosition = currentPermittedPosition
+			permittedPosition = currentPermittedPosition
 
 		# move to the permitted position
 		self.position = permittedPosition

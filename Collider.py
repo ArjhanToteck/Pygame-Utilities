@@ -73,7 +73,7 @@ class Collider:
 
 
 	def onCollisionStay(self, collision):
-		pass
+		print("colliding")
 
 
 	def onTriggerEnter(self, collision):
@@ -152,21 +152,20 @@ class RectangleCollider(Collider):
 
 				overlap.x = max(0, min(selfRight, otherRight) - max(selfLeft, otherLeft))
 				overlap.y = max(0, min(selfTop, otherTop) - max(selfBottom, otherBottom))
-
+				
 				# collision occurred
 				if overlap.x > 0 and overlap.y > 0:
 					# get collision point
 					collisionPoint = Vector2(max(selfLeft, otherLeft), max(selfTop, otherTop))
 
 					# get collision data
-					collision = Collision(self, otherCollider, Collision.CollisionType.Collision, collisionPoint, overlap)
+					
+					if selfLeft > otherLeft:
+						overlap.x = -overlap.x
+				
+					if selfBottom > otherBottom:
+						overlap.y = -overlap.y
 
-				# collision occured
-				if overlap.x > 0 and overlap.y > 0:
-					# get collision point
-					collisionPoint = Vector2(max(selfLeft, otherLeft), max(selfTop, otherTop))
-
-					# get collision data
 					collision = Collision(self, otherCollider, Collision.CollisionType.Collision, collisionPoint, overlap)
 
 			else:
@@ -224,15 +223,18 @@ class RectangleCollider(Collider):
 		for collision in currentCollisions:
 			# make sure it's not a trigger
 			if collision.collisionType == Collision.CollisionType.Collision:
-				farthestPosition = None # set this to the spot where the collider should stop at Vector2
 
-				# make sure this farthest position isn't greater than targetPosition
-				if farthestPosition.distanceTo(originalPosition) < targetPosition.distanceTo(originalPosition):
-					# set permittedPosition to farthestPosition if it is closer than permittedPosition
-					if farthestPosition.distanceTo(originalPosition) < permittedPosition.distanceTo(originalPosition):
-						permittedPosition = farthestPosition
+				overlap = collision.overlap
 
-		print(permittedPosition)
+				if abs(collision.overlap.x) < abs(collision.overlap.y):
+					overlap.y = 0
+				else:
+					overlap.x = 0
+
+				permittedPosition -= overlap
+
+				#permittedPosition = targetPosition + collision.overlap
+				print(collision.overlap)
 
 		return permittedPosition
 

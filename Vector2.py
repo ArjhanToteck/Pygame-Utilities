@@ -24,25 +24,8 @@ class Vector2:
 		return f"Vector2({self.x}, {self.y})"
 
 	
-	def projectOnto(self, other):
-        # projection of this vector onto another vector
-		dotProduct = self.dot(other)
-		lengthSquared = other.x ** 2 + other.y ** 2
-
-		# avoid division by zero
-		if lengthSquared != 0:
-			projectionScalar = dotProduct / lengthSquared
-			projection = Vector2(projectionScalar * other.x, projectionScalar * other.y)
-
-			return projection
-		else:
-			# if the length squared is zero, return a zero vector
-			return Vector2(0, 0)
-
-
-	def dot(self, other):
-        # dot product of two vectors
-		return self.x * other.x + self.y * other.y
+	def magnitude(self):
+		return (self.x ** 2 + self.y ** 2) ** 0.5
 
 
 	def distanceTo(self, other):
