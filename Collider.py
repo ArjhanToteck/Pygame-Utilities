@@ -147,13 +147,6 @@ class RectangleCollider(Collider):
 				otherTop = otherCollider.position.y + otherPivotOffset.y + otherCollider.offset.y + (otherCollider.size.y / 2)
 				otherBottom = otherCollider.position.y + otherPivotOffset.y + otherCollider.offset.y - (otherCollider.size.y / 2)
 
-				print("selfPosition", self.position)
-				print("selfSize", self.size)
-				print("selfLeft:", selfLeft)
-				print("selfRight:", selfRight)
-				print("selfTop:", selfTop)
-				print("selfBottom:", selfBottom)
-
 				# check for overlap on both axes
 				overlap = Vector2()
 
@@ -182,13 +175,14 @@ class RectangleCollider(Collider):
 
 			# check if a collision of any type was detected
 			if collision != None:
+				collisions.append(collision)
+
 				# mark collision as trigger event if applicable
 				if self.isTrigger or otherCollider.isTrigger:
 					collision.collisionType = Collision.CollisionType.Trigger
 
 				# check if collision is already accounted for
 				for otherCollision in self.currentCollisions:
-
 					# check if the current collision already has the other collider
 					if otherCollision.otherCollider == otherCollider:
 						# make sure the collision knows it isn't new (onCollisionStay instead of onCollisionEnter)
@@ -214,29 +208,34 @@ class RectangleCollider(Collider):
 						else:
 							self.onCollisionStay(collision)
 
-		# overwrite old collision array
-		self.currentCollisions = collisions
+		# overwrite old collision array, but only if callEvents to not interfere with the game loop
+		if callEvents:
+			self.currentCollisions = collisions
 
 		# return collision array
-		return self.currentCollisions
+		return collisions
 
-	def requestMovement(rectangleCollider, originalPosition):
-		# Save the original position in case the movement needs to be reverted
-		originalPosition = rectangleCollider.parent.position.clone()
+	def requestMovement(self, originalPosition, targetPosition):
+		# this is a fake test collision, so we shouldn't call events and interfere with the game loop
+		currentCollisions = self.updateCollisions(callEvents = False)
+		
+		permittedPosition = targetPosition
 
-		# Update collisions and get the current collisions
-		currentCollisions = rectangleCollider.updateCollisions(callEvents=False)
-
-		# Check for collisions and revert the movement if necessary
 		for collision in currentCollisions:
+			# make sure it's not a trigger
 			if collision.collisionType == Collision.CollisionType.Collision:
-				# Revert the movement
-				rectangleCollider.parent.position = originalPosition
-				# Update collisions again to make sure the currentCollisions array is accurate
-				rectangleCollider.updateCollisions()
-				return False  # Movement was blocked by a collision
+				farthestPosition = None # set this to the spot where the collider should stop at Vector2
 
-		return True  # Movement was successful
+				# make sure this farthest position isn't greater than targetPosition
+				if farthestPosition.distanceTo(originalPosition) < targetPosition.distanceTo(originalPosition):
+					# set permittedPosition to farthestPosition if it is closer than permittedPosition
+					if farthestPosition.distanceTo(originalPosition) < permittedPosition.distanceTo(originalPosition):
+						permittedPosition = farthestPosition
+
+		print(permittedPosition)
+
+		return permittedPosition
+
 	
 	def onRender(self):
 		if self.visible:
