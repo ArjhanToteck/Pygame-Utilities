@@ -22,9 +22,12 @@ class StoreView:
 		background = Sprite(imagePath = "Images/FloorAndWalls.png", size = GameManager.screenSizeWorldUnits, layer = 0)
 
 		salesTable = Sprite(imagePath = "Images/SalesTable.png", position = Vector2(0, 4), layer = 2)
-		Collider.RectangleCollider(parent = salesTable, isTrigger = False, pivot = Vector2(-1, 0))
-		Collider.RectangleCollider(parent = salesTable, isTrigger = False, pivot = Vector2(1, 0))
-
+		Collider.RectangleCollider(parent = salesTable, isTrigger = False, pivot = Vector2(-1, 0), size = Vector2(0.25, salesTable.size.y), offset = Vector2(-salesTable.size.x / 2, 0))
+		Collider.RectangleCollider(parent = salesTable, isTrigger = False, pivot = Vector2(-1, 0), size = Vector2(0.25, salesTable.size.y))
+		
+		Collider.RectangleCollider(parent = salesTable, isTrigger = False, pivot = Vector2(1, 0), size = Vector2(0.25, salesTable.size.y), offset = Vector2(salesTable.size.x / 2, 0))
+		Collider.RectangleCollider(parent = salesTable, isTrigger = False, pivot = Vector2(1, 0), size = Vector2(0.25, salesTable.size.y))
+		
 		clock = Sprite(imagePath = "Images/Clock.png", position = Vector2(5, 4), layer = 2)
 		lamp = Sprite(imagePath = "Images/Lamp.png", position = Vector2(-5, 4), layer = 2)
 

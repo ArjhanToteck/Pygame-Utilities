@@ -15,7 +15,7 @@ class Collider:
 
 		self.currentCollisions = []
 
-		self.visible = visible # TODO: add a way to render colliders for debug (in non-default colliders)
+		self.visible = visible
 
 		# default pivot
 		if pivot == None:
@@ -135,15 +135,15 @@ class RectangleCollider(Collider):
 				otherPivotOffset = (otherCollider.size / 2) * otherCollider.pivot
 
 				# calculate adjusted positions of rectangles
-				selfLeft = self.position.x + selfPivotOffset.x + self.offset.x - (self.size.x / 2)
-				selfRight = self.position.x + selfPivotOffset.x + self.offset.x + (self.size.x / 2)
-				selfTop = self.position.y + selfPivotOffset.y + self.offset.y + (self.size.y / 2)
-				selfBottom = self.position.y + selfPivotOffset.y + self.offset.y - (self.size.y / 2)
+				selfLeft = self.position.x - selfPivotOffset.x + self.offset.x - (self.size.x / 2)
+				selfRight = self.position.x - selfPivotOffset.x + self.offset.x + (self.size.x / 2)
+				selfBottom = self.position.y - selfPivotOffset.y + self.offset.y - (self.size.y / 2)
+				selfTop = self.position.y - selfPivotOffset.y + self.offset.y + (self.size.y / 2)
 				
-				otherLeft = otherCollider.position.x + otherPivotOffset.x + otherCollider.offset.x - (otherCollider.size.x / 2)
-				otherRight = otherCollider.position.x + otherPivotOffset.x + otherCollider.offset.x + (otherCollider.size.x / 2)
-				otherTop = otherCollider.position.y + otherPivotOffset.y + otherCollider.offset.y + (otherCollider.size.y / 2)
-				otherBottom = otherCollider.position.y + otherPivotOffset.y + otherCollider.offset.y - (otherCollider.size.y / 2)
+				otherLeft = otherCollider.position.x - otherPivotOffset.x + otherCollider.offset.x - (otherCollider.size.x / 2)
+				otherRight = otherCollider.position.x - otherPivotOffset.x + otherCollider.offset.x + (otherCollider.size.x / 2)
+				otherBottom = otherCollider.position.y - otherPivotOffset.y + otherCollider.offset.y - (otherCollider.size.y / 2)
+				otherTop = otherCollider.position.y - otherPivotOffset.y + otherCollider.offset.y + (otherCollider.size.y / 2)
 
 				# check for overlap on both axes
 				overlap = Vector2()
@@ -245,7 +245,7 @@ class RectangleCollider(Collider):
 			color = (255, 0, 230)
 
 			# get screen position of sprite (top left corner)
-			screenPosition = GameManager.worldToScreenPosition(self.position)
+			screenPosition = GameManager.worldToScreenPosition(self.position + self.offset)
 
 			# center of sprite (default pivot)
 			pivotOffset = (self.size / 2) * GameManager.worldUnitSize
