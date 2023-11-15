@@ -31,9 +31,11 @@ class GameObject:
 		GameManager.removeFromRenderQueue(self.onRender, self.layer)
 
 
-	# by default, game objects will render self.image in self.position with self.size
+	# by default, game objects won't render anything except colliders for debug (use Sprite to render images)
 	def onRender(self):
-		pass
+		# render colliders
+		for collider in self.colliders:
+			collider.onRender()
 
 
 	def onUpdate(self):

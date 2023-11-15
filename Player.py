@@ -15,7 +15,7 @@ class Player(Sprite):
 		self.speed = 5
 
 		# add collider to self		
-		self.colliders.append(Collider.RectangleCollider(parent = self, visible = True))
+		Collider.RectangleCollider(parent = self, visible = True)
 
 	def onUpdate(self):
 

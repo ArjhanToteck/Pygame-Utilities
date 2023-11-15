@@ -34,6 +34,10 @@ class Vector2:
 			warnings.warn("This operation is not implemented.")
 
 
+	def __rmul__(self, other):
+		return self * other
+
+
 	def __add__(self, other):
 		# check if added to another Vector2
 		if isinstance(other, Vector2):

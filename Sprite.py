@@ -1,3 +1,4 @@
+from shutil import move
 import pygame
 
 from GameManager import GameManager
@@ -60,7 +61,21 @@ class Sprite(GameObject):
 		# update position
 		self.position += movement
 
-		# TODO: implement collisions here
+		permittedPosition = self.position
+
+		"""for collider in self.colliders:
+			currentPermittedPosition = collider.requestMovement(originalPosition)
+
+			# check if this collider permits less movement than the permittedPosition
+			if abs(currentPermittedPosition - originalPosition) < abs(permittedPosition - originalPosition):
+				permittedPosition = currentPermittedPosition"""
+
+		# move to the permitted position
+		self.position = permittedPosition
+
+		for collider in self.colliders:
+			if collider.followParent:
+				collider.position = self.position
 
 
 	def setPosition(self, position):
@@ -101,4 +116,5 @@ class Sprite(GameObject):
 			# draw image at position
 			GameManager.screen.blit(self.image, screenPosition.toArray())
 
-		# TODO: show colliders if visible
+		# perform normal gameObject render
+		super().onRender()

@@ -19,6 +19,11 @@ class StoreView:
 		background = Sprite(imagePath = "Images/FloorAndWalls.png", size = GameManager.screenSizeWorldUnits, layer = 0)
 
 		salesTable = Sprite(imagePath = "Images/SalesTable.png", position = Vector2(0, 4), layer = 2)
+
+
+		salesTableCollider = Collider.RectangleCollider(parent = salesTable, isTrigger = True, visible = True)
+		
+
 		clock = Sprite(imagePath = "Images/Clock.png", position = Vector2(5, 4), layer = 2)
 		lamp = Sprite(imagePath = "Images/Lamp.png", position = Vector2(-5, 4), layer = 2)
 
@@ -29,3 +34,5 @@ class StoreView:
 
 		# create player
 		player = Player(imagePath = "Images/Player.png", size = Vector2(3, 3))
+
+	

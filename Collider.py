@@ -1,3 +1,5 @@
+import pygame
+
 from GameManager import GameManager
 from Vector2 import Vector2
 from enum import Enum
@@ -6,7 +8,7 @@ from enum import Enum
 
 # this is a default collider class not meant for actual use outside of being inherited by the real types of colliders
 class Collider:
-	def __init__(self, parent, pivot = None, position = None, enabled = True, isTrigger = False, followParent = True, visible = False):
+	def __init__(self, parent, pivot = None, offset = None, position = None, enabled = True, isTrigger = False, followParent = True, visible = False):
 		# parent gameObject
 		self.parent = parent
 		self.enabled = enabled
@@ -17,16 +19,29 @@ class Collider:
 
 		self.visible = visible # TODO: add a way to render colliders for debug (in non-default colliders)
 
-		# default offset
+		# default pivot
 		if pivot == None:
-			pivot = Vector2(0, 0)
+			self.pivot = parent.pivot
+		else:
+			self.pivot = pivot
+
+		# default offset
+		if offset == None:
+			self.offset = Vector2(0, 0)
+		else:
+			self.offset = offset
 
 		# default position
 		if position == None:
-			position = parent.position
+			self.position = parent.position
+		else:
+			self.position = position
 			
 		# add self to global collider list
 		GameManager.colliders.append(self)
+
+		# add self to parent collider list
+		parent.colliders.append(self)
 
 
 	def destroy(self):
@@ -35,50 +50,63 @@ class Collider:
 
 		# remove self from parent
 		self.parent.colliders.remove(self)
-		
-		# make sure not to be rendered
-		self.hide()
 
 
 	def updateCollisions(self):
 		pass
 
 
-	def onCollisionEnter(self):
-		pass
-
-
-	def onCollisionExit(self):
-		pass
-
-
-	def onCollisionStay(self):
-		pass
-
-
-	def onTriggerEnter(self):
-		pass
-
-
-	def onTriggerExit(self):
-		pass
-
-
-	def onTriggerStay(self):
+	def requestMovement(self):
 		pass
 
 
 	def onRender(self):
 		pass
 
+	def onCollisionEnter(self, collision):		
+		print(self.position)
+		print(collision.otherCollider.position)
+		print(collision.overlap)
+
+
+	def onCollisionExit(self, collision):		
+		print(self.position)
+		print(collision.otherCollider.position)
+		print(collision.overlap)
+
+
+	def onCollisionStay(self, collision):
+		print(self.position)
+		print(collision.otherCollider.position)
+		print(collision.overlap)
+
+
+	def onTriggerEnter(self, collision):
+		print(self.position)
+		print(collision.otherCollider.position)
+		print(collision.overlap)
+
+
+	def onTriggerExit(self, collision):
+		print(self.position)
+		print(collision.otherCollider.position)
+		print(collision.overlap)
+
+
+	def onTriggerStay(self, collision):
+		print(self.position)
+		print(collision.otherCollider.position)
+		print(collision.overlap)
+
 
 class Collision:
 
-	def __init__(self, selfCollider, otherCollider, collisionType, collisionPoint, justEntered = True):
+	def __init__(self, selfCollider, otherCollider, collisionType, collisionPoint, overlap, justEntered = True):
 		self.collisionType = collisionType
 		self.selfCollider = selfCollider
 		self.otherCollider = otherCollider
 		self.collisionPoint = collisionPoint
+		self.overlap = overlap
 		self.justEntered = justEntered
 
 	# enum for collision types
@@ -88,7 +116,7 @@ class Collision:
 
 
 class RectangleCollider(Collider):
-	def __init__(self, parent, offset=None, size = None, position=None, enabled=True, isTrigger=False, followParent=True, visible=False):
+	def __init__(self, parent, pivot = None, offset = None, position = None, size = None, enabled = True, isTrigger = False, followParent = True, visible = False):
 		
 		# set default size
 		if size == None:
@@ -98,7 +126,7 @@ class RectangleCollider(Collider):
 			self.size = size
 
 		# call base init
-		super().__init__(parent, offset, position, enabled, isTrigger, followParent, visible)
+		super().__init__(parent, pivot, offset, position, enabled, isTrigger, followParent, visible)
 
 
 	def updateCollisions(self, callEvents = True):
@@ -107,32 +135,47 @@ class RectangleCollider(Collider):
 		# loop through colliders in scene
 		for otherCollider in GameManager.colliders:
 
+			# skip own collider
+			if otherCollider == self:
+				continue
+
 			collision = None
 
 			# check if other rectangle collider
 			if isinstance(otherCollider, RectangleCollider):
-				# check for collision between two rectangles based on bounding boxes
-				selfLeft = self.parent.position.x + self.offset.x
-				selfRight = selfLeft + self.size.x
-				selfTop = self.parent.position.y + self.offset.y
-				selfBottom = selfTop + self.size.y
+				# calculate pivot offsets
+				selfPivotOffset = self.pivot * (self.size / 2)
+				otherPivotOffset = otherCollider.pivot * (otherCollider.size / 2)
 
-				otherLeft = otherCollider.parent.position.x + otherCollider.offset.x
-				otherRight = otherLeft + otherCollider.size.x
-				otherTop = otherCollider.parent.position.y + otherCollider.offset.y
-				otherBottom = otherTop + otherCollider.size.y
+				# calculate adjusted positions of rectangles
+				selfAdjustedLeft = self.parent.position.x + self.offset.x - selfPivotOffset.x
+				selfAdjustedRight = selfAdjustedLeft + self.size.x
+				selfAdjustedTop = self.parent.position.y + self.offset.y - selfPivotOffset.y
+				selfAdjustedBottom = selfAdjustedTop + self.size.y
 
-				# check for overlap along both axes
-				xOverlap = selfRight > otherLeft and selfLeft < otherRight
-				yOverlap = selfBottom > otherTop and selfTop < otherBottom
+				otherAdjustedLeft = otherCollider.parent.position.x + otherCollider.offset.x - otherPivotOffset.x
+				otherAdjustedRight = otherAdjustedLeft + otherCollider.size.x
+				otherAdjustedTop = otherCollider.parent.position.y + otherCollider.offset.y - otherPivotOffset.y
+				otherAdjustedBottom = otherAdjustedTop + otherCollider.size.y
+
+				# check for overlap on both axes
+				overlap = Vector2()
+
+				# check overlap on the x
+				if selfAdjustedRight >= otherAdjustedLeft and otherAdjustedRight >= selfAdjustedLeft:
+					overlap.x = min(selfAdjustedRight, otherAdjustedRight) - max(selfAdjustedLeft, otherAdjustedLeft)
+
+				# check overlap on the y
+				if selfAdjustedBottom >= otherAdjustedTop and otherAdjustedBottom >= selfAdjustedTop:
+					overlap.y = min(selfAdjustedBottom, otherAdjustedBottom) - max(selfAdjustedTop, otherAdjustedTop)
 
 				# collision occured
-				if xOverlap and yOverlap:
+				if overlap.x > 0 and overlap.y > 0:
 					# get collision point
-					collisionPoint = Vector2(max(selfLeft, otherLeft), max(selfTop, otherTop))
+					collisionPoint = Vector2(max(selfAdjustedLeft, otherAdjustedLeft), max(selfAdjustedTop, otherAdjustedTop))
 
 					# get collision data
-					collision = Collision(self, otherCollider, Collision.CollisionType.Collision, collisionPoint)
+					collision = Collision(self, otherCollider, Collision.CollisionType.Collision, collisionPoint, overlap)
 
 			else:
 				# TODO: implement collisions with other types
@@ -155,28 +198,46 @@ class RectangleCollider(Collider):
 
 				# check if we need to call events
 				if callEvents:
-					if collision.isTrigger:
+					if collision.collisionType == Collision.CollisionType.Trigger:
 						# trigger and justEntered
 						if collision.justEntered:
-							self.onTriggerEnter()
+							self.onTriggerEnter(collision)
 							
 						# trigger and staying
 						else:
-							self.onTriggerStay()
+							self.onTriggerStay(collision)
 					else:						
 						# collider and justEntered
 						if collision.justEntered:
-							self.onCollisionEnter()
+							self.onCollisionEnter(collision)
 
 						# collider and staying
 						else:
-							self.onCollisionStay()
+							self.onCollisionStay(collision)
 
 		# overwrite old collision array
 		self.currentCollisions = collisions
 
 		# return collision array
 		return self.currentCollisions
+
+	def requestMovement(rectangleCollider, originalPosition):
+		# Save the original position in case the movement needs to be reverted
+		originalPosition = rectangleCollider.parent.position.clone()
+
+		# Update collisions and get the current collisions
+		currentCollisions = rectangleCollider.updateCollisions(callEvents=False)
+
+		# Check for collisions and revert the movement if necessary
+		for collision in currentCollisions:
+			if collision.collisionType == Collision.CollisionType.Collision:
+				# Revert the movement
+				rectangleCollider.parent.position = originalPosition
+				# Update collisions again to make sure the currentCollisions array is accurate
+				rectangleCollider.updateCollisions()
+				return False  # Movement was blocked by a collision
+
+		return True  # Movement was successful
 	
 	def onRender(self):
 		if self.visible:
@@ -198,7 +259,7 @@ class RectangleCollider(Collider):
 			# subtract pivot
 			screenPosition -= pivotOffset
 
-			GameManager.pygame.draw.rect(GameManager.screen, color, GameManager.pygame.Rect(screenPosition.x, screenPosition.y, self.size.x * GameManager.worldUnitSize, self.size.x * GameManager.worldUnitSize),  2)
+			pygame.draw.rect(GameManager.screen, color, pygame.Rect(screenPosition.x, screenPosition.y, self.size.x * GameManager.worldUnitSize.x, self.size.x * GameManager.worldUnitSize.x),  2)
 
 
 class CircleCollider(Collider):

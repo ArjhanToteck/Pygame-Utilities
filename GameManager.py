@@ -1,19 +1,19 @@
 import pygame
 import warnings
 import sys
-import threading
 
 from Vector2 import Vector2
 
 class GameManager:
-	# pygame settings
+	# settings	
+	worldUnitSize = Vector2(50, 50) # number of pixels per world unit
+	screenSizePixels = Vector2(1280, 720)
+
 	running = True
 	screen = None
 	clock = None
 	gameLoopThread = None
 	deltaTime = 0
-	worldUnitSize = Vector2(50, 50) # number of pixels per world unit
-	screenSizePixels = Vector2(1280, 720)
 	screenSizeWorldUnits = screenSizePixels / worldUnitSize
 
 	gameObjects = []
@@ -51,9 +51,9 @@ class GameManager:
 			# get key presses
 			cls.keysDown = pygame.key.get_pressed()
 
-			"""# detect collisions
+			# update collisions
 			for collider in GameManager.colliders:
-				collider.checkCollisions()"""
+				collider.updateCollisions()
 
 			# call update events on gameObjects
 			for gameObject in cls.gameObjects:
@@ -72,16 +72,19 @@ class GameManager:
 			cls.deltaTime = cls.clock.tick() / 1000
 
 	@classmethod
-	def setUpGame(cls, callback = None):
+	def setUpGame(cls, worldUnitSize = None, screenSizePixels = None):
 		# pygame setup
 		pygame.init()
 		cls.screen = pygame.display.set_mode(cls.screenSizePixels.toArray())
 		cls.clock = pygame.time.Clock()
 		cls.running = True
 
-		if(callback != None):
-			callbackThread = threading.Thread(target = callback)
-			callbackThread.start()
+		if worldUnitSize != None:
+			cls.worldUnitSize = worldUnitSize
+
+		
+		if screenSizePixels != None:
+			cls.screenSizePixels = screenSizePixels
 
 	@classmethod
 	def addToRenderQueue(cls, renderer, layer):
