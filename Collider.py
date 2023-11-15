@@ -4,8 +4,6 @@ from GameManager import GameManager
 from Vector2 import Vector2
 from enum import Enum
 
-# TODO: implement actual collision, allow colliders to be added to GameObjects, create subclasses for different collider types
-
 # this is a default collider class not meant for actual use outside of being inherited by the real types of colliders
 class Collider:
 	def __init__(self, parent, pivot = None, offset = None, position = None, enabled = True, isTrigger = False, followParent = True, visible = False):
@@ -73,7 +71,7 @@ class Collider:
 
 
 	def onCollisionStay(self, collision):
-		print("colliding")
+		pass
 
 
 	def onTriggerEnter(self, collision):
@@ -214,6 +212,7 @@ class RectangleCollider(Collider):
 		# return collision array
 		return collisions
 
+
 	def requestMovement(self, originalPosition, targetPosition):
 		# this is a fake test collision, so we shouldn't call events and interfere with the game loop
 		currentCollisions = self.updateCollisions(callEvents = False)
@@ -224,17 +223,19 @@ class RectangleCollider(Collider):
 			# make sure it's not a trigger
 			if collision.collisionType == Collision.CollisionType.Collision:
 
-				overlap = collision.overlap
+				if isinstance(collision.otherCollider, RectangleCollider):
+					overlap = collision.overlap
 
-				if abs(collision.overlap.x) < abs(collision.overlap.y):
-					overlap.y = 0
-				else:
-					overlap.x = 0
+					if abs(collision.overlap.x) < abs(collision.overlap.y):
+						overlap.y = 0
+					elif abs(collision.overlap.x) > abs(collision.overlap.y):
+						overlap.x = 0
 
-				permittedPosition -= overlap
+					currentPermittedPosition = permittedPosition - overlap
 
-				#permittedPosition = targetPosition + collision.overlap
-				print(collision.overlap)
+					# set permittedPosition to currentPermitedPosition
+					if Vector2.distance(currentPermittedPosition, originalPosition) < Vector2.distance(permittedPosition, originalPosition):
+						permittedPosition = currentPermittedPosition
 
 		return permittedPosition
 

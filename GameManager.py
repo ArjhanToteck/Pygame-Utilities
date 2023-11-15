@@ -113,6 +113,16 @@ class GameManager:
 		else:
 			cls.renderQueue[layer].remove(renderer)
 
+			
+	@classmethod
+	def showAllColliders(cls):
+		for collider in cls.colliders:
+			collider.visible = True
+		
+	@classmethod
+	def hideAllColliders(cls):
+		for collider in cls.colliders:
+			collider.visible = False
 	
 	@classmethod
 	def worldToScreenPosition(cls, worldPosition):

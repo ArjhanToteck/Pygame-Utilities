@@ -22,7 +22,8 @@ class StoreView:
 		background = Sprite(imagePath = "Images/FloorAndWalls.png", size = GameManager.screenSizeWorldUnits, layer = 0)
 
 		salesTable = Sprite(imagePath = "Images/SalesTable.png", position = Vector2(0, 4), layer = 2)
-		salesTableCollider = Collider.RectangleCollider(parent = salesTable, isTrigger = False, visible = True)
+		Collider.RectangleCollider(parent = salesTable, isTrigger = False, pivot = Vector2(-1, 0))
+		Collider.RectangleCollider(parent = salesTable, isTrigger = False, pivot = Vector2(1, 0))
 
 		clock = Sprite(imagePath = "Images/Clock.png", position = Vector2(5, 4), layer = 2)
 		lamp = Sprite(imagePath = "Images/Lamp.png", position = Vector2(-5, 4), layer = 2)
@@ -32,5 +33,5 @@ class StoreView:
 		couches = Sprite(imagePath = "Images/Couches.png", position = Vector2(-12, 3), pivot = Vector2(-1, 1), layer = 2)
 		tablesAndChairs = Sprite(imagePath = "Images/TablesAndChairs.png", position = Vector2(12, 3), pivot = Vector2(1, 1), layer = 2)
 
-
-	
+		# show all colliders for testing
+		GameManager.showAllColliders()

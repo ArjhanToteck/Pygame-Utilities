@@ -7,7 +7,7 @@ import pygame
 
 # player class
 class Player(Sprite):
-	def __init__(self, position=None, size=None, visible=True, layer=1, pivot = None, imagePath=None, image=None):
+	def __init__(self, position = None, size = None, visible = True, layer = 1, pivot = None, imagePath = None, image = None):
 		# do regular sprite init
 		super().__init__(position, size, visible, layer, pivot, imagePath, image)
 
@@ -15,7 +15,7 @@ class Player(Sprite):
 		self.speed = 5
 
 		# add collider to self		
-		Collider.RectangleCollider(parent = self, visible = True)
+		Collider.RectangleCollider(parent = self, size = Vector2(1, 1))
 
 	def onUpdate(self):
 
