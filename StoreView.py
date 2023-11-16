@@ -1,12 +1,10 @@
 from GameManager import GameManager
 from GameObject import GameObject
-from Sprite import Sprite
+from SpriteObject import SpriteObject
 from Vector2 import Vector2
 from Player import Player
 
 import Collider
-
-import pygame
 
 # this class contains all the game objects and stuff for the scene
 class StoreView:
@@ -15,26 +13,23 @@ class StoreView:
 	@staticmethod
 	def start():
 		# create player
-		player = Player(imagePath = "Images/Player.png", size = Vector2(3, 3))
-
+		player = Player(spritePath = "Images/Player.png", size = Vector2(3, 3))
 
 		# store
-		background = Sprite(imagePath = "Images/FloorAndWalls.png", size = GameManager.screenSizeWorldUnits, layer = 0)
+		background = SpriteObject(spritePath = "Images/FloorAndWalls.png", size = GameManager.screenSizeWorldUnits, layer = 0)
 
-		salesTable = Sprite(imagePath = "Images/SalesTable.png", position = Vector2(0, 4), layer = 2)
+		salesTable = SpriteObject(spritePath = "Images/SalesTable.png", position = Vector2(0, 4), layer = 2)
 		Collider.RectangleCollider(parent = salesTable, isTrigger = False, pivot = Vector2(-1, 0), size = Vector2(0.25, salesTable.size.y), offset = Vector2(-salesTable.size.x / 2, 0))
-		Collider.RectangleCollider(parent = salesTable, isTrigger = False, pivot = Vector2(-1, 0), size = Vector2(0.25, salesTable.size.y))
-		
+		Collider.RectangleCollider(parent = salesTable, isTrigger = False, pivot = Vector2(0, 0), size = Vector2(0.5, salesTable.size.y))		
 		Collider.RectangleCollider(parent = salesTable, isTrigger = False, pivot = Vector2(1, 0), size = Vector2(0.25, salesTable.size.y), offset = Vector2(salesTable.size.x / 2, 0))
-		Collider.RectangleCollider(parent = salesTable, isTrigger = False, pivot = Vector2(1, 0), size = Vector2(0.25, salesTable.size.y))
-		
-		clock = Sprite(imagePath = "Images/Clock.png", position = Vector2(5, 4), layer = 2)
-		lamp = Sprite(imagePath = "Images/Lamp.png", position = Vector2(-5, 4), layer = 2)
 
-		rug = Sprite(imagePath = "Images/Rug.png", position = Vector2(0, -1), layer = 0)
+		clock = SpriteObject(spritePath = "Images/Clock.png", position = Vector2(5, 4), layer = 2)
+		lamp = SpriteObject(spritePath = "Images/Lamp.png", position = Vector2(-5, 4), layer = 2)
 
-		couches = Sprite(imagePath = "Images/Couches.png", position = Vector2(-12, 3), pivot = Vector2(-1, 1), layer = 2)
-		tablesAndChairs = Sprite(imagePath = "Images/TablesAndChairs.png", position = Vector2(12, 3), pivot = Vector2(1, 1), layer = 2)
+		rug = SpriteObject(spritePath = "Images/Rug.png", position = Vector2(0, -1), layer = 0)
+
+		couches = SpriteObject(spritePath = "Images/Couches.png", position = Vector2(-12, 3), pivot = Vector2(-1, 1), layer = 2)
+		tablesAndChairs = SpriteObject(spritePath = "Images/TablesAndChairs.png", position = Vector2(12, 3), pivot = Vector2(1, 1), layer = 2)
 
 		# show all colliders for testing
 		GameManager.showAllColliders()

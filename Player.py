@@ -1,15 +1,15 @@
 from GameManager import GameManager
-from Sprite import Sprite
+from SpriteObject import SpriteObject
 from Vector2 import Vector2
 import Collider
 
 import pygame
 
 # player class
-class Player(Sprite):
-	def __init__(self, position = None, size = None, visible = True, layer = 1, pivot = None, imagePath = None, image = None):
+class Player(SpriteObject):
+	def __init__(self, position = None, size = None, visible = True, layer = 1, pivot = None, spritePath = None, sprite = None):
 		# do regular sprite init
-		super().__init__(position, size, visible, layer, pivot, imagePath, image)
+		super().__init__(position, size, visible, layer, pivot, spritePath, sprite)
 
 		# set speed variable
 		self.speed = 5
