@@ -10,12 +10,20 @@ class SpriteSheet:
             self.image = pygame.image.load(imagePath)
 
 
+    def sliceByGrid(self, rows, columns, width, height, reset = True)
+        if reset:
+            self.sprites = {}
+
+            
+        # TODO: crop into sprite grid using the width and height of each sprite and number of columns and rows
+
     def sliceByCellSize(self, width, hight, reset = True):
         
         if reset:
             self.sprites = {}
 
         # TODO: crop into sprite grid using the width and height of each sprite
+        # can just calculate number of columns and rows and call sliceByGrid
 
         pass
 
@@ -26,6 +34,7 @@ class SpriteSheet:
             self.sprites = {}
             
         # TODO: crop into sprite grid using the number of rows and columns
+        # can just calculate cell size and call sliceByGrid
 
         pass
 
