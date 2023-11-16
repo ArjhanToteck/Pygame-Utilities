@@ -1,50 +1,82 @@
 import pygame
 
+from Vector2 import Vector2
+
 class SpriteSheet:
     def __init__(self, image = None, imagePath = None):
         self.image = image
         self.sprites = {}
+        self.sliceData = {}
         
         # load image from path if applicable
         if imagePath != None:
             self.image = pygame.image.load(imagePath)
 
-
-    def sliceByGrid(self, rows, columns, width, height, reset = True)
-        if reset:
-            self.sprites = {}
-
-            
-        # TODO: crop into sprite grid using the width and height of each sprite and number of columns and rows
-
-    def sliceByCellSize(self, width, hight, reset = True):
+    class Slice:
         
-        if reset:
-            self.sprites = {}
+        def __init__(self, position, size):
+            self.position = position
+            self.size = size
 
-        # TODO: crop into sprite grid using the width and height of each sprite
-        # can just calculate number of columns and rows and call sliceByGrid
+    def sliceFromSliceData(self, sliceData = None):
+        self.sprites = {}
 
-        pass
+        if sliceData == None:
+            sliceData = self.sliceData
+        else:
+            self.sliceData = sliceData
+
+        # recursive function for processing
+        def processSliceData(data, parentDictionary):
+            for key, value in data.items():
+                # check if it's another dictionary
+                if isinstance(value, dict):
+                    # create new parent dictionary for the sprites in this dictionary
+                    parentDictionary[key] = {}
+
+                    # recursively process dictionary
+                    processSliceData(value, parentDictionary)
+                else:
+                    # cut sprite
+                    sprite = self.image.subsurface(pygame.Rect(value.position.x, value.position.y, value.size.x, value.size.y))
+
+                    # add sprite to parent dictionary
+                    parentDictionary[key] = sprite
+
+        # start recursion
+        processSliceData(sliceData, self.sprites)
+
+        return self.sprites
+
+    def sliceByGrid(self, rows, columns, width, height):
+        slices = {}
+    
+        for y in rows:
+            # create row in slices
+            slices[y] = {}
+
+            for x in columns:
+                # get the data needed for slicing sprites and put it in the dictionary
+                slice = SpriteSheet.Slice(Vector2(x, y), Vector2(width, height))
+                slices[y][x] = slice
+
+        # use slice data to slice the sprites
+        return self.sliceFromSliceData(slices)
+
+    def sliceByCellSize(self, width, height):
+
+        # divide image into a number of rows and columns
+        rows = self.image.get_height() / height
+        columns = self.image.get_width() / width
+
+        # slice with grid data
+        return self.sliceByGrid(rows, columns, width, height)
 
     
-    def sliceByRowsAndColumns(self, rows, columns,  reset = True):
+    def sliceByRowsAndColumns(self, rows, columns):    
         
-        if reset:
-            self.sprites = {}
-            
-        # TODO: crop into sprite grid using the number of rows and columns
-        # can just calculate cell size and call sliceByGrid
-
-        pass
-
-
-    def sliceFromDictionary(self, dictionary, reset = True):
+        width = self.image.get_height() / columns
+        height = self.image.get_width() / rows
         
-        if reset:
-            self.sprites = {}
-        
-        # TODO: crop into sprite grid using an inputed dictionary
-        # dictionary keys should be name of sprite for easy access and include Vector2 for pixel size and position on image
-
-        pass
+        # slice with grid data
+        return self.sliceByGrid(rows, columns, width, height)
