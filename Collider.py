@@ -19,7 +19,7 @@ class Collider:
 
 		# default pivot
 		if pivot == None:
-			self.pivot = parent.pivot
+			self.pivot = parent.pivot.clone()
 		else:
 			self.pivot = pivot
 
@@ -31,7 +31,7 @@ class Collider:
 
 		# default position
 		if position == None:
-			self.position = parent.position
+			self.position = parent.position.clone()
 		else:
 			self.position = position
 			
