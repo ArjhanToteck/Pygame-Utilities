@@ -35,7 +35,7 @@ class SpriteSheet:
                     parentDictionary[key] = {}
 
                     # recursively process dictionary
-                    processSliceData(value, parentDictionary)
+                    processSliceData(value, parentDictionary[key])
                 else:
                     # cut sprite
                     sprite = self.image.subsurface(pygame.Rect(value.position.x, value.position.y, value.size.x, value.size.y))
@@ -51,11 +51,11 @@ class SpriteSheet:
     def sliceByGrid(self, rows, columns, width, height):
         slices = {}
     
-        for y in rows:
+        for y in range(rows):
             # create row in slices
             slices[y] = {}
 
-            for x in columns:
+            for x in range(columns):
                 # get the data needed for slicing sprites and put it in the dictionary
                 slice = SpriteSheet.Slice(Vector2(x, y), Vector2(width, height))
                 slices[y][x] = slice
@@ -75,8 +75,8 @@ class SpriteSheet:
     
     def sliceByRowsAndColumns(self, rows, columns):    
         
-        width = self.image.get_height() / columns
-        height = self.image.get_width() / rows
+        width = self.image.get_width() / columns
+        height = self.image.get_height() / rows
         
         # slice with grid data
         return self.sliceByGrid(rows, columns, width, height)

@@ -3,6 +3,7 @@ from GameObject import GameObject
 from SpriteObject import SpriteObject
 from Vector2 import Vector2
 from Player import Player
+from SpriteSheet import SpriteSheet
 
 import Collider
 
@@ -13,7 +14,9 @@ class StoreView:
 	@staticmethod
 	def start():
 		# create player
-		player = Player(spritePath = "Images/Player.png", size = Vector2(3, 3))
+		playerSpriteSheet = SpriteSheet(imagePath = "Images/Player.png")
+		playerSpriteSheet.sliceByRowsAndColumns(10, 6)
+		player = Player(sprite = playerSpriteSheet.sprites[0][0], size = Vector2(3, 3))
 
 		# store
 		background = SpriteObject(spritePath = "Images/FloorAndWalls.png", size = GameManager.screenSizeWorldUnits, layer = 0)

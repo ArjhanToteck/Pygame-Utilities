@@ -15,7 +15,7 @@ class Player(SpriteObject):
 		self.speed = 5
 
 		# add collider to self		
-		Collider.RectangleCollider(parent = self, size = Vector2(1, 1))
+		Collider.RectangleCollider(parent = self)
 
 	def onUpdate(self):
 
@@ -31,3 +31,5 @@ class Player(SpriteObject):
 
 		if GameManager.keysDown[pygame.K_DOWN]:
 			self.move(Vector2(0, -self.speed * GameManager.deltaTime))
+
+		# animations
