@@ -2,6 +2,7 @@ from GameManager import GameManager
 from GameObject import GameObject
 from SpriteObject import SpriteObject
 from Vector2 import Vector2
+from Vector2Bool import Vector2Bool
 from Player import Player
 from SpriteSheet import SpriteSheet
 
@@ -37,13 +38,14 @@ class StoreView:
 		rug = SpriteObject(spritePath = "Images/Rug.png", position = Vector2(0, -1), layer = 0)
 
 		# TODO: separate couches, tables, and chairs
-		couches = SpriteObject(spritePath = "Images/Couches.png", position = Vector2(-12, 3), pivot = Vector2(-1, 1), layer = 2)
-		chouch1Collider = Collider.RectangleCollider(parent = couches, size = Vector2(couches.size.x - 0.1, 2.9), pivot = Vector2(-1, -1))
-		chouch1Collider.position.y -= couches.size.y / 2
-		chouch1Collider.position.y += 0.4
+		couch1 = SpriteObject(spritePath = "Images/Couch.png", position = Vector2(-12, 3), pivot = Vector2(-1, 1), layer = 2)
+		couch2 = SpriteObject(spritePath = "Images/Couch.png", position = Vector2(-12, -1), pivot = Vector2(-1, 1), layer = 2)
 
-		chouch2Collider = Collider.RectangleCollider(parent = couches, size = Vector2(couches.size.x - 0.1, 2.9), pivot = Vector2(-1, -1))
-		chouch2Collider.position.y -= couches.size.y
+		chouch1Collider = Collider.RectangleCollider(parent = couch1, size = Vector2(couch1.size.x - 0.1, 2.9), pivot = Vector2(-1, -1))
+		chouch1Collider.position.y -= couch1.size.y
+
+		chouch2Collider = Collider.RectangleCollider(parent = couch2, size = Vector2(couch2.size.x - 0.1, 2.9), pivot = Vector2(-1, -1))
+		chouch2Collider.position.y -= couch2.size.y
 
 		tablesAndChairs = SpriteObject(spritePath = "Images/TablesAndChairs.png", position = Vector2(12, 3), pivot = Vector2(1, 1), layer = 2)
 

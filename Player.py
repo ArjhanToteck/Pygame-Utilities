@@ -7,16 +7,16 @@ import pygame
 
 # player class
 class Player(SpriteObject):
-	def __init__(self, position = None, size = None, visible = True, layer = 1, pivot = None, spritePath = None, sprite = None):
+	def __init__(self, position = None, size = None, visible = True, reflection = None, layer = 1, pivot = None, spritePath = None, sprite = None):
 		# do regular sprite init
-		super().__init__(position, size, visible, layer, pivot, spritePath, sprite)
+		super().__init__(position, size, visible, layer, reflection, pivot, spritePath, sprite)
 
 		# set speed variable
 		self.speed = 5
 		self.running = False
 
 		# add collider to self		
-		Collider.RectangleCollider(parent = self, pivot = Vector2(0, 1), size = Vector2(self.size.x / 4, self.size.y / 3))
+		Collider.RectangleCollider(parent = self, pivot = Vector2(0, 1), size = Vector2(self.size.x / 4, self.size.y / 3), offset = Vector2(0, -0.1))
 
 	def onUpdate(self):
 		# reset running variable
@@ -35,7 +35,7 @@ class Player(SpriteObject):
 			self.move(Vector2(0, self.speed * GameManager.deltaTime))
 			self.running = True
 
-		if GameManager.keysDown[pygame.K_DOWN]:
+		if GameManager.keysDown[pygame.K_DOWN]: 
 			self.move(Vector2(0, -self.speed * GameManager.deltaTime))
 			self.running = True
 

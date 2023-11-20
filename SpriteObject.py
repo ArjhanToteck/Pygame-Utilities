@@ -3,11 +3,12 @@ import pygame
 
 from GameManager import GameManager
 from Vector2 import Vector2
+from Vector2Bool import Vector2Bool
 from GameObject import GameObject
 
 # sprites are a template for GameObjects that rely on a 2d image
 class SpriteObject(GameObject):
-	def __init__(self, position = None, size = None, visible = True, layer = 1, pivot = None, spritePath = None, sprite = None):
+	def __init__(self, position = None, size = None, visible = True, layer = 1, reflection = None, pivot = None, spritePath = None, sprite = None):
 		# do the regular __init__ for gameObjects
 		super().__init__(visible, layer)
 
@@ -22,6 +23,12 @@ class SpriteObject(GameObject):
 			self.position = Vector2(0, 0)
 		else:
 			self.position = position
+
+		# set default for reflection
+		if reflection == None:
+			self.reflection = Vector2Bool(False, False)
+		else:
+			self.reflection = reflection
 		
 		# set default for size (world units)
 		# while this can be set at instantiation, helper functions should be used to set the size of the object afterwards
@@ -113,8 +120,11 @@ class SpriteObject(GameObject):
 			# subtract pivot
 			screenPosition -= pivotOffset
 
+			# reflect sprite
+			reflectedSprite = pygame.transform.flip(self.sprite, self.reflection.x, self.reflection.y)
+
 			# draw sprite at position
-			GameManager.screen.blit(self.sprite, screenPosition.toArray())
+			GameManager.screen.blit(reflectedSprite, screenPosition.toArray())
 
 		# perform normal gameObject render
 		super().onRender()
