@@ -48,35 +48,46 @@ class SpriteSheet:
 
         return self.sprites
 
-    def sliceByGrid(self, rows, columns, width, height):
+    def sliceByGrid(self, rows, columns, width, height, rowNames = None, columnNames = None):
         slices = {}
-    
-        for y in range(rows):
-            # create row in slices
-            slices[y] = {}
 
-            for x in range(columns):
+        if rowNames == None:
+            rowNames = range(rows)
+
+            
+        if columnNames == None:
+            columnNames = range(rows)
+    
+        for y in range(len(rowNames)):
+            rowName = rowNames[y]
+
+            # create row in slices
+            slices[rowName] = {}
+
+            for x in range(len(columnNames)):
+                columnName = columnNames[x]
+
                 # get the data needed for slicing sprites and put it in the dictionary
                 slice = SpriteSheet.Slice(Vector2(x, y), Vector2(width, height))
-                slices[y][x] = slice
+                slices[rowName][columnName] = slice
 
         # use slice data to slice the sprites
         return self.sliceFromSliceData(slices)
 
-    def sliceByCellSize(self, width, height):
+    def sliceByCellSize(self, width, height, rowNames = None, columnNames = None):
 
         # divide image into a number of rows and columns
         rows = self.image.get_height() / height
         columns = self.image.get_width() / width
 
         # slice with grid data
-        return self.sliceByGrid(rows, columns, width, height)
+        return self.sliceByGrid(rows, columns, width, height, rowNames, columnNames)
 
     
-    def sliceByRowsAndColumns(self, rows, columns):    
+    def sliceByRowsAndColumns(self, rows, columns, rowNames = None, columnNames = None):
         
         width = self.image.get_width() / columns
         height = self.image.get_height() / rows
         
         # slice with grid data
-        return self.sliceByGrid(rows, columns, width, height)
+        return self.sliceByGrid(rows, columns, width, height, rowNames, columnNames)

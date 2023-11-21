@@ -3,7 +3,6 @@ import warnings
 
 class Vector2:
 
-
 	@staticmethod
 	def distance(v1, v2):
 		# distance between two vectors
@@ -101,3 +100,9 @@ class Vector2:
 
 	def __abs__(self):
 		return Vector2(abs(self.x), abs(self.y))
+	
+# static properties (reference itself)
+Vector2.up = Vector2(0, 1)
+Vector2.down = Vector2(0, -1)
+Vector2.right = Vector2(1, 0)
+Vector2.left = Vector2(-1, 0)
