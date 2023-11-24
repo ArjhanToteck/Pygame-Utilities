@@ -41,28 +41,27 @@ class Player(SpriteObject):
 		# movement
 		newDirection = Vector2.zero
 
+		# get direction
 		if GameManager.keysDown[pygame.K_DOWN]: 
-			self.move(Vector2(0, -self.speed * GameManager.deltaTime))
-			self.running = True
 			newDirection += Vector2.down
 
 		if GameManager.keysDown[pygame.K_UP]:
-			self.move(Vector2(0, self.speed * GameManager.deltaTime))
-			self.running = True
 			newDirection += Vector2.up
 
 		if GameManager.keysDown[pygame.K_LEFT]:
-			self.move(Vector2(-self.speed * GameManager.deltaTime, 0))
-			self.running = True
 			newDirection += Vector2.left
 
 		if GameManager.keysDown[pygame.K_RIGHT]:
-			self.move(Vector2(self.speed * GameManager.deltaTime, 0))
-			self.running = True
 			newDirection += Vector2.right
-
+			
+		# check if there was movement
 		if newDirection != Vector2.zero:
+			# move in direction
 			self.direction = newDirection
+			self.move(self.direction * self.speed * GameManager.deltaTime)
+
+			# mark as running
+			self.running = True
 
 		# animations
 		animationRow = ""
