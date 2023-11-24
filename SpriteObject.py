@@ -59,7 +59,6 @@ class SpriteObject(GameObject):
 	def updateSpriteTransformations(self):		
 		# account for size (might not be set yet)
 		if hasattr(self, "size"):
-			print("dick balls")
 			self.transformedSprite = pygame.transform.scale(self.transformedSprite, (self.size * GameManager.worldUnitSize).toArray())
 
 		# account for reflection (might not be set yet)
@@ -73,6 +72,8 @@ class SpriteObject(GameObject):
 		# copy sprite into transformedSprite
 		# transformedSprite will have all the transformations applied to it and will be the actual drawn image
 		self.transformedSprite = self.sprite.copy()
+
+		self.updateSpriteTransformations()
 
 
 	def updateSpriteByPath(self, spritePath):
