@@ -15,7 +15,7 @@ class StoreView:
 	@staticmethod
 	def start():
 		# create player
-		player = Player(size = Vector2(3, 3))
+		player = Player()
 
 		# store
 		background = SpriteObject(spritePath = "Images/FloorAndWalls.png", size = GameManager.screenSizeWorldUnits, layer = 0)
@@ -69,4 +69,4 @@ class StoreView:
 		reflectedChair3Collider = Collider.RectangleCollider(parent = reflectedChair3, size = (Vector2(1, 1)))
 
 		# show all colliders for testing
-		#GameManager.showAllColliders()
+		GameManager.showAllColliders()

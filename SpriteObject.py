@@ -9,14 +9,14 @@ from GameObject import GameObject
 # sprites are a template for GameObjects that rely on a 2d image
 class SpriteObject(GameObject):
 	def __init__(self, position = None, size = None, visible = True, layer = 1, reflection = None, pivot = None, spritePath = None, sprite = None):
-		# do the regular __init__ for gameObjects
-		super().__init__(visible, layer)
 
-		self.sprite = sprite
+		# set sprite
+		if sprite != None:
+			self.updateSprite(sprite)
 
-		# set default for sprite with path
+		# set sprite with path
 		if spritePath != None:
-			self.sprite = pygame.image.load(spritePath)
+			self.updateSpriteByPath(spritePath)
 			
 		# set default for position (world units)
 		if position == None:
@@ -24,11 +24,13 @@ class SpriteObject(GameObject):
 		else:
 			self.position = position
 
+		# sprite transformations
+
 		# set default for reflection
 		if reflection == None:
-			self.reflection = Vector2Bool(False, False)
+			self.setReflection(Vector2Bool(False, False))
 		else:
-			self.reflection = reflection
+			self.setReflection(reflection)
 		
 		# set default for size (world units)
 		# while this can be set at instantiation, helper functions should be used to set the size of the object afterwards
@@ -41,16 +43,50 @@ class SpriteObject(GameObject):
 		else:
 			self.setSize(size)
 
+		# update sprite transofmrations
+		self.updateSpriteTransformations()
+
 		# set default for pivot (distance from center in percentage of total size)
 		if pivot == None:
 			self.pivot = Vector2(0, 0)
 		else:
 			self.pivot = pivot
+		
+		# do the regular __init__ for gameObjects
+		super().__init__(visible, layer)
+
+
+	def updateSpriteTransformations(self):		
+		# account for size (might not be set yet)
+		if hasattr(self, "size"):
+			print("dick balls")
+			self.transformedSprite = pygame.transform.scale(self.transformedSprite, (self.size * GameManager.worldUnitSize).toArray())
+
+		# account for reflection (might not be set yet)
+		if hasattr(self, "reflection"):
+			self.transformedSprite = pygame.transform.flip(self.transformedSprite, self.reflection.x, self.reflection.y)
+
+
+	def updateSprite(self, sprite):
+		self.sprite = sprite
+
+		# copy sprite into transformedSprite
+		# transformedSprite will have all the transformations applied to it and will be the actual drawn image
+		self.transformedSprite = self.sprite.copy()
+
+
+	def updateSpriteByPath(self, spritePath):
+		self.updateSprite(pygame.image.load(spritePath))
+
+
+	def setReflection(self, reflection):
+		self.reflection = reflection
+		self.updateSpriteTransformations()
 
 
 	def setSize(self, size):
 		self.size = size
-		self.sprite = pygame.transform.scale(self.sprite, (self.size * GameManager.worldUnitSize).toArray())
+		self.updateSpriteTransformations()
 
 
 	def setSizePixels(self, size):
@@ -92,15 +128,6 @@ class SpriteObject(GameObject):
 	def setPositionInPixels(self, position):
 		self.setPosition(position / GameManager.worldUnitSize)
 
-
-	def setSprite(self, sprite):
-		self.sprite = sprite
-
-
-	def setSpriteFromPath(self, spritePath):
-		self.sprite = pygame.image.load(spritePath)
-
-
 	# by default, game objects will render self.sprite in self.position with self.size
 	def onRender(self):
 		if self.visible:
@@ -120,11 +147,8 @@ class SpriteObject(GameObject):
 			# subtract pivot
 			screenPosition -= pivotOffset
 
-			# reflect sprite
-			reflectedSprite = pygame.transform.flip(self.sprite, self.reflection.x, self.reflection.y)
-
 			# draw sprite at position
-			GameManager.screen.blit(reflectedSprite, screenPosition.toArray())
+			GameManager.screen.blit(self.transformedSprite, screenPosition.toArray())
 
 		# perform normal gameObject render
 		super().onRender()

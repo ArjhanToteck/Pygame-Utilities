@@ -13,17 +13,19 @@ class Player(SpriteObject):
 	spriteSheet = SpriteSheet(imagePath = "Images/Player.png")
 	spriteSheet.sliceByRowsAndColumns(10, 6, rowNames = ["downIdle", "sideIdle", "upIdle", "downRun", "sideRun", "upRun", "downAttack", "sideAttack", "upAttack", "death"])
 
-	def __init__(self, speed = 5, position = None, size = None, visible = True, reflection = None, layer = 1, pivot = None, spritePath = None, sprite = None):
+	def __init__(self, speed = 5, position = None, size = None, visible = True,  layer = 1, reflection = None, pivot = None, spritePath = None, sprite = None):
 		# set default sprite
 		if sprite == None and spritePath == None:
 			sprite = Player.spriteSheet.sprites["downIdle"][0]
 
+		if size == None:
+			size = Vector2(3, 3)
+
 		# do regular sprite init
 		super().__init__(position, size, visible, layer, reflection, pivot, spritePath, sprite)
 
-		# set speed variable
+		# exclusive player properties
 		self.speed = speed
-
 		self.running = False
 		self.direction = Vector2.down
 
@@ -81,4 +83,4 @@ class Player(SpriteObject):
 			animationRow += "Idle"
 
 		# update sprite
-		self.sprite = Player.spriteSheet.sprites[animationRow][0]
+		#self.updateSprite(Player.spriteSheet.sprites[animationRow][0])
