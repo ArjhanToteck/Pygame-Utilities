@@ -17,6 +17,7 @@ class Collider:
 
 		self.visible = visible
 
+		# TODO: improve pivot system to also factor in the parent sprite object pivot
 		# default pivot
 		if pivot == None:
 			self.pivot = parent.pivot.clone()

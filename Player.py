@@ -11,6 +11,7 @@ import pygame
 class Player(SpriteObject):
 	# load sprite sheet
 	spriteSheet = SpriteSheet(imagePath = "Images/Player.png")
+	# TODO: doesn't seem to be slicing things correctly. fix spritesheet slicing
 	spriteSheet.sliceByRowsAndColumns(10, 6, rowNames = ["downIdle", "sideIdle", "upIdle", "downRun", "sideRun", "upRun", "downAttack", "sideAttack", "upAttack", "death"])
 
 	def __init__(self, speed = 5, position = None, size = None, visible = True,  layer = 1, reflection = None, pivot = None, spritePath = None, sprite = None):
@@ -38,43 +39,47 @@ class Player(SpriteObject):
 		self.reflection = Vector2Bool(False, False)
 
 		# movement
+		newDirection = Vector2.zero
 
 		if GameManager.keysDown[pygame.K_DOWN]: 
 			self.move(Vector2(0, -self.speed * GameManager.deltaTime))
 			self.running = True
-			self.direction = Vector2.down
+			newDirection += Vector2.down
 
 		if GameManager.keysDown[pygame.K_UP]:
 			self.move(Vector2(0, self.speed * GameManager.deltaTime))
 			self.running = True
-			self.direction = Vector2.up
+			newDirection += Vector2.up
 
 		if GameManager.keysDown[pygame.K_LEFT]:
 			self.move(Vector2(-self.speed * GameManager.deltaTime, 0))
 			self.running = True
-			self.direction = Vector2.left
+			newDirection += Vector2.left
 
 		if GameManager.keysDown[pygame.K_RIGHT]:
 			self.move(Vector2(self.speed * GameManager.deltaTime, 0))
 			self.running = True
-			self.direction = Vector2.right
+			newDirection += Vector2.right
+
+		if newDirection != Vector2.zero:
+			self.direction = newDirection
 
 		# animations
-		animationRow = None
+		animationRow = ""
 
 		# account for direction
-		if self.direction == Vector2.down:
-			animationRow = "down"
-
-		elif self.direction == Vector2.up:
-			animationRow = "up"
-			
-		elif self.direction == Vector2.left:
+		if self.direction.x == -1:
 			animationRow = "side"
 			self.reflection = Vector2Bool(True, False)
 
-		elif self.direction == Vector2.right:
+		elif self.direction.x == 1:
 			animationRow = "side"
+
+		elif self.direction.y == -1:
+			animationRow = "down"
+
+		elif self.direction.y == 1:
+			animationRow = "up"
 
 		# account for running
 		if self.running:
@@ -83,4 +88,4 @@ class Player(SpriteObject):
 			animationRow += "Idle"
 
 		# update sprite
-		#self.updateSprite(Player.spriteSheet.sprites[animationRow][0])
+		self.updateSprite(Player.spriteSheet.sprites[animationRow][0])

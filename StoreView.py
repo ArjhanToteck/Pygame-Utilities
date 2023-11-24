@@ -45,7 +45,7 @@ class StoreView:
 		chouch2Collider = Collider.RectangleCollider(parent = couch2, size = Vector2(couch2.size.x - 0.1, 2.9), pivot = Vector2(-1, -1))
 		chouch2Collider.position.y -= couch2.size.y
 
-		#TODO: create parent/grouping and cloning for game objects to make stuff like this less annoying
+		# TODO: create parent/grouping and cloning for game objects to make stuff like this less annoying
 
 		table1 = SpriteObject(spritePath = "Images/Table.png", position = Vector2(10.5, 1), pivot = Vector2(1, -1), layer = 2, reflection = Vector2Bool(True, False))
 		table1Collider = Collider.RectangleCollider(parent = table1, size = (Vector2(table1.size.x, 1)))
@@ -69,4 +69,4 @@ class StoreView:
 		reflectedChair3Collider = Collider.RectangleCollider(parent = reflectedChair3, size = (Vector2(1, 1)))
 
 		# show all colliders for testing
-		GameManager.showAllColliders()
+		#GameManager.showAllColliders()

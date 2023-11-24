@@ -53,22 +53,21 @@ class SpriteSheet:
 
         if rowNames == None:
             rowNames = range(rows)
-
             
         if columnNames == None:
-            columnNames = range(rows)
+            columnNames = range(columns)
     
-        for y in range(len(rowNames)):
+        for y in range(rows):
             rowName = rowNames[y]
 
             # create row in slices
             slices[rowName] = {}
 
-            for x in range(len(columnNames)):
+            for x in range(columns):
                 columnName = columnNames[x]
 
                 # get the data needed for slicing sprites and put it in the dictionary
-                slice = SpriteSheet.Slice(Vector2(x, y), Vector2(width, height))
+                slice = SpriteSheet.Slice(Vector2(x * width, y * height), Vector2(width, height))
                 slices[rowName][columnName] = slice
 
         # use slice data to slice the sprites

@@ -102,6 +102,9 @@ class Vector2:
 		return Vector2(abs(self.x), abs(self.y))
 	
 # static properties (reference itself)
+Vector2.zero = Vector2(0, 0)
+Vector2.one = Vector2(1, 1)
+
 Vector2.up = Vector2(0, 1)
 Vector2.down = Vector2(0, -1)
 Vector2.right = Vector2(1, 0)
