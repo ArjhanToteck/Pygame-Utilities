@@ -3,6 +3,7 @@ from SpriteObject import SpriteObject
 from Vector2 import Vector2
 from Vector2Bool import Vector2Bool
 from SpriteSheet import SpriteSheet
+from AnimationController import AnimationController
 import Collider
 
 import pygame
@@ -27,8 +28,10 @@ class Player(SpriteObject):
 
 		# exclusive player properties
 		self.speed = speed
+
 		self.running = False
 		self.direction = Vector2.down
+		self.animationController = AnimationController(6, 0.125)
 
 		# add collider to self		
 		Collider.RectangleCollider(parent = self, pivot = Vector2(0, 1), size = Vector2(self.size.x / 4, self.size.y / 3), offset = Vector2(0, -0.1))
@@ -86,5 +89,8 @@ class Player(SpriteObject):
 		else:
 			animationRow += "Idle"
 
+		# get animation frame
+		animationFrame = self.animationController.getFrame(GameManager.deltaTime)
+
 		# update sprite
-		self.updateSprite(Player.spriteSheet.sprites[animationRow][0])
+		self.updateSprite(Player.spriteSheet.sprites[animationRow][animationFrame])
