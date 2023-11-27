@@ -120,14 +120,17 @@ class SpriteObject(GameObject):
 		for collider in self.colliders:
 			if collider.followParent:
 				collider.position = self.position
+		
+		return permittedPosition
 
 
 	def setPosition(self, position):
 		self.position = position
 
-	
+
 	def setPositionInPixels(self, position):
 		self.setPosition(position / GameManager.worldUnitSize)
+
 
 	# by default, game objects will render self.sprite in self.position with self.size
 	def onRender(self):

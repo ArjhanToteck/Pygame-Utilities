@@ -17,7 +17,6 @@ class AnimationController:
 
 		# check if time to change frame
 		if self.timeSinceLastFrame >= self.interval:
-			print(self.timeSinceLastFrame)
 			# current frame should be the floor of time elapsed / frame interval
 			self.currentFrame += self.timeSinceLastFrame // self.interval
 
@@ -27,6 +26,5 @@ class AnimationController:
 		# cap current frame at the max
 		if self.currentFrame >= self.frameCount:
 			self.currentFrame = self.currentFrame - self.frameCount
-
 
 		return self.currentFrame

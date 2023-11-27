@@ -215,6 +215,8 @@ class RectangleCollider(Collider):
 
 
 	def requestMovement(self, originalPosition, targetPosition):
+		# TODO: this kind of sucks. should probably fix.
+		
 		# this is a fake test collision, so we shouldn't call events and interfere with the game loop
 		currentCollisions = self.updateCollisions(callEvents = False)
 		

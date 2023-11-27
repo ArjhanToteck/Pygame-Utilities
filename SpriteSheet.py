@@ -18,6 +18,7 @@ class SpriteSheet:
             self.position = position
             self.size = size
 
+
     def sliceFromSliceData(self, sliceData = None):
         self.sprites = {}
 
@@ -25,6 +26,7 @@ class SpriteSheet:
             sliceData = self.sliceData
         else:
             self.sliceData = sliceData
+
 
         # recursive function for processing
         def processSliceData(data, parentDictionary):

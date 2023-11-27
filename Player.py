@@ -12,7 +12,7 @@ import pygame
 class Player(SpriteObject):
 	# load sprite sheet
 	spriteSheet = SpriteSheet(imagePath = "Images/Player.png")
-	# TODO: doesn't seem to be slicing things correctly. fix spritesheet slicing
+	
 	spriteSheet.sliceByRowsAndColumns(10, 6, rowNames = ["downIdle", "sideIdle", "upIdle", "downRun", "sideRun", "upRun", "downAttack", "sideAttack", "upAttack", "death"])
 
 	def __init__(self, speed = 5, position = None, size = None, visible = True,  layer = 1, reflection = None, pivot = None, spritePath = None, sprite = None):
