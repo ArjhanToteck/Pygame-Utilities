@@ -18,7 +18,11 @@ class StoreView:
 		player = Player()
 
 		# store
-		background = SpriteObject(spritePath = "Images/FloorAndWalls.png", size = GameManager.screenSizeWorldUnits, layer = 0)
+		background = SpriteObject(spritePath = "Images/FloorAndWalls.png", size = GameManager.screenSizeWorldUnits, layer = 0)		
+		Collider.RectangleCollider(parent = background, pivot = Vector2(-1, 0), size = Vector2(0.25, background.size.y), offset = Vector2(-background.size.x / 2, 0))
+		Collider.RectangleCollider(parent = background, pivot = Vector2(1, 0), size = Vector2(0.25, background.size.y), offset = Vector2(background.size.x / 2, 0))
+		Collider.RectangleCollider(parent = background, pivot = Vector2(0, -1), size = Vector2(background.size.x, 0.25), offset = Vector2(0, -background.size.y / 2))
+		Collider.RectangleCollider(parent = background, pivot = Vector2(0, 1), size = Vector2(background.size.x, 0.25), offset = Vector2(0, background.size.y / 2))
 
 		salesTable = SpriteObject(spritePath = "Images/SalesTable.png", position = Vector2(0, 4), layer = 2)
 		Collider.RectangleCollider(parent = salesTable, pivot = Vector2(-1, 0), size = Vector2(0.25, salesTable.size.y), offset = Vector2(-salesTable.size.x / 2, 0))
