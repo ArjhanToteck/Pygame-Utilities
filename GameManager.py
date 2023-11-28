@@ -26,11 +26,13 @@ class GameManager:
 	# stores functions to render stuff here, the key being the render layer
 	renderQueue = {}
 	
+	
 	@classmethod
 	def quit(cls):
 		cls.running = False
 		pygame.quit()
 		sys.exit()
+
 
 	@classmethod
 	def nextFrame(cls):
@@ -71,6 +73,7 @@ class GameManager:
 			# next frame
 			cls.deltaTime = cls.clock.tick() / 1000
 
+
 	@classmethod
 	def setUpGame(cls, worldUnitSize = None, screenSizePixels = None):
 		# pygame setup
@@ -81,10 +84,10 @@ class GameManager:
 
 		if worldUnitSize != None:
 			cls.worldUnitSize = worldUnitSize
-
 		
 		if screenSizePixels != None:
 			cls.screenSizePixels = screenSizePixels
+
 
 	@classmethod
 	def addToRenderQueue(cls, renderer, layer):
@@ -98,6 +101,7 @@ class GameManager:
 
 		# make sure to sort it after changing
 		cls.renderQueue = dict(sorted(cls.renderQueue.items()))
+
 
 	@classmethod
 	def removeFromRenderQueue(cls, renderer, layer):
@@ -119,11 +123,13 @@ class GameManager:
 		for collider in cls.colliders:
 			collider.visible = True
 		
+
 	@classmethod
 	def hideAllColliders(cls):
 		for collider in cls.colliders:
 			collider.visible = False
 	
+
 	@classmethod
 	def worldToScreenPosition(cls, worldPosition):
 		# invert y axis
