@@ -6,7 +6,7 @@ from enum import Enum
 
 # this is a default collider class not meant for actual use outside of being inherited by the real types of colliders
 class Collider:
-	color = (255, 0, 230)
+	debugColor = (255, 0, 230)
 
 	def __init__(self, parent, pivot = None, offset = None, position = None, enabled = True, isTrigger = False, followParent = True, visible = False):
 		# parent gameObject
@@ -244,35 +244,26 @@ class RectangleCollider(Collider):
 
 		return permittedPosition
 
-	def getPivotOffset(self):
+	
+	def getPivotOffset(self):		
 		# center of sprite (default pivot)
 		pivotOffset = -(self.size / 2)
-		pivotOffset.y *= -1
 
+		# reflect y axis
+		pivotOffset.y *= -1
+		
 		# apply the actual pivot (not just 0,0)
-		pivotOffset += (self.size / 2) * self.pivot
+		pivotOffset += (self.size / 2) * -self.pivot
+		
 
 		return pivotOffset
 	
 	def onRender(self):
 		if self.visible:
-			# get screen position of sprite (top left corner)
-			screenPosition = GameManager.worldToScreenPosition(self.position + self.offset)
+			# get screen position of collider with pivot and pivot offset factored in
+			screenPosition = GameManager.worldToScreenPosition(self.position + self.offset + self.getPivotOffset())
 
-			# center of sprite (default pivot)
-			pivotOffset = (self.size / 2) * GameManager.worldUnitSize
-
-			# invert y of pivot
-			pivotYInverted = self.pivot.clone()
-			pivotYInverted.y *= -1
-
-			# add pivot to offset (percentage of size)
-			pivotOffset += pivotYInverted * (self.size / 2) * GameManager.worldUnitSize
-
-			# subtract pivot
-			screenPosition -= pivotOffset
-
-			pygame.draw.rect(GameManager.screen, Collider.color, pygame.Rect(screenPosition.x, screenPosition.y, self.size.x * GameManager.worldUnitSize.x, self.size.y * GameManager.worldUnitSize.y),  2)
+			pygame.draw.rect(GameManager.screen, Collider.debugColor, pygame.Rect(screenPosition.x, screenPosition.y, self.size.x * GameManager.worldUnitSize.x, self.size.y * GameManager.worldUnitSize.y),  2)
 
 
 class CircleCollider(Collider):

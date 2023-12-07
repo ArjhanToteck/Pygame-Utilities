@@ -41,9 +41,10 @@ class StoreView:
 
 		# TODO: figure out better parameters for colliders and pivots/offsets to make things like this less annoying. maybe it should factor in both the pivot of the game object and the collider?
 		couch1 = SpriteObject(spritePath = "Images/Couch.png", position = Vector2(-12, 3), pivot = Vector2(-1, 1), layer = 2)
-		couch2 = SpriteObject(spritePath = "Images/Couch.png", position = Vector2(-12, -1), pivot = Vector2(-1, 1), layer = 2)
 
-		chouch1Collider = Collider.RectangleCollider(parent = couch1, size = Vector2(couch1.size.x - 0.1, 2.9), pivot = Vector2(-1, -1))
+		couch2 = SpriteObject(spritePath = "Images/Couch.png", position = Vector2(-12, -1), pivot = Vector2(-1, 1), layer = 2)
+		
+		chouch1Collider = Collider.RectangleCollider(parent = couch1, size = Vector2(couch2.size.x - 0.1, 2.9), pivot = Vector2(-1, -1))
 		chouch1Collider.position.y -= couch1.size.y
 
 		chouch2Collider = Collider.RectangleCollider(parent = couch2, size = Vector2(couch2.size.x - 0.1, 2.9), pivot = Vector2(-1, -1))

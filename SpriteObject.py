@@ -135,10 +135,13 @@ class SpriteObject(GameObject):
 	def getPivotOffset(self):
 		# center of sprite (default pivot)
 		pivotOffset = -(self.size / 2)
-		pivotOffset.y *= -1
 
+		# reflect y axis
+		pivotOffset.y *= -1
+		
 		# apply the actual pivot (not just 0,0)
-		pivotOffset += (self.size / 2) * self.pivot
+		pivotOffset += (self.size / 2) * -self.pivot
+		
 
 		return pivotOffset
 
