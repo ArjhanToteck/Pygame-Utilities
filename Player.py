@@ -4,6 +4,8 @@ from Vector2 import Vector2
 from Vector2Bool import Vector2Bool
 from SpriteSheet import SpriteSheet
 from AnimationController import AnimationController
+from Layers import Layers
+
 import Collider
 
 import pygame
@@ -15,13 +17,16 @@ class Player(SpriteObject):
 	
 	spriteSheet.sliceByRowsAndColumns(10, 6, rowNames = ["downIdle", "sideIdle", "upIdle", "downRun", "sideRun", "upRun", "downAttack", "sideAttack", "upAttack", "death"])
 
-	def __init__(self, speed = 5, position = None, size = None, visible = True,  layer = 1, reflection = None, pivot = None, spritePath = None, sprite = None):
-		# set default sprite
+	def __init__(self, speed = 5, position = None, size = None, visible = True,  layer = None, reflection = None, pivot = None, spritePath = None, sprite = None):
+		# set defaults
 		if sprite == None and spritePath == None:
 			sprite = Player.spriteSheet.sprites["downIdle"][0]
 
 		if size == None:
 			size = Vector2(3, 3)
+
+		if layer == None:
+			layer = Layers.player
 
 		# do regular sprite init
 		super().__init__(position, size, visible, layer, reflection, pivot, spritePath, sprite)

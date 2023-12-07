@@ -1,8 +1,10 @@
-import pygame
-
 from GameManager import GameManager
 from Vector2 import Vector2
+from Layers import Layers
+
 from enum import Enum
+
+import pygame
 
 # this is a default collider class not meant for actual use outside of being inherited by the real types of colliders
 class Collider:
@@ -136,7 +138,6 @@ class RectangleCollider(Collider):
 
 			# check if other rectangle collider
 			if isinstance(otherCollider, RectangleCollider):
-				# TODO: ffs apparantly theres a pygame.Rect.colliderect exists.
 
 				# calculate pivot offsets
 				selfCalculatedPosition = self.position + self.offset + self.getPivotOffset(False) + self.parent.getPivotOffset(False)
