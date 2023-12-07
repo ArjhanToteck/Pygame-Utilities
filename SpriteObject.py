@@ -135,21 +135,12 @@ class SpriteObject(GameObject):
 	# by default, game objects will render self.sprite in self.position with self.size
 	def onRender(self):
 		if self.visible:
-			# get screen position of sprite (top left corner)
-			screenPosition = GameManager.worldToScreenPosition(self.position)
-
 			# center of sprite (default pivot)
-			pivotOffset = (self.size / 2) * GameManager.worldUnitSize
+			pivotOffset = (self.size / 2)
+			pivotOffset.y *= -1
 
-			# invert y of pivot
-			pivotYInverted = self.pivot.clone()
-			pivotYInverted.y *= -1
-
-			# add pivot to offset (percentage of size)
-			pivotOffset += pivotYInverted * (self.size / 2) * GameManager.worldUnitSize
-
-			# subtract pivot
-			screenPosition -= pivotOffset
+			# get screen position of sprite (top left corner)
+			screenPosition = GameManager.worldToScreenPosition(self.position - pivotOffset)
 
 			# draw sprite at position
 			GameManager.screen.blit(self.transformedSprite, screenPosition.toArray())
