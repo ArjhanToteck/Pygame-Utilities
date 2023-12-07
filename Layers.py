@@ -1,6 +1,4 @@
-from enum import Enum
-
-class Layers(Enum):
+class Layers():
     background = 0
     player = 1
     furniture = 2

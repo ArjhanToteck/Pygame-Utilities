@@ -54,6 +54,22 @@ class Collider:
 		# remove self from parent
 		self.parent.colliders.remove(self)
 
+		
+	def getPivotOffset(self, centerFirst = True):
+		pivotOffset = Vector2(0, 0)
+
+		if (centerFirst):
+			# center sprite (default pivot)
+			pivotOffset = -(self.size / 2)
+
+			# reflect y axis
+			pivotOffset.y *= -1
+		
+		# apply the actual pivot (not just 0,0)
+		pivotOffset += (self.size / 2) * -self.pivot
+
+		return pivotOffset
+
 
 	def updateCollisions(self):
 		pass
@@ -250,22 +266,7 @@ class RectangleCollider(Collider):
 
 		return permittedPosition
 
-	
-	def getPivotOffset(self, centerFirst = True):
-		pivotOffset = Vector2(0, 0)
 
-		if (centerFirst):
-			# center sprite (default pivot)
-			pivotOffset = -(self.size / 2)
-
-			# reflect y axis
-			pivotOffset.y *= -1
-		
-		# apply the actual pivot (not just 0,0)
-		pivotOffset += (self.size / 2) * -self.pivot		
-
-		return pivotOffset
-	
 	def onRender(self):
 		if self.visible:
 			# get screen position of collider with pivot and pivot offset factored in
