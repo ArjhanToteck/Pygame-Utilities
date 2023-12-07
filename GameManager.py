@@ -72,7 +72,7 @@ class GameManager:
 			
 			# next frame
 			cls.deltaTime = cls.clock.tick() / 1000
-
+			
 
 	@classmethod
 	def setUpGame(cls, worldUnitSize = None, screenSizePixels = None):

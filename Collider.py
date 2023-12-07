@@ -8,21 +8,21 @@ from enum import Enum
 class Collider:
 	debugColor = (255, 0, 230)
 
-	def __init__(self, parent, pivot = None, offset = None, position = None, enabled = True, isTrigger = False, followParent = True, visible = False):
+	def __init__(self, parent, pivot = None, offset = None, position = None, enabled = True, isTrigger = False, followParent = True, visible = False, enableCollisionEvents = True):
 		# parent gameObject
 		self.parent = parent
 		self.enabled = enabled
 		self.isTrigger = isTrigger
 		self.followParent = followParent
+		self.enableCollisionEvents = enableCollisionEvents
+		self.visible = visible
 
 		self.currentCollisions = []
-
-		self.visible = visible
 
 		# TODO: improve pivot system to also factor in the parent sprite object pivot
 		# default pivot
 		if pivot == None:
-			self.pivot = parent.pivot.clone()
+			self.pivot = Vector2(0, 0)
 		else:
 			self.pivot = pivot
 
@@ -104,9 +104,8 @@ class Collision:
 		Trigger = 0
 		Collision = 1
 
-
 class RectangleCollider(Collider):
-	def __init__(self, parent, pivot = None, offset = None, position = None, size = None, enabled = True, isTrigger = False, followParent = True, visible = False):
+	def __init__(self, parent, pivot = None, offset = None, position = None, size = None, enabled = True, isTrigger = False, followParent = True, visible = False, enableCollisionEvents = True):
 		
 		# set default size
 		if size == None:
@@ -116,10 +115,14 @@ class RectangleCollider(Collider):
 			self.size = size
 
 		# call base init
-		super().__init__(parent, pivot, offset, position, enabled, isTrigger, followParent, visible)
+		super().__init__(parent, pivot, offset, position, enabled, isTrigger, followParent, visible, enableCollisionEvents)
 
 
 	def updateCollisions(self, callEvents = True):
+		# dont need to check every frame if enable collision events is false
+		if callEvents and not self.enableCollisionEvents:
+			return
+
 		collisions = []
 
 		# loop through colliders in scene
@@ -133,20 +136,22 @@ class RectangleCollider(Collider):
 
 			# check if other rectangle collider
 			if isinstance(otherCollider, RectangleCollider):
+				# TODO: ffs apparantly theres a pygame.Rect.colliderect exists.
+
 				# calculate pivot offsets
-				selfPivotOffset = (self.size / 2) * self.pivot
-				otherPivotOffset = (otherCollider.size / 2) * otherCollider.pivot
+				selfCalculatedPosition = self.position + self.offset + self.getPivotOffset(False) + self.parent.getPivotOffset(False)
+				otherCalculatedPosition = otherCollider.position + otherCollider.offset + otherCollider.getPivotOffset(False) + otherCollider.parent.getPivotOffset(False)
 
 				# calculate adjusted positions of rectangles
-				selfLeft = self.position.x - selfPivotOffset.x + self.offset.x - (self.size.x / 2)
-				selfRight = self.position.x - selfPivotOffset.x + self.offset.x + (self.size.x / 2)
-				selfBottom = self.position.y - selfPivotOffset.y + self.offset.y - (self.size.y / 2)
-				selfTop = self.position.y - selfPivotOffset.y + self.offset.y + (self.size.y / 2)
+				selfLeft = selfCalculatedPosition.x - (self.size.x / 2)
+				selfRight = selfCalculatedPosition.x + (self.size.x / 2)
+				selfBottom = selfCalculatedPosition.y - (self.size.y / 2)
+				selfTop = selfCalculatedPosition.y + (self.size.y / 2)
 				
-				otherLeft = otherCollider.position.x - otherPivotOffset.x + otherCollider.offset.x - (otherCollider.size.x / 2)
-				otherRight = otherCollider.position.x - otherPivotOffset.x + otherCollider.offset.x + (otherCollider.size.x / 2)
-				otherBottom = otherCollider.position.y - otherPivotOffset.y + otherCollider.offset.y - (otherCollider.size.y / 2)
-				otherTop = otherCollider.position.y - otherPivotOffset.y + otherCollider.offset.y + (otherCollider.size.y / 2)
+				otherLeft = otherCalculatedPosition.x - (otherCollider.size.x / 2)
+				otherRight = otherCalculatedPosition.x + (otherCollider.size.x / 2)
+				otherBottom = otherCalculatedPosition.y - (otherCollider.size.y / 2)
+				otherTop = otherCalculatedPosition.y + (otherCollider.size.y / 2)
 
 				# check for overlap on both axes
 				overlap = Vector2()
@@ -245,23 +250,25 @@ class RectangleCollider(Collider):
 		return permittedPosition
 
 	
-	def getPivotOffset(self):		
-		# center of sprite (default pivot)
-		pivotOffset = -(self.size / 2)
+	def getPivotOffset(self, centerFirst = True):
+		pivotOffset = Vector2(0, 0)
 
-		# reflect y axis
-		pivotOffset.y *= -1
+		if (centerFirst):
+			# center sprite (default pivot)
+			pivotOffset = -(self.size / 2)
+
+			# reflect y axis
+			pivotOffset.y *= -1
 		
 		# apply the actual pivot (not just 0,0)
-		pivotOffset += (self.size / 2) * -self.pivot
-		
+		pivotOffset += (self.size / 2) * -self.pivot		
 
 		return pivotOffset
 	
 	def onRender(self):
 		if self.visible:
 			# get screen position of collider with pivot and pivot offset factored in
-			screenPosition = GameManager.worldToScreenPosition(self.position + self.offset + self.getPivotOffset())
+			screenPosition = GameManager.worldToScreenPosition(self.position + self.offset + self.getPivotOffset() + self.parent.getPivotOffset(False))
 
 			pygame.draw.rect(GameManager.screen, Collider.debugColor, pygame.Rect(screenPosition.x, screenPosition.y, self.size.x * GameManager.worldUnitSize.x, self.size.y * GameManager.worldUnitSize.y),  2)
 
