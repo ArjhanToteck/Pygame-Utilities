@@ -73,4 +73,4 @@ class StoreView:
 		reflectedChair3Collider = Collider.RectangleCollider(parent = reflectedChair3, size = (Vector2(1, 1)))
 
 		# show all colliders for testing
-		#GameManager.showAllColliders()
+		GameManager.showAllColliders()

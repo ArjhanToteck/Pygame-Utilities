@@ -100,6 +100,9 @@ class Vector2:
 
 	def __abs__(self):
 		return Vector2(abs(self.x), abs(self.y))
+
+	def __neg__(self):
+		return Vector2(-self.x, -self.y)
 	
 # static properties (reference itself)
 Vector2.zero = Vector2(0, 0)

@@ -134,13 +134,27 @@ class GameManager:
 	def worldToScreenPosition(cls, worldPosition):
 		# invert y axis
 		worldPositionYInverted = Vector2(worldPosition.x, -worldPosition.y)
-
-		pixelCenter = Vector2(cls.screenSizePixels.x / 2, cls.screenSizePixels.y / 2)
-
+		
 		# scale world units by size in pixels
-		pixelPosition = worldPositionYInverted * cls.worldUnitSize
+		screenPosition = worldPositionYInverted * cls.worldUnitSize
 
+		# add offset to account for center of screen		
+		centerOffsetPixels = Vector2(cls.screenSizePixels.x / 2, cls.screenSizePixels.y / 2)
+		screenPosition += centerOffsetPixels
+
+		return screenPosition
+	
+
+	@classmethod
+	def screenToWorldPosition(cls, screenPosition):
+				
+		# divide world units by size in pixels
+		worldPosition = screenPosition / cls.worldUnitSize
+		print("1", worldPosition)
+		
 		# add offset to account for center of screen
-		pixelPosition += pixelCenter
+		centerOffsetWorldUnits = Vector2(cls.screenSizeWorldUnits.x / 2, -cls.screenSizeWorldUnits.y / 2)
+		worldPosition -= centerOffsetWorldUnits
+		print("2", worldPosition)
 
-		return pixelPosition
+		return worldPosition
