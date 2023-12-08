@@ -4,10 +4,10 @@ import pygame
 from GameManager import GameManager
 from Vector2 import Vector2
 from Vector2Bool import Vector2Bool
-from GameObject import GameObject
+from Component import Component
 
 # sprites are a template for GameObjects that rely on a 2d image
-class SpriteObject(GameObject):
+class SpriteObject(Component):
 	def __init__(self, position = None, size = None, visible = True, layer = 1, reflection = None, pivot = None, spritePath = None, sprite = None):
 
 		# set sprite

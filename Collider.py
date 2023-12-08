@@ -1,13 +1,15 @@
 from GameManager import GameManager
 from Vector2 import Vector2
 from Layers import Layers
+from Component import Component
 
 from enum import Enum
 
 import pygame
 
 # this is a default collider class not meant for actual use outside of being inherited by the real types of colliders
-class Collider:
+# TODO: incorporate Component class into this
+class Collider():
 	debugColor = (255, 0, 230)
 
 	def __init__(self, parent, pivot = None, offset = None, position = None, enabled = True, isTrigger = False, followParent = True, visible = False, enableCollisionEvents = True):

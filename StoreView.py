@@ -1,5 +1,5 @@
 from GameManager import GameManager
-from GameObject import GameObject
+from Component import Component
 from SpriteObject import SpriteObject
 from Vector2 import Vector2
 from Vector2Bool import Vector2Bool

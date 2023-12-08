@@ -4,7 +4,7 @@ from GameManager import GameManager
 from Vector2 import Vector2
 
 # this is the barebones template required for gameObjects. more often than not, sprites will be of better use unless you want to make something like a background.
-class GameObject:
+class Component:
 	def __init__(self, visible = True, layer = 1):
 		self.colliders = []
 
