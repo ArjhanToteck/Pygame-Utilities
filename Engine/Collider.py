@@ -1,7 +1,5 @@
-from GameManager import GameManager
-from Vector2 import Vector2
-from Layers import Layers
-from Component import Component
+from Engine.GameManager import GameManager
+from Engine.Vector2 import Vector2
 
 from enum import Enum
 
@@ -238,7 +236,6 @@ class RectangleCollider(Collider):
 
 		# return collision array
 		return collisions
-
 
 	def requestMovement(self, originalPosition, targetPosition):
 		# TODO: this kind of sucks. should probably fix.

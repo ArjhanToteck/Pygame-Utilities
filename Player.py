@@ -1,14 +1,5 @@
-from GameManager import GameManager
-from SpriteObject import SpriteObject
-from Vector2 import Vector2
-from Vector2Bool import Vector2Bool
-from SpriteSheet import SpriteSheet
-from AnimationController import AnimationController
 from Layers import Layers
-
-import Collider
-
-import pygame
+from Engine import *
 
 # player class
 class Player(SpriteObject):

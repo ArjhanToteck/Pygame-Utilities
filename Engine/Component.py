@@ -1,7 +1,4 @@
-import pygame
-
-from GameManager import GameManager
-from Vector2 import Vector2
+from Engine.GameManager import GameManager
 
 # this is the barebones template required for gameObjects. more often than not, sprites will be of better use unless you want to make something like a background.
 class Component:

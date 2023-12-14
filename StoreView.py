@@ -1,13 +1,6 @@
-from GameManager import GameManager
-from Component import Component
-from SpriteObject import SpriteObject
-from Vector2 import Vector2
-from Vector2Bool import Vector2Bool
+from Engine import *
 from Player import Player
-from SpriteSheet import SpriteSheet
 from Layers import Layers
-
-import Collider
 
 # this class contains all the game objects and stuff for the scene
 class StoreView:

@@ -1,8 +1,8 @@
+from Engine.Vector2 import Vector2
+
 import pygame
 import warnings
 import sys
-
-from Vector2 import Vector2
 
 class GameManager:
 	# settings	

@@ -1,6 +1,6 @@
-from GameManager import GameManager
 from StoreView import StoreView
-from Vector2 import Vector2
+
+from Engine import *
 
 def main():
 	# set game up
