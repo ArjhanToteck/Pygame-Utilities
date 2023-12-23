@@ -1,9 +1,4 @@
-import pygame
-
-from Engine.Vector2 import Vector2
-from Engine.Vector2Bool import Vector2Bool
-from Engine.Component import Component
-from Engine.GameManager import GameManager
+from Engine import *
 
 # sprites are a template for GameObjects that rely on a 2d image
 class SpriteObject(Component):

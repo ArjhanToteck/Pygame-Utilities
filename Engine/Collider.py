@@ -1,9 +1,6 @@
-from Engine.GameManager import GameManager
-from Engine.Vector2 import Vector2
+from Engine import *
 
 from enum import Enum
-
-import pygame
 
 # this is a default collider class not meant for actual use outside of being inherited by the real types of colliders
 # TODO: incorporate Component class into this

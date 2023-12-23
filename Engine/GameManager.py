@@ -1,6 +1,5 @@
-from Engine.Vector2 import Vector2
+from Engine import *
 
-import pygame
 import warnings
 import sys
 

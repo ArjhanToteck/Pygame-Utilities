@@ -1,6 +1,6 @@
 import pygame
 
-from Engine.Vector2 import Vector2
+from Engine import *
 
 class SpriteSheet:
     def __init__(self, image = None, imagePath = None):
