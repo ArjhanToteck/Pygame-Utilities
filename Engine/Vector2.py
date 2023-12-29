@@ -6,8 +6,7 @@ class Vector2:
 	@staticmethod
 	def distance(v1, v2):
 		# distance between two vectors
-		return math.sqrt((v1.x - v2.x) ** 2 + (v1.y - v2.y) ** 2)
-	
+		return math.sqrt((v1.x - v2.x) ** 2 + (v1.y - v2.y) ** 2)	
 	
 	def __init__(self, x = 0, y = 0):
 		self.x = x
@@ -28,10 +27,6 @@ class Vector2:
 
 	def __str__(self):
 		return f"Vector2({self.x}, {self.y})"
-
-	
-	def magnitude(self):
-		return (self.x ** 2 + self.y ** 2) ** 0.5
 
 
 	def __eq__(self, other):
