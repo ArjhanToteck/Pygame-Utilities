@@ -1,6 +1,9 @@
 import math
 import warnings
 
+from Engine import *
+
+# wrapper for c++ Vector2
 class Vector2:
 
 	@staticmethod
@@ -9,9 +12,28 @@ class Vector2:
 		return math.sqrt((v1.x - v2.x) ** 2 + (v1.y - v2.y) ** 2)	
 	
 	def __init__(self, x = 0, y = 0):
-		self.x = x
-		self.y = y
+		self.pointer = cppEngine.Vector2_init(x, y)
 
+	# properties
+	@property
+	def x(self):
+		test = cppEngine.Vector2_getX(self.pointer)
+		print(test)
+		return test
+	
+	@x.setter
+	def setX(self, value):
+		return cppEngine.Vector2_setX(self.pointer, value)
+
+	@property
+	def y(self):
+		return cppEngine.Vector2_getY(self.pointer)
+	
+	@y.setter
+	def setY(self, value):
+		return cppEngine.Vector2_setY(self.pointer, value)
+
+	# nonstatic methods
 
 	def clone(self):
 		return Vector2(self.x, self.y)
@@ -24,6 +46,8 @@ class Vector2:
 	def toTuple(self):
 		return (self.x, self.y)
 	
+
+	# operator overloads
 
 	def __str__(self):
 		return f"Vector2({self.x}, {self.y})"

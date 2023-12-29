@@ -128,33 +128,33 @@ extern "C" {
 
 	// static fields
 
-	const Vector2* Vector2_zero() {
+	__declspec(dllexport) const Vector2* Vector2_zero() {
 		return &Vector2::zero;
 	}
 
-	const Vector2* Vector2_one() {
+	__declspec(dllexport) const Vector2* Vector2_one() {
 		return &Vector2::one;
 	}
 
-	const Vector2* Vector2_up() {
+	__declspec(dllexport) const Vector2* Vector2_up() {
 		return &Vector2::up;
 	}
 
-	const Vector2* Vector2_down() {
+	__declspec(dllexport) const Vector2* Vector2_down() {
 		return &Vector2::down;
 	}
 
-	const Vector2* Vector2_left() {
+	__declspec(dllexport) const Vector2* Vector2_left() {
 		return &Vector2::left;
 	}
 
-	const Vector2* Vector2_right() {
+	__declspec(dllexport) const Vector2* Vector2_right() {
 		return &Vector2::right;
 	}
 
 	// static methods
 
-	float Vector2_distance(const Vector2* v1, const Vector2* v2) {
+	__declspec(dllexport) float Vector2_distance(const Vector2* v1, const Vector2* v2) {
 		return Vector2::Distance(*v1, *v2);
 	}
 
@@ -162,105 +162,105 @@ extern "C" {
 
 	// nonstatic fields
 
-	float Vector2_getX(const Vector2* self) {
+	__declspec(dllexport) float Vector2_getX(const Vector2* self) {
 		return self->x;
 	}
 
-	void Vector2_setX(Vector2* self, const float value) {
+	__declspec(dllexport) void Vector2_setX(Vector2* self, const float value) {
 		self->x = value;
 	}
 
-	float Vector2_getY(const Vector2* self) {
+	__declspec(dllexport) float Vector2_getY(const Vector2* self) {
 		return self->y;
 	}
 
-	void Vector2_setY(Vector2* self, const float value) {
+	__declspec(dllexport) void Vector2_setY(Vector2* self, const float value) {
 		self->y = value;
 	}
 
 	// nonstatic methods
 
 	// constructor
-	Vector2* Vector2_init(float x, float y) {
+	__declspec(dllexport) Vector2* Vector2_init(float x, float y) {
 		return new Vector2(x, y);
 	}
 
-	Vector2* Vector2_clone(const Vector2* self) {
+	__declspec(dllexport) Vector2* Vector2_clone(const Vector2* self) {
 		return new Vector2(self->Clone());
 	}
 
 	// free memory for python garbage collector
-	void Vector2_del(Vector2* self) {
+	__declspec(dllexport) void Vector2_del(Vector2* self) {
 		delete self;
 	}
 
 	// operator overloads
 
-	Vector2* Vector2_mul_Vector2(const Vector2* self, const Vector2* other) {
+	__declspec(dllexport) Vector2* Vector2_mul_Vector2(const Vector2* self, const Vector2* other) {
 		return new Vector2((*self) * (*other));
 	}
 
-	Vector2* Vector2_mul_float(const Vector2* self, const float other) {
+	__declspec(dllexport) Vector2* Vector2_mul_float(const Vector2* self, const float other) {
 		return new Vector2((*self) * other);
 	}
 
-	Vector2* Vector2_mul_int(const Vector2* self, const int other) {
+	__declspec(dllexport) Vector2* Vector2_mul_int(const Vector2* self, const int other) {
 		return Vector2_mul_float(self, static_cast<float>(other));
 	}
 
-	Vector2* Vector2_truediv_Vector2(const Vector2* self, const Vector2* other) {
+	__declspec(dllexport) Vector2* Vector2_truediv_Vector2(const Vector2* self, const Vector2* other) {
 		return new Vector2((*self) / (*other));
 	}
 
-	Vector2* Vector2_truediv_float(const Vector2* self, const float other) {
+	__declspec(dllexport) Vector2* Vector2_truediv_float(const Vector2* self, const float other) {
 		return new Vector2((*self) / other);
 	}
 
-	Vector2* Vector2_truediv_int(const Vector2* self, const int other) {
+	__declspec(dllexport) Vector2* Vector2_truediv_int(const Vector2* self, const int other) {
 		return Vector2_truediv_float(self, static_cast<float>(other));
 	}
 
-	Vector2* Vector2_add_Vector2(const Vector2* self, const Vector2* other) {
+	__declspec(dllexport) Vector2* Vector2_add_Vector2(const Vector2* self, const Vector2* other) {
 		return new Vector2((*self) + (*other));
 	}
 
-	Vector2* Vector2_add_float(const Vector2* self, const float other) {
+	__declspec(dllexport) Vector2* Vector2_add_float(const Vector2* self, const float other) {
 		return new Vector2((*self) + other);
 	}
 
-	Vector2* Vector2_add_int(const Vector2* self, const int other) {
+	__declspec(dllexport) Vector2* Vector2_add_int(const Vector2* self, const int other) {
 		return Vector2_add_float(self, static_cast<float>(other));
 	}
 
-	Vector2* Vector2_sub_Vector2(const Vector2* self, const Vector2* other) {
+	__declspec(dllexport) Vector2* Vector2_sub_Vector2(const Vector2* self, const Vector2* other) {
 		return new Vector2((*self) - (*other));
 	}
 
-	Vector2* Vector2_sub_float(const Vector2* self, const float other) {
+	__declspec(dllexport) Vector2* Vector2_sub_float(const Vector2* self, const float other) {
 		return new Vector2((*self) - other);
 	}
 
-	Vector2* Vector2_sub_int(const Vector2* self, const int other) {
+	__declspec(dllexport) Vector2* Vector2_sub_int(const Vector2* self, const int other) {
 		return Vector2_sub_float(self, static_cast<float>(other));
 	}
 
-	Vector2* Vector2_pow_Vector2(const Vector2* self, const Vector2* other) {
+	__declspec(dllexport) Vector2* Vector2_pow_Vector2(const Vector2* self, const Vector2* other) {
 		return new Vector2(self->pow(*other));
 	}
 
-	Vector2* Vector2_pow_float(const Vector2* self, const float other) {
+	__declspec(dllexport) Vector2* Vector2_pow_float(const Vector2* self, const float other) {
 		return new Vector2(self->pow(other));
 	}
 
-	Vector2* Vector2_pow_int(const Vector2* self, const int other) {
+	__declspec(dllexport) Vector2* Vector2_pow_int(const Vector2* self, const int other) {
 		return Vector2_pow_float(self, static_cast<float>(other));
 	}
 
-	Vector2* Vector2_abs(const Vector2* self) {
+	__declspec(dllexport) Vector2* Vector2_abs(const Vector2* self) {
 		return new Vector2(self->abs());
 	}
 
-	Vector2* Vector2_neg(const Vector2* self) {
+	__declspec(dllexport) Vector2* Vector2_neg(const Vector2* self) {
 		return new Vector2(self->neg());
 	}
 }
