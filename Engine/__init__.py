@@ -1,6 +1,3 @@
-import ctypes
-cppEngine = ctypes.CDLL('Engine/C++/x64/Debug/C++.dll')
-
 import pygame
 
 from Engine.Vector2 import Vector2

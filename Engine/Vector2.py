@@ -1,42 +1,18 @@
 import math
 import warnings
 
-from Engine import *
-from ctypes import Structure, c_float
-
-# wrapper for c++ Vector2
-class Vector2(Structure):
-	_fields_ = [("x", c_float), ("y", c_float)]
+class Vector2:
 
 	@staticmethod
 	def distance(v1, v2):
 		# distance between two vectors
-		return math.sqrt((v1.x - v2.x) ** 2 + (v1.y - v2.y) ** 2)	
+		return math.sqrt((v1.x - v2.x) ** 2 + (v1.y - v2.y) ** 2)
+	
 	
 	def __init__(self, x = 0, y = 0):
-		self.pointer = cppEngine.Vector2_init(x, y)
-		print(self.x)
+		self.x = x
+		self.y = y
 
-	# properties
-	@property
-	def x(self):
-		test = cppEngine.Vector2_getX(self.pointer)
-		print(test)
-		return test
-	
-	@x.setter
-	def setX(self, value):
-		return cppEngine.Vector2_setX(self.pointer, value)
-
-	@property
-	def y(self):
-		return cppEngine.Vector2_getY(self.pointer)
-	
-	@y.setter
-	def setY(self, value):
-		return cppEngine.Vector2_setY(self.pointer, value)
-
-	# nonstatic methods
 
 	def clone(self):
 		return Vector2(self.x, self.y)
@@ -50,10 +26,12 @@ class Vector2(Structure):
 		return (self.x, self.y)
 	
 
-	# operator overloads
-
 	def __str__(self):
 		return f"Vector2({self.x}, {self.y})"
+
+	
+	def magnitude(self):
+		return (self.x ** 2 + self.y ** 2) ** 0.5
 
 
 	def __eq__(self, other):
@@ -126,8 +104,6 @@ class Vector2(Structure):
 	def __neg__(self):
 		return Vector2(-self.x, -self.y)
 	
-cppEngine.Vector2_init.restype = ctypes.POINTER(Vector2)
-
 # static properties (reference itself)
 Vector2.zero = Vector2(0, 0)
 Vector2.one = Vector2(1, 1)
