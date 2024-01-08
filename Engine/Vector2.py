@@ -2,9 +2,11 @@ import math
 import warnings
 
 from Engine import *
+from ctypes import Structure, c_float
 
 # wrapper for c++ Vector2
-class Vector2:
+class Vector2(Structure):
+	_fields_ = [("x", c_float), ("y", c_float)]
 
 	@staticmethod
 	def distance(v1, v2):
@@ -13,6 +15,7 @@ class Vector2:
 	
 	def __init__(self, x = 0, y = 0):
 		self.pointer = cppEngine.Vector2_init(x, y)
+		print(self.x)
 
 	# properties
 	@property
@@ -123,6 +126,8 @@ class Vector2:
 	def __neg__(self):
 		return Vector2(-self.x, -self.y)
 	
+cppEngine.Vector2_init.restype = ctypes.POINTER(Vector2)
+
 # static properties (reference itself)
 Vector2.zero = Vector2(0, 0)
 Vector2.one = Vector2(1, 1)
