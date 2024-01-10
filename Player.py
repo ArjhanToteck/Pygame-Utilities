@@ -1,8 +1,10 @@
-from Layers import Layers
 from Engine import *
 
+from Layers import Layers
+
 # player class
-class Player(SpriteObject):
+# TODO: make character class to inherit from
+class Player():
 	# load sprite sheet
 	spriteSheet = SpriteSheet(imagePath = "Images/Player.png")
 	
