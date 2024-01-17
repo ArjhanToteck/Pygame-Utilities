@@ -1,31 +1,20 @@
-class Order:
-    def __init__(self):
-        self.items = []
-        self.currentItem = 0
-
+class Order(list):
     def add(self, items):
         if type(items) is list:
-            self.items += items
+            self += items
         else:
-            self.items.append(items)
+            self.append(items)
 
-    def __len__(self):
-        return len(self.items)
-    
-    def __iter__(self):
+    @property
+    def items(self):
         return self
+    
+    def __len__(self):
+        super().__len__(self)
+    
+
+    def __iter__(self):
+        super().__iter__(self)
 
     def __next__(self):
-        # check if we need to stop
-        if self.currentItem >= len(self.items):
-            # reset and close iteration
-            self.currentItem = 0
-            raise StopIteration
-        else:
-
-            # increment current item
-            self.currentItem += 1
-
-            # return next item
-            return self.items[self.currentItem - 1]
-        
+        super().__next__(self)
