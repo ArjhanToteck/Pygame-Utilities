@@ -11,6 +11,7 @@ class Character(SpriteObject):
         else:
             self.currentHealth = currentHealth
 
+
     def takeDamage(self, damage):
         # decrease health
         self.currentHealth -= damage

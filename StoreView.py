@@ -77,7 +77,7 @@ class StoreView:
 		# test for order class
 		order = Order()
 		order.add([
-			ShopItem.Weapon("+2 Longsword", 15, 10, 5, 2),			
+			ShopItem.Weapon("+2 Longsword", 15, 10, 5, 2),
 			ShopItem.Weapon("Comically Large Spoon", 1, 2, 10, 0),
 			ShopItem.Consumable.HealthPotion("Health Potion", 5, 5),
 			ShopItem.Armor("Gold Armor", 25, 18)
