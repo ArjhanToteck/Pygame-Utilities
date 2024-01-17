@@ -116,6 +116,11 @@ class SpriteObject(Component):
 				collider.position = self.position
 		
 		return permittedPosition
+	
+
+	def moveTowards(self, targetPosition, movementStep):
+		# TODO: implement moveTowards
+		pass
 
 
 	def setPosition(self, position):
@@ -140,6 +145,7 @@ class SpriteObject(Component):
 		pivotOffset += (self.size / 2) * -self.pivot		
 
 		return pivotOffset
+
 
 	# by default, game objects will render self.sprite in self.position with self.size
 	def onRender(self):

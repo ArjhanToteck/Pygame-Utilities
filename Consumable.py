@@ -11,5 +11,4 @@ class HealthPotion(Consumable):
         self.health = health
 
     def onUse(self, character):
-        # TODO: create a character class with a heal method
         character.heal(self.health)

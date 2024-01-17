@@ -4,7 +4,7 @@ from Layers import Layers
 
 # player class
 # TODO: make character class to inherit from
-class Player():
+class Player(SpriteObject):
 	# load sprite sheet
 	spriteSheet = SpriteSheet(imagePath = "Images/Player.png")
 	
@@ -31,7 +31,7 @@ class Player():
 		self.direction = Vector2.down
 		self.animationController = AnimationController(6, 0.125)
 
-		# add collider to self		
+		# add collider to self
 		Collider.RectangleCollider(parent = self, pivot = Vector2(0, 1), size = Vector2(self.size.x / 4, self.size.y / 3), offset = Vector2(0, -0.1))
 
 	def onUpdate(self):
