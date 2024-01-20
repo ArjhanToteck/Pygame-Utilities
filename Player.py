@@ -33,13 +33,9 @@ class Player(SpriteObject):
 		self.running = False
 		self.direction = Vector2.down
 		self.animationController = AnimationController(6, 0.125)
-
-		# add inventory
-		self.inventory = Inventory()
-		Inventory.items = [ShopItem.Weapon("Comically Large Spoon", 1, 2, 10, 0)]
-
+		
 		# add collider to self
-		Collider.RectangleCollider(parent = self, pivot = Vector2(0, 1), size = Vector2(self.size.x / 4, self.size.y / 3), offset = Vector2(0, -0.1))
+		self.collider = Collider.RectangleCollider(parent = self, pivot = Vector2(0, 1), size = Vector2(self.size.x / 4, self.size.y / 3), offset = Vector2(0, -0.1))
 
 	def onUpdate(self):
 		# reset running and reflection
