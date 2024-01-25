@@ -30,7 +30,7 @@ class Consumable(Item):
         super().__init__(name)
 
 
-class HealthPotion(Consumable):
+class __HealthPotion(Consumable):
     def __init__(self, name, health):
         super().__init__(name)
         self.health = health
@@ -40,7 +40,7 @@ class HealthPotion(Consumable):
         character.heal(self.health)
 
 # HealthPotion should be accessable through Consumable.HealthPotion
-Consumable.HealthPotion = HealthPotion
+Consumable.HealthPotion = __HealthPotion
 
 # weapons
 

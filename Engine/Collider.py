@@ -268,7 +268,7 @@ class RectangleCollider(Collider):
 			# get screen position of collider with pivot and pivot offset factored in
 			screenPosition = GameManager.worldToScreenPosition(self.position + self.offset + self.getPivotOffset() + self.parent.getPivotOffset(False))
 
-			pygame.draw.rect(GameManager.screen, Collider.debugColor, pygame.Rect(screenPosition.x, screenPosition.y, self.size.x * GameManager.worldUnitSize.x, self.size.y * GameManager.worldUnitSize.y),  2)
+			pygame.draw.rect(GameManager.screen, Collider.debugColor, pygame.Rect(screenPosition.x, screenPosition.y, self.size.x * GameManager.worldUnitSize.x, self.size.y * GameManager.worldUnitSize.y), 2)
 
 
 class CircleCollider(Collider):
