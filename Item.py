@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class ShopItem(ABC):
+class Item(ABC):
     def __init__(self, name):
         self.name = name
 
@@ -14,7 +14,8 @@ class ShopItem(ABC):
         return "Item " + self.name
 
 
-    @abstractmethod
+    # TODO: implement this on everything
+    #@abstractmethod
     def calculateCost(self):
         pass
 
@@ -24,14 +25,16 @@ class ShopItem(ABC):
 
 # comsumables
 
-class Consumable(ShopItem):
+class Consumable(Item):
     def __init__(self, name):
         super().__init__(name)
+
 
 class HealthPotion(Consumable):
     def __init__(self, name, health):
         super().__init__(name)
         self.health = health
+
 
     def onUse(self, character):
         character.heal(self.health)
@@ -41,16 +44,16 @@ Consumable.HealthPotion = HealthPotion
 
 # weapons
 
-class Weapon(ShopItem):
-    def __init__(self, name, damage, knockback, attackModifier):
+class Weapon(Item):
+    def __init__(self, name, damage, knockback, attackModifier = 0):
         super().__init__(name)
         self.damage = damage
         self.knockback = knockback
         self.attackModifier = attackModifier
 
-# armor
 
-class Armor(ShopItem):
+# armor
+class Armor(Item):
     def __init__(self, name, armorClass):
         super().__init__(name)
 

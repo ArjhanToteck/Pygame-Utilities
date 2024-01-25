@@ -2,7 +2,10 @@ from Engine import *
 
 class Character(SpriteObject):
     def __init__(self, position=None, size=None, visible=True, layer=1, reflection=None, pivot=None, spritePath=None, sprite=None, maxHealth = 10, currentHealth = None):
+        # do regular sprite init
         super().__init__(position, size, visible, layer, reflection, pivot, spritePath, sprite)
+
+        # set fields
         self.maxHealth = maxHealth
 
         # maxHealth is same as health by default

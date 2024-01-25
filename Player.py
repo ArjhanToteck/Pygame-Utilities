@@ -2,18 +2,19 @@ from Engine import *
 
 from Inventory import Inventory
 from Layers import Layers
+from Character import Character
 
-import ShopItem
+import Item
 
 # player class
 # TODO: make character class to inherit from
-class Player(SpriteObject):
+class Player(Character):
 	# load sprite sheet
 	spriteSheet = SpriteSheet(imagePath = "Images/Player.png")
 	
 	spriteSheet.sliceByRowsAndColumns(10, 6, rowNames = ["downIdle", "sideIdle", "upIdle", "downRun", "sideRun", "upRun", "downAttack", "sideAttack", "upAttack", "death"])
 
-	def __init__(self, speed = 5, position = None, size = None, visible = True,  layer = None, reflection = None, pivot = None, spritePath = None, sprite = None):
+	def __init__(self, speed = 5, position = None, size = None, visible = True,  layer = None, reflection = None, pivot = None, spritePath = None, sprite = None, maxHealth = 10):
 		# set defaults
 		if sprite == None and spritePath == None:
 			sprite = Player.spriteSheet.sprites["downIdle"][0]
@@ -24,8 +25,8 @@ class Player(SpriteObject):
 		if layer == None:
 			layer = Layers.player
 
-		# do regular sprite init
-		super().__init__(position, size, visible, layer, reflection, pivot, spritePath, sprite)
+		# do regular character init
+		super().__init__(position, size, visible, layer, reflection, pivot, spritePath, sprite, maxHealth)
 
 		# exclusive player properties
 		self.speed = speed
@@ -33,6 +34,9 @@ class Player(SpriteObject):
 		self.running = False
 		self.direction = Vector2.down
 		self.animationController = AnimationController(6, 0.125)
+
+		# add inventory
+		self.inventory = Inventory()
 		
 		# add collider to self
 		self.collider = Collider.RectangleCollider(parent = self, pivot = Vector2(0, 1), size = Vector2(self.size.x / 4, self.size.y / 3), offset = Vector2(0, -0.1))

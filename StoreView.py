@@ -2,7 +2,7 @@ from Engine import *
 from Player import Player
 from Layers import Layers
 from Order import Order
-import ShopItem
+import Item
 
 # this class contains all the game objects and stuff for the scene
 class StoreView:
@@ -76,10 +76,10 @@ class StoreView:
 
 		# test for order class
 		order = Order()
-		order.add(ShopItem.Weapon("+2 Longsword", 15, 10, 5, 2))
-		order.add(ShopItem.Weapon("Comically Large Spoon", 1, 2, 10, 0))
-		order.add(ShopItem.Consumable.HealthPotion("Health Potion", 5, 5))
-		order.add(ShopItem.Armor("Gold Armor", 25, 18))
+		order.add(Item.Weapon("+2 Longsword", 10, 5, 2))
+		order.add(Item.Weapon("Comically Large Spoon", 2, 10))
+		order.add(Item.Consumable.HealthPotion("Health Potion", 5))
+		order.add(Item.Armor("Gold Armor", 18))
 
 		print("order items:", order.items)
 
