@@ -1,8 +1,10 @@
 # this is literally just a list wrapper why did we have to do a whole project about this
 class Order(list):
-    def add(self, __object):
-        super().append(__object)
 
+    @property
+    def items(self):
+        return self
+    
     def __len__(self):
         return super().__len__()
     
@@ -12,6 +14,17 @@ class Order(list):
     def __next__(self):
         return super().__next__()
 
-    @property
-    def items(self):
-        return self
+    def add(self, __object):
+        super().append(__object)
+
+    def calculatePrice(self):
+        totalCost = 0
+
+        for item in self.items:
+            totalCost += item.calculateTotalPrice()
+
+        return totalCost
+
+    def calculateTax(self, taxPercent = 0.0725):
+        return self.calculateTax * taxPercent
+            

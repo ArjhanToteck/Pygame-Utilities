@@ -10,8 +10,12 @@ class StoreView:
 	# this is called when the scene is opened. creates all the gameObjects it needs.
 	@staticmethod
 	def start():
+		# create shopkeep (static)
+		shopkeep = SpriteObject(spritePath = "Images/Shopkeep.png", size = Vector2(3, 3), layer = Layers.player, position = Vector2(0, 5))
+		
 		# create player
 		player = Player()
+
 
 		# store
 		background = SpriteObject(spritePath = "Images/FloorAndWalls.png", size = GameManager.screenSizeWorldUnits, layer = Layers.background)		
@@ -73,13 +77,13 @@ class StoreView:
 
 		# show all colliders for testing
 		GameManager.showAllColliders()
-
+ 
 		# test for order class
 		order = Order()
 		order.add(Item.Weapon("+2 Longsword", 10, 5, 2))
 		order.add(Item.Weapon("Comically Large Spoon", 2, 10))
-		order.add(Item.Consumable.HealthPotion("Health Potion", 5))
-		order.add(Item.Armor("Gold Armor", 18))
+		order.add(Item.Consumable.HealthPotion("Health Potion", 2, 5))
+		order.add(Item.Armor("Gold Armor", 8))
 
 		print("order items:", order.items)
 
