@@ -25,6 +25,7 @@ class Order(list):
 
         return totalCost
 
+    # again, taxes in zelda is crazy, why do we need this function in two places its the same thing?
     def calculateTax(self, taxPercent = 0.0725):
         return self.calculateTax * taxPercent
             
