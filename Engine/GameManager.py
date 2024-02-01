@@ -121,15 +121,14 @@ class GameManager:
 	@classmethod
 	def showAllColliders(cls):
 		for component in cls.components:
-			# TODO: figure out wtf is happening with Collider.Collider
-			if isinstance(component, Engine.Collider.Collider):
+			if isinstance(component, Engine.Collider):
 				component.show()
 		
 
 	@classmethod
 	def hideAllColliders(cls):
 		for component in cls.components:
-			# TODO: figure out wtf is happening with Collider.Collider
+			# TODO: figure out wtf is happening with Collider
 			if isinstance(component, Engine.Collider):
 				component.hide()
 	

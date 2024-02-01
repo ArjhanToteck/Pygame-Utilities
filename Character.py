@@ -1,9 +1,9 @@
 from Engine import *
 
 class Character(SpriteObject):
-    def __init__(self, maxHealth = 10, currentHealth = None, position = None, size = None, reflection = None, pivot = None, spritePath = None, sprite = None, visible = True, layer = 1, parent = None):
+    def __init__(self, maxHealth = 10, currentHealth = None, reflection = None, spritePath = None, sprite = None, visible = True, layer = 1, parent = None, position = None, size = None, pivot = None):
         # do regular sprite init
-        super().__init__(position, size, reflection, pivot, spritePath, sprite, visible, layer, parent)
+        super().__init__(reflection, spritePath, sprite, visible, layer, parent, position, size, pivot)
 
         # set fields
         self.maxHealth = maxHealth

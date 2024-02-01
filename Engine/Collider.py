@@ -1,3 +1,5 @@
+import importlib
+
 import Engine
 
 from enum import Enum
@@ -7,14 +9,13 @@ from enum import Enum
 class Collider(Engine.RenderedComponent):
 	debugColor = (255, 0, 230)
 
-	def __init__(self, pivot = None, offset = None, position = None, enabled = True, isTrigger = False, followParent = True, enableCollisionEvents = True, visible = False, layer = 99, parent = None):
+	def __init__(self, offset = None, enabled = True, isTrigger = False, enableCollisionEvents = True, visible = False, layer = 999, parent = None, position = None, size = None, pivot = None):
 
-		super().__init__(visible, layer, parent)
+		super().__init__(visible, layer, parent, position, size, pivot)
 
 		# parent component
 		self.enabled = enabled
 		self.isTrigger = isTrigger
-		self.followParent = followParent
 		self.enableCollisionEvents = enableCollisionEvents
 
 		self.currentCollisions = []
@@ -51,22 +52,6 @@ class Collider(Engine.RenderedComponent):
 
 		# remove self from parent
 		self.parent.colliders.remove(self)
-
-		
-	def getPivotOffset(self, centerFirst = True):
-		pivotOffset = Engine.Vector2(0, 0)
-
-		if (centerFirst):
-			# center sprite (default pivot)
-			pivotOffset = -(self.size / 2)
-
-			# reflect y axis
-			pivotOffset.y *= -1
-		
-		# apply the actual pivot (not just 0,0)
-		pivotOffset += (self.size / 2) * -self.pivot
-
-		return pivotOffset
 
 
 	def updateCollisions(self):
@@ -120,11 +105,12 @@ class Collision:
 		Trigger = 0
 		Collision = 1
 
+
 class RectangleCollider(Collider):
-	def __init__(self, size = None, pivot = None, offset = None, position = None, enabled = True, isTrigger = False, followParent = True, enableCollisionEvents = True, visible = False, layer = 99, parent = None):
+	def __init__(self, offset = None, enabled = True, isTrigger = False, enableCollisionEvents = True, visible = False, layer = 999, parent = None, position = None, size = None, pivot = None):
 		
 		# call base init
-		super().__init__(pivot, offset, position, enabled, isTrigger, followParent, enableCollisionEvents, visible, layer, parent)
+		super().__init__(offset, enabled, isTrigger, enableCollisionEvents, visible, layer, parent, position, size, pivot)
 
 		# set default size
 		if size == None:
@@ -279,3 +265,12 @@ class CircleCollider(Collider):
 
 class ImageCollider(Collider):
 	pass
+
+
+Collider.Collision = Collision
+Collider.RectangleCollider = RectangleCollider
+Collider.CircleCollider = CircleCollider
+Collider.ImageCollider = ImageCollider
+
+
+importlib.reload(Engine)

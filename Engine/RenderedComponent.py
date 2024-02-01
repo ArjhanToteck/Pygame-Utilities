@@ -1,9 +1,9 @@
 import Engine
 
-# this is the barebones template required for components. more often than not, sprites will be of better use unless you want to make something like a background.
+# this class automatically handles the events for rendering something in GameManager's queue. For actually displaying images, SpriteObject is usually recommendable, though this can be useful for custom render functions.
 class RenderedComponent(Engine.Component):
-	def __init__(self, visible = True, layer = 1, parent = None):
-		super().__init__(parent)
+	def __init__(self, visible = True, layer = 1, parent = None, position = None, size = None, pivot = None):
+		super().__init__(parent, position, size, pivot)
 
 		self.colliders = []
 

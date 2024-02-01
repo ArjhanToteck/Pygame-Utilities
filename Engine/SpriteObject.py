@@ -2,16 +2,19 @@ import Engine
 
 # sprites are a template for components that rely on a 2d image
 class SpriteObject(Engine.RenderedComponent):
-	def __init__(self, position = None, size = None, reflection = None, pivot = None, spritePath = None, sprite = None, visible = True, layer = 1, parent = None):
+	def __init__(self, reflection = None, spritePath = None, sprite = None, visible = True, layer = 1, parent = None, position = None, size = None, pivot = None):
+		
+		# do the regular __init__ for rendered components
+		super().__init__(visible, layer, parent, position, size, pivot)
 
 		# set sprite
 		if sprite != None:
-			self.updateSprite(sprite)
+			self.setSprite(sprite)
 
 		# set sprite with path
 		if spritePath != None:
-			self.updateSpriteByPath(spritePath)
-			
+			self.updateSpriteByPath(spritePath)			
+
 		# set default for position (world units)
 		if position == None:
 			self.position = Engine.Vector2(0, 0)
@@ -49,21 +52,18 @@ class SpriteObject(Engine.RenderedComponent):
 		else:
 			self.pivot = pivot
 		
-		# do the regular __init__ for rendered components
-		super().__init__(visible, layer, parent)
-
 
 	def updateSpriteTransformations(self):		
 		# account for size (might not be set yet)
 		if hasattr(self, "size"):
-			self.transformedSprite = Engine.pygame.transform.scale(self.transformedSprite, (self.size * Engine.GameManager.worldUnitSize).toArray())
+			self.transformedSprite = Engine.pygame.transform.scale(self.sprite, (self.size * Engine.GameManager.worldUnitSize).toArray())
 
 		# account for reflection (might not be set yet)
 		if hasattr(self, "reflection"):
 			self.transformedSprite = Engine.pygame.transform.flip(self.transformedSprite, self.reflection.x, self.reflection.y)
 
 
-	def updateSprite(self, sprite):
+	def setSprite(self, sprite):
 		self.sprite = sprite
 
 		# copy sprite into transformedSprite
@@ -74,7 +74,7 @@ class SpriteObject(Engine.RenderedComponent):
 
 
 	def updateSpriteByPath(self, spritePath):
-		self.updateSprite(Engine.pygame.image.load(spritePath))
+		self.setSprite(Engine.pygame.image.load(spritePath))
 
 
 	def setReflection(self, reflection):
@@ -83,71 +83,8 @@ class SpriteObject(Engine.RenderedComponent):
 
 
 	def setSize(self, size):
-		self.size = size
+		super().setSize(size)
 		self.updateSpriteTransformations()
-
-
-	def setSizePixels(self, size):
-		self.setSize(size / Engine.GameManager.worldUnitSize)
-
-
-	def scale(self, factor):
-		self.setSize(self.size * factor)
-
-
-	def move(self, movement):
-		# remember original position in case of collision
-		originalPosition = self.position.clone()
-
-		# update position
-		self.position += movement
-
-		permittedPosition = self.position
-
-		for collider in self.colliders:
-			currentPermittedPosition = collider.requestMovement(originalPosition, self.position)
-
-			# set permittedPosition to currentPermitedPosition
-			if Engine.Vector2.distance(currentPermittedPosition, originalPosition) < Engine.Vector2.distance(permittedPosition, originalPosition):
-				permittedPosition = currentPermittedPosition
-
-		# move to the permitted position
-		self.position = permittedPosition
-
-		for collider in self.colliders:
-			if collider.followParent:
-				collider.position = self.position
-		
-		return permittedPosition
-	
-
-	def moveTowards(self, targetPosition, movementStep):
-		# TODO: implement moveTowards
-		pass
-
-
-	def setPosition(self, position):
-		self.position = position
-
-
-	def setPositionInPixels(self, position):
-		self.setPosition(position / Engine.GameManager.worldUnitSize)
-
-
-	def getPivotOffset(self, centerFirst = True):
-		pivotOffset = Engine.Vector2(0, 0)
-
-		if (centerFirst):
-			# center sprite (default pivot)
-			pivotOffset = -(self.size / 2)
-
-			# reflect y axis
-			pivotOffset.y *= -1
-		
-		# apply the actual pivot (not just 0,0)
-		pivotOffset += (self.size / 2) * -self.pivot		
-
-		return pivotOffset
 
 
 	# by default, game objects will render self.sprite in self.position with self.size

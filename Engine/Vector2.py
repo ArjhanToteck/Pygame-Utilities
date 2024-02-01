@@ -104,11 +104,11 @@ class Vector2:
 	def __neg__(self):
 		return Vector2(-self.x, -self.y)
 	
-# static properties (reference itself)
-Vector2.zero = Vector2(0, 0)
-Vector2.one = Vector2(1, 1)
+# constants
+Vector2.ZERO = Vector2(0, 0)
+Vector2.ONE = Vector2(1, 1)
 
-Vector2.up = Vector2(0, 1)
-Vector2.down = Vector2(0, -1)
-Vector2.right = Vector2(1, 0)
-Vector2.left = Vector2(-1, 0)
+Vector2.UP = Vector2(0, 1)
+Vector2.DOWN = Vector2(0, -1)
+Vector2.RIGHT = Vector2(1, 0)
+Vector2.LEFT = Vector2(-1, 0)

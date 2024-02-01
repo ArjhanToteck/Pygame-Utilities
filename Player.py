@@ -14,7 +14,7 @@ class Player(Character):
 	
 	spriteSheet.sliceByRowsAndColumns(10, 6, rowNames = ["downIdle", "sideIdle", "upIdle", "downRun", "sideRun", "upRun", "downAttack", "sideAttack", "upAttack", "death"])
 
-	def __init__(self, speed = 5, maxHealth = 10, currentHealth = None, position = None, size = None, reflection = None, pivot = None, spritePath = None, sprite = None, visible = True, layer = 1, parent = None):
+	def __init__(self, speed = 3, maxHealth = 10, currentHealth = None, reflection = None, spritePath = None, sprite = None, visible = True, layer = 1, parent = None, position = None, size = None, pivot = None):
 		# set defaults
 		if sprite == None and spritePath == None:
 			sprite = Player.spriteSheet.sprites["downIdle"][0]
@@ -26,14 +26,14 @@ class Player(Character):
 			layer = Layers.player
 
 		# do regular character init
-		super().__init__(maxHealth, currentHealth, position, size, reflection, pivot, spritePath, sprite, visible, layer, parent)
+		super().__init__(maxHealth, currentHealth, reflection, spritePath, sprite, visible, layer, parent, position, size, pivot)
 
 		# exclusive player properties
 		self.speed = speed
 
 		self.running = False
-		self.direction = Vector2.down
-		self.animationController = AnimationController(6, 0.125)
+		self.direction = Vector2.DOWN
+		self.animationController = AnimationController(6, 0.25)
 
 		# add inventory
 		self.inventory = Inventory()
@@ -47,23 +47,23 @@ class Player(Character):
 		self.reflection = Vector2Bool(False, False)
 
 		# movement
-		newDirection = Vector2.zero
+		newDirection = Vector2.ZERO
 
 		# get direction
 		if GameManager.keysDown[pygame.K_DOWN]: 
-			newDirection += Vector2.down
+			newDirection += Vector2.DOWN
 
 		if GameManager.keysDown[pygame.K_UP]:
-			newDirection += Vector2.up
+			newDirection += Vector2.UP
 
 		if GameManager.keysDown[pygame.K_LEFT]:
-			newDirection += Vector2.left
+			newDirection += Vector2.LEFT
 
 		if GameManager.keysDown[pygame.K_RIGHT]:
-			newDirection += Vector2.right
+			newDirection += Vector2.RIGHT
 			
 		# check if there was movement
-		if newDirection != Vector2.zero:
+		if newDirection != Vector2.ZERO:
 			# move in direction
 			self.direction = newDirection
 			self.move(self.direction * self.speed * GameManager.deltaTime)
@@ -98,4 +98,4 @@ class Player(Character):
 		animationFrame = self.animationController.getFrame(GameManager.deltaTime)
 
 		# update sprite
-		self.updateSprite(Player.spriteSheet.sprites[animationRow][animationFrame])
+		self.setSprite(Player.spriteSheet.sprites[animationRow][animationFrame])
