@@ -1,3 +1,5 @@
+from Item import Item
+
 # this is literally just a list wrapper why did we have to do a whole project about this
 class Order(list):
 
@@ -26,6 +28,6 @@ class Order(list):
 		return totalCost
 
 	# again, taxes in zelda is crazy, why do we need this function in two places its the same thing?
-	def calculateTax(self, taxPercent = 0.0725):
-		return self.calculateTax * taxPercent
+	def calculateTax(self):
+		return self.calculateTax * Item.TAX_PERCENT
 			

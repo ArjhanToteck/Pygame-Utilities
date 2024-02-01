@@ -2,6 +2,9 @@ from abc import ABC, abstractmethod
 
 
 class Item(ABC):
+	TAX_PERCENT = 0.0725
+
+
 	def __init__(self, name, quantity = 1):
 		self.name = name
 		self.quantity = quantity
@@ -24,8 +27,8 @@ class Item(ABC):
 		return self.calculatePricePerItem() * self.quantity
 
 	# taxes in a video game is actually insane why are we adding this bruh
-	def calculateTax(self, taxPercent = 0.0725):
-		return self.calculatePricePerItem() * taxPercent
+	def calculateTax(self):
+		return self.calculatePricePerItem() * Item.TAX_PERCENT
 
 	def calculateTotalTax(self):
 		return self.calculateTax() * self.quantity
