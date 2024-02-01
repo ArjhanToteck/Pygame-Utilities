@@ -52,6 +52,24 @@ class SpriteObject(Engine.RenderedComponent):
 		else:
 			self.pivot = pivot
 		
+	
+	def instantiate(self, parent = None, position = None):
+		clonePosition = position
+
+		# copy original position by default
+		if clonePosition == None:
+			clonePosition = self.position
+
+		positionChange = clonePosition - self.position
+
+		clone = SpriteObject(self.reflection, None, self.sprite, self.visible, self.layer, parent, position, self.size, self.pivot)
+
+		# make sure to clone children too
+		for child in self.children:
+			child.instantiate(clone, child.position + positionChange)
+
+		return clone
+
 
 	def updateSpriteTransformations(self):		
 		# account for size (might not be set yet)

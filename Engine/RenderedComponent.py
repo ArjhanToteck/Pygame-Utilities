@@ -53,3 +53,20 @@ class RenderedComponent(Engine.Component):
 
 		# make sure not to be rendered
 		self.hide()
+
+	def instantiate(self, parent = None, position = None):
+		clonePosition = position
+
+		# copy original position by default
+		if clonePosition == None:
+			clonePosition = self.position
+
+		positionChange = clonePosition - self.position
+
+		clone = RenderedComponent(self.visible, self.layer, parent, position, self.size, self.pivot)
+
+		# make sure to clone children too
+		for child in self.children:
+			child.instantiate(clone, child.position + positionChange)
+
+		return clone

@@ -65,7 +65,7 @@ class GameManager:
 			for layer in cls.renderQueue:
 				# render everything in the current layer
 				for event in cls.renderQueue[layer]:
-					event()            
+					event()			
 
 			# flip display for screen
 			Engine.pygame.display.flip()

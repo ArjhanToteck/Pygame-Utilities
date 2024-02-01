@@ -30,6 +30,11 @@ class StoreView:
 		Collider.RectangleCollider(parent = salesTable, pivot = Vector2(0, 0), size = Vector2(0.5, salesTable.size.y), enableCollisionEvents = False)		
 		Collider.RectangleCollider(parent = salesTable, pivot = Vector2(1, 0), size = Vector2(0.25, salesTable.size.y), offset = Vector2(salesTable.size.x / 2, 0), enableCollisionEvents = False)
 
+		print(salesTable.children)
+
+		salesTable.instantiate(position = Vector2(0, 2))
+
+
 		clock = SpriteObject(spritePath = "Images/Clock.png", position = Vector2(5, 4), layer = Layers.furniture)
 		clockCollider = Collider.RectangleCollider(parent = clock, size = Vector2(clock.size.x - 0.35, 0.5), pivot = Vector2(0, -1), enableCollisionEvents = False)
 		clockCollider.position.y -= clock.size.y / 2

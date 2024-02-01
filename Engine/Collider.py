@@ -46,6 +46,24 @@ class Collider(Engine.RenderedComponent):
 		self.parent.colliders.append(self)
 
 
+	def instantiate(self, parent = None, position = None):
+		clonePosition = position
+
+		# copy original position by default
+		if clonePosition == None:
+			clonePosition = self.position
+
+		positionChange = clonePosition - self.position
+
+		clone = Collider(self.offset, self.enabled, self.isTrigger, self.enableCollisionEvents, self.visible, self.layer, parent, position, self.size, self.pivot)
+
+		# make sure to clone children too
+		for child in self.children:
+			child.instantiate(clone, child.position + positionChange)
+
+		return clone
+
+
 	def destroy(self):
 		# remove self from global collider list
 		Engine.GameManager.colliders.remove(self)
@@ -119,6 +137,23 @@ class RectangleCollider(Collider):
 		else:
 			self.size = size
 
+
+	def instantiate(self, parent = None, position = None):
+		clonePosition = position
+
+		# copy original position by default
+		if clonePosition == None:
+			clonePosition = self.position
+
+		positionChange = clonePosition - self.position
+
+		clone = RectangleCollider(self.offset, self.enabled, self.isTrigger, self.enableCollisionEvents, self.visible, self.layer, parent, position, self.size, self.pivot)
+
+		# make sure to clone children too
+		for child in self.children:
+			child.instantiate(clone, child.position + positionChange)
+
+		return clone
 
 
 	def updateCollisions(self, callEvents = True):

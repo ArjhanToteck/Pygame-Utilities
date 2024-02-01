@@ -41,6 +41,25 @@ class Player(Character):
 		# add collider to self
 		self.collider = Collider.RectangleCollider(parent = self, pivot = Vector2(0, 1), size = Vector2(self.size.x / 4, self.size.y / 3), offset = Vector2(0, -0.1))
 
+	
+	def instantiate(self, parent = None, position = None):
+		clonePosition = position
+
+		# copy original position by default
+		if clonePosition == None:
+			clonePosition = self.position
+
+		positionChange = clonePosition - self.position
+
+		clone = SpriteObject(self.maxHealth, self.currentHealth, self.reflection, None, self.sprite, self.visible, self.layer, parent, position, self.size, self.pivot)
+
+		# make sure to clone children too
+		for child in self.children:
+			child.instantiate(clone, child.position + positionChange)
+
+		return clone
+	
+
 	def onUpdate(self):
 		# reset running and reflection
 		self.running = False
