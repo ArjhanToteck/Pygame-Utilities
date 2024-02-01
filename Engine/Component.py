@@ -1,49 +1,30 @@
-from Engine import *
+import Engine
 
-# this is the barebones template required for gameObjects. more often than not, sprites will be of better use unless you want to make something like a background.
+# this is the barebones template required for components. more often than not, sprites will be of better use unless you want to make something like a background.
 class Component:
-	def __init__(self, visible = True, layer = 1):
-		self.colliders = []
+	def __init__(self, parent = None):
+		
+		# track component in GameManager
+		Engine.GameManager.components.append(self)
 
-		self.layer = layer
+		# create children list
+		self.children = []
 
-		# while this can be set at instantiation, helper functions should be used to hide and show the object afterwards
-		self.visible = visible
-
-		# show gameObject if visible (in renderQueue, of course)
-		if self.visible:
-			self.show()
-
-		# track gameObject in GameManager
-		GameManager.gameObjects.append(self)
-
-
-	def show(self):
-		self.visible = True
-		GameManager.addToRenderQueue(self.onRender, self.layer)
+		if parent != None:
+			parent.addChild(self)
 
 	
-	def hide(self):
-		self.visible = False
-		GameManager.removeFromRenderQueue(self.onRender, self.layer)
+	def addChild(self, child):
+		self.children.append(child)
+		child.parent = self
 
 
-	# by default, game objects won't render anything except colliders for debug (use Sprite to render images)
-	def onRender(self):
-		# render colliders
-		for collider in self.colliders:
-			collider.onRender()
+	def removeChild(self, child):
+		self.children.remove(child)
+		child.parent = None
 
 
 	def onUpdate(self):
-		pass
-
-
-	def onCollision(self, localCollider, otherCollider):
-		pass
-
-	
-	def onTrigger(self, localCollider, otherCollider):
 		pass
 
 
@@ -54,7 +35,7 @@ class Component:
 				collider.destroy()
 
 		# remove self from global record
-		GameManager.gameObjects.remove(self)
+		Engine.GameManager.components.remove(self)
 
-		# make sure not to be rendered
-		self.hide()
+		# remove self from parent
+		self.parent.removeChild(self)

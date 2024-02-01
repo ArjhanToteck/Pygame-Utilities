@@ -14,7 +14,7 @@ class Player(Character):
 	
 	spriteSheet.sliceByRowsAndColumns(10, 6, rowNames = ["downIdle", "sideIdle", "upIdle", "downRun", "sideRun", "upRun", "downAttack", "sideAttack", "upAttack", "death"])
 
-	def __init__(self, speed = 5, position = None, size = None, visible = True,  layer = None, reflection = None, pivot = None, spritePath = None, sprite = None, maxHealth = 10):
+	def __init__(self, speed = 5, maxHealth = 10, currentHealth = None, position = None, size = None, reflection = None, pivot = None, spritePath = None, sprite = None, visible = True, layer = 1, parent = None):
 		# set defaults
 		if sprite == None and spritePath == None:
 			sprite = Player.spriteSheet.sprites["downIdle"][0]
@@ -26,7 +26,7 @@ class Player(Character):
 			layer = Layers.player
 
 		# do regular character init
-		super().__init__(position, size, visible, layer, reflection, pivot, spritePath, sprite, maxHealth)
+		super().__init__(maxHealth, currentHealth, position, size, reflection, pivot, spritePath, sprite, visible, layer, parent)
 
 		# exclusive player properties
 		self.speed = speed

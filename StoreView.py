@@ -7,11 +7,11 @@ import Item
 # this class contains all the game objects and stuff for the scene
 class StoreView:
 
-	# this is called when the scene is opened. creates all the gameObjects it needs.
+	# this is called when the scene is opened. creates all the components it needs.
 	@staticmethod
 	def start():
 		# create shopkeep (static)
-		shopkeep = SpriteObject(spritePath = "Images/Shopkeep.png", size = Vector2(3, 3), layer = Layers.player, position = Vector2(0, 5))
+		shopkeep = SpriteObject(spritePath = "Images/Shopkeep.png", size = Vector2(3, 3), layer = Layers.characters, position = Vector2(0, 5))
 		
 		# create player
 		player = Player()

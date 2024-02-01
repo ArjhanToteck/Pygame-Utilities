@@ -1,33 +1,34 @@
-from Engine import *
+import Engine
 
 from enum import Enum
 
 # this is a default collider class not meant for actual use outside of being inherited by the real types of colliders
 # TODO: incorporate Component class into this
-class Collider():
+class Collider(Engine.RenderedComponent):
 	debugColor = (255, 0, 230)
 
-	def __init__(self, parent, pivot = None, offset = None, position = None, enabled = True, isTrigger = False, followParent = True, visible = False, enableCollisionEvents = True):
-		# parent gameObject
-		self.parent = parent
+	def __init__(self, pivot = None, offset = None, position = None, enabled = True, isTrigger = False, followParent = True, enableCollisionEvents = True, visible = False, layer = 99, parent = None):
+
+		super().__init__(visible, layer, parent)
+
+		# parent component
 		self.enabled = enabled
 		self.isTrigger = isTrigger
 		self.followParent = followParent
 		self.enableCollisionEvents = enableCollisionEvents
-		self.visible = visible
 
 		self.currentCollisions = []
 
 		# TODO: improve pivot system to also factor in the parent sprite object pivot
 		# default pivot
 		if pivot == None:
-			self.pivot = Vector2(0, 0)
+			self.pivot = Engine.Vector2(0, 0)
 		else:
 			self.pivot = pivot
 
 		# default offset
 		if offset == None:
-			self.offset = Vector2(0, 0)
+			self.offset = Engine.Vector2(0, 0)
 		else:
 			self.offset = offset
 
@@ -38,22 +39,22 @@ class Collider():
 			self.position = position
 			
 		# add self to global collider list
-		GameManager.colliders.append(self)
+		Engine.GameManager.colliders.append(self)
 
 		# add self to parent collider list
-		parent.colliders.append(self)
+		self.parent.colliders.append(self)
 
 
 	def destroy(self):
 		# remove self from global collider list
-		GameManager.colliders.remove(self)
+		Engine.GameManager.colliders.remove(self)
 
 		# remove self from parent
 		self.parent.colliders.remove(self)
 
 		
 	def getPivotOffset(self, centerFirst = True):
-		pivotOffset = Vector2(0, 0)
+		pivotOffset = Engine.Vector2(0, 0)
 
 		if (centerFirst):
 			# center sprite (default pivot)
@@ -120,17 +121,18 @@ class Collision:
 		Collision = 1
 
 class RectangleCollider(Collider):
-	def __init__(self, parent, pivot = None, offset = None, position = None, size = None, enabled = True, isTrigger = False, followParent = True, visible = False, enableCollisionEvents = True):
+	def __init__(self, size = None, pivot = None, offset = None, position = None, enabled = True, isTrigger = False, followParent = True, enableCollisionEvents = True, visible = False, layer = 99, parent = None):
 		
+		# call base init
+		super().__init__(pivot, offset, position, enabled, isTrigger, followParent, enableCollisionEvents, visible, layer, parent)
+
 		# set default size
 		if size == None:
 			# by default, match parent size
-			self.size = Vector2(parent.size.x, parent.size.y)
+			self.size = Engine.Vector2(parent.size.x, parent.size.y)
 		else:
 			self.size = size
 
-		# call base init
-		super().__init__(parent, pivot, offset, position, enabled, isTrigger, followParent, visible, enableCollisionEvents)
 
 
 	def updateCollisions(self, callEvents = True):
@@ -141,7 +143,7 @@ class RectangleCollider(Collider):
 		collisions = []
 
 		# loop through colliders in scene
-		for otherCollider in GameManager.colliders:
+		for otherCollider in Engine.GameManager.colliders:
 
 			# skip own collider
 			if otherCollider == self:
@@ -168,7 +170,7 @@ class RectangleCollider(Collider):
 				otherTop = otherCalculatedPosition.y + (otherCollider.size.y / 2)
 
 				# check for overlap on both axes
-				overlap = Vector2()
+				overlap = Engine.Vector2()
 
 				overlap.x = max(0, min(selfRight, otherRight) - max(selfLeft, otherLeft))
 				overlap.y = max(0, min(selfTop, otherTop) - max(selfBottom, otherBottom))
@@ -176,7 +178,7 @@ class RectangleCollider(Collider):
 				# collision occurred
 				if overlap.x > 0 and overlap.y > 0:
 					# get collision point
-					collisionPoint = Vector2(max(selfLeft, otherLeft), max(selfTop, otherTop))
+					collisionPoint = Engine.Vector2(max(selfLeft, otherLeft), max(selfTop, otherTop))
 
 					# get collision data
 					
@@ -257,7 +259,7 @@ class RectangleCollider(Collider):
 					currentPermittedPosition = permittedPosition - overlap
 
 					# set permittedPosition to currentPermitedPosition
-					if Vector2.distance(currentPermittedPosition, originalPosition) < Vector2.distance(permittedPosition, originalPosition):
+					if Engine.Vector2.distance(currentPermittedPosition, originalPosition) < Engine.Vector2.distance(permittedPosition, originalPosition):
 						permittedPosition = currentPermittedPosition
 
 		return permittedPosition
@@ -266,9 +268,9 @@ class RectangleCollider(Collider):
 	def onRender(self):
 		if self.visible:
 			# get screen position of collider with pivot and pivot offset factored in
-			screenPosition = GameManager.worldToScreenPosition(self.position + self.offset + self.getPivotOffset() + self.parent.getPivotOffset(False))
+			screenPosition = Engine.GameManager.worldToScreenPosition(self.position + self.offset + self.getPivotOffset() + self.parent.getPivotOffset(False))
 
-			pygame.draw.rect(GameManager.screen, Collider.debugColor, pygame.Rect(screenPosition.x, screenPosition.y, self.size.x * GameManager.worldUnitSize.x, self.size.y * GameManager.worldUnitSize.y), 2)
+			Engine.pygame.draw.rect(Engine.GameManager.screen, Collider.debugColor, Engine.pygame.Rect(screenPosition.x, screenPosition.y, self.size.x * Engine.GameManager.worldUnitSize.x, self.size.y * Engine.GameManager.worldUnitSize.y), 2)
 
 
 class CircleCollider(Collider):

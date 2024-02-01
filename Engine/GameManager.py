@@ -1,12 +1,13 @@
-from Engine import *
-
+import importlib
 import warnings
 import sys
 
+import Engine
+
 class GameManager:
 	# settings	
-	worldUnitSize = Vector2(50, 50) # number of pixels per world unit
-	screenSizePixels = Vector2(1280, 720)
+	worldUnitSize = Engine.Vector2(50, 50) # number of pixels per world unit
+	screenSizePixels = Engine.Vector2(1280, 720)
 
 	running = True
 	screen = None
@@ -15,7 +16,7 @@ class GameManager:
 	deltaTime = 0
 	screenSizeWorldUnits = screenSizePixels / worldUnitSize
 
-	gameObjects = []
+	components = []
 	colliders = []
 
 	# stores pygame events on a given frame
@@ -29,7 +30,7 @@ class GameManager:
 	@classmethod
 	def quit(cls):
 		cls.running = False
-		pygame.quit()
+		Engine.pygame.quit()
 		sys.exit()
 
 
@@ -40,9 +41,9 @@ class GameManager:
 			cls.pygameEvents = []
 			
 			# event queue
-			for event in pygame.event.get():
+			for event in Engine.pygame.event.get():
 				# on window closing
-				if event.type == pygame.QUIT:
+				if event.type == Engine.pygame.QUIT:
 					cls.running = False
 					cls.quit()
 
@@ -50,15 +51,15 @@ class GameManager:
 				cls.pygameEvents.append(event)
 					
 			# get key presses
-			cls.keysDown = pygame.key.get_pressed()
+			cls.keysDown = Engine.pygame.key.get_pressed()
 
 			# update collisions
 			for collider in GameManager.colliders:
 				collider.updateCollisions()
 
-			# call update events on gameObjects
-			for gameObject in cls.gameObjects:
-				gameObject.onUpdate()
+			# call update events on components
+			for component in cls.components:
+				component.onUpdate()
 
 			# loop through render layers
 			for layer in cls.renderQueue:
@@ -67,7 +68,7 @@ class GameManager:
 					event()            
 
 			# flip display for screen
-			pygame.display.flip()
+			Engine.pygame.display.flip()
 			
 			# next frame
 			cls.deltaTime = cls.clock.tick() / 1000
@@ -76,9 +77,9 @@ class GameManager:
 	@classmethod
 	def setUpGame(cls, worldUnitSize = None, screenSizePixels = None):
 		# pygame setup
-		pygame.init()
-		cls.screen = pygame.display.set_mode(cls.screenSizePixels.toArray())
-		cls.clock = pygame.time.Clock()
+		Engine.pygame.init()
+		cls.screen = Engine.pygame.display.set_mode(cls.screenSizePixels.toArray())
+		cls.clock = Engine.pygame.time.Clock()
 		cls.running = True
 
 		if worldUnitSize != None:
@@ -119,26 +120,30 @@ class GameManager:
 			
 	@classmethod
 	def showAllColliders(cls):
-		for collider in cls.colliders:
-			collider.visible = True
+		for component in cls.components:
+			# TODO: figure out wtf is happening with Collider.Collider
+			if isinstance(component, Engine.Collider.Collider):
+				component.show()
 		
 
 	@classmethod
 	def hideAllColliders(cls):
-		for collider in cls.colliders:
-			collider.visible = False
+		for component in cls.components:
+			# TODO: figure out wtf is happening with Collider.Collider
+			if isinstance(component, Engine.Collider):
+				component.hide()
 	
 
 	@classmethod
 	def worldToScreenPosition(cls, worldPosition):
 		# invert y axis
-		worldPositionYInverted = Vector2(worldPosition.x, -worldPosition.y)
+		worldPositionYInverted = Engine.Vector2(worldPosition.x, -worldPosition.y)
 		
 		# scale world units by size in pixels
 		screenPosition = worldPositionYInverted * cls.worldUnitSize
 
 		# add offset to account for center of screen		
-		centerOffsetPixels = Vector2(cls.screenSizePixels.x / 2, cls.screenSizePixels.y / 2)
+		centerOffsetPixels = Engine.Vector2(cls.screenSizePixels.x / 2, cls.screenSizePixels.y / 2)
 		screenPosition += centerOffsetPixels
 
 		return screenPosition
@@ -152,8 +157,10 @@ class GameManager:
 		print("1", worldPosition)
 		
 		# add offset to account for center of screen
-		centerOffsetWorldUnits = Vector2(cls.screenSizeWorldUnits.x / 2, -cls.screenSizeWorldUnits.y / 2)
+		centerOffsetWorldUnits = Engine.Vector2(cls.screenSizeWorldUnits.x / 2, -cls.screenSizeWorldUnits.y / 2)
 		worldPosition -= centerOffsetWorldUnits
 		print("2", worldPosition)
 
-		return worldPosition
+		return
+
+importlib.reload(Engine)

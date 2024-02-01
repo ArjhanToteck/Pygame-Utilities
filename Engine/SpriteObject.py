@@ -1,8 +1,8 @@
-from Engine import *
+import Engine
 
-# sprites are a template for GameObjects that rely on a 2d image
-class SpriteObject(Component):
-	def __init__(self, position = None, size = None, visible = True, layer = 1, reflection = None, pivot = None, spritePath = None, sprite = None):
+# sprites are a template for components that rely on a 2d image
+class SpriteObject(Engine.RenderedComponent):
+	def __init__(self, position = None, size = None, reflection = None, pivot = None, spritePath = None, sprite = None, visible = True, layer = 1, parent = None):
 
 		# set sprite
 		if sprite != None:
@@ -14,50 +14,53 @@ class SpriteObject(Component):
 			
 		# set default for position (world units)
 		if position == None:
-			self.position = Vector2(0, 0)
+			self.position = Engine.Vector2(0, 0)
 		else:
 			self.position = position
 
 		# sprite transformations
 
-		# set default for reflection
-		if reflection == None:
-			self.setReflection(Vector2Bool(False, False))
-		else:
-			self.setReflection(reflection)
-		
-		# set default for size (world units)
-		# while this can be set at instantiation, helper functions should be used to set the size of the object afterwards
-		if size == None:
-			# set size based on sprite
-			if self.sprite != None:
-				self.setSizePixels(Vector2(self.sprite.get_width(), self.sprite.get_height()))
-			else:
-				self.setSize(Vector2(1, 1))
-		else:
-			self.setSize(size)
+		# make sure sprite was set
+		if self.sprite != None:
 
-		# update sprite transofmrations
-		self.updateSpriteTransformations()
+			# set default for reflection
+			if reflection == None:
+				self.setReflection(Engine.Vector2Bool(False, False))
+			else:
+				self.setReflection(reflection)
+		
+			# set default for size (world units)
+			# while this can be set at instantiation, helper functions should be used to set the size of the object afterwards
+			if size == None:
+				# set size based on sprite
+				if self.sprite != None:
+					self.setSizePixels(Engine.Vector2(self.sprite.get_width(), self.sprite.get_height()))
+				else:
+					self.setSize(Engine.Vector2(1, 1))
+			else:
+				self.setSize(size)
+
+			# update sprite transofmrations
+			self.updateSpriteTransformations()
 
 		# set default for pivot (distance from center in percentage of total size)
 		if pivot == None:
-			self.pivot = Vector2(0, 0)
+			self.pivot = Engine.Vector2(0, 0)
 		else:
 			self.pivot = pivot
 		
-		# do the regular __init__ for gameObjects
-		super().__init__(visible, layer)
+		# do the regular __init__ for rendered components
+		super().__init__(visible, layer, parent)
 
 
 	def updateSpriteTransformations(self):		
 		# account for size (might not be set yet)
 		if hasattr(self, "size"):
-			self.transformedSprite = pygame.transform.scale(self.transformedSprite, (self.size * GameManager.worldUnitSize).toArray())
+			self.transformedSprite = Engine.pygame.transform.scale(self.transformedSprite, (self.size * Engine.GameManager.worldUnitSize).toArray())
 
 		# account for reflection (might not be set yet)
 		if hasattr(self, "reflection"):
-			self.transformedSprite = pygame.transform.flip(self.transformedSprite, self.reflection.x, self.reflection.y)
+			self.transformedSprite = Engine.pygame.transform.flip(self.transformedSprite, self.reflection.x, self.reflection.y)
 
 
 	def updateSprite(self, sprite):
@@ -71,7 +74,7 @@ class SpriteObject(Component):
 
 
 	def updateSpriteByPath(self, spritePath):
-		self.updateSprite(pygame.image.load(spritePath))
+		self.updateSprite(Engine.pygame.image.load(spritePath))
 
 
 	def setReflection(self, reflection):
@@ -85,7 +88,7 @@ class SpriteObject(Component):
 
 
 	def setSizePixels(self, size):
-		self.setSize(size / GameManager.worldUnitSize)
+		self.setSize(size / Engine.GameManager.worldUnitSize)
 
 
 	def scale(self, factor):
@@ -105,7 +108,7 @@ class SpriteObject(Component):
 			currentPermittedPosition = collider.requestMovement(originalPosition, self.position)
 
 			# set permittedPosition to currentPermitedPosition
-			if Vector2.distance(currentPermittedPosition, originalPosition) < Vector2.distance(permittedPosition, originalPosition):
+			if Engine.Vector2.distance(currentPermittedPosition, originalPosition) < Engine.Vector2.distance(permittedPosition, originalPosition):
 				permittedPosition = currentPermittedPosition
 
 		# move to the permitted position
@@ -128,11 +131,11 @@ class SpriteObject(Component):
 
 
 	def setPositionInPixels(self, position):
-		self.setPosition(position / GameManager.worldUnitSize)
+		self.setPosition(position / Engine.GameManager.worldUnitSize)
 
 
 	def getPivotOffset(self, centerFirst = True):
-		pivotOffset = Vector2(0, 0)
+		pivotOffset = Engine.Vector2(0, 0)
 
 		if (centerFirst):
 			# center sprite (default pivot)
@@ -152,10 +155,10 @@ class SpriteObject(Component):
 		if self.visible:
 
 			# get screen position of sprite with pivot offset factored in
-			screenPosition = GameManager.worldToScreenPosition(self.position + self.getPivotOffset())
+			screenPosition = Engine.GameManager.worldToScreenPosition(self.position + self.getPivotOffset())
 
 			# draw sprite at position
-			GameManager.screen.blit(self.transformedSprite, screenPosition.toArray())
+			Engine.GameManager.screen.blit(self.transformedSprite, screenPosition.toArray())
 
-		# perform normal gameObject render
+		# perform normal component render
 		super().onRender()
