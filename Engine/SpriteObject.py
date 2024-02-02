@@ -8,6 +8,7 @@ class SpriteObject(Engine.RenderedComponent):
 		super().__init__(visible, layer, parent, position, size, pivot)
 
 		# set sprite
+		self.sprite = sprite
 		if sprite != None:
 			self.setSprite(sprite)
 

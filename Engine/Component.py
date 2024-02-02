@@ -1,7 +1,7 @@
 import Engine
 
 # this is the barebones template required for components, more of a loose abstract class than something actual useful
-# TODO: add rotation, make affecting parent affect child
+# TODO: add rotation and reflection, make affecting parent affect child
 class Component():
 	def __init__(self, parent = None, position = None, size = None, pivot = None):
 		
