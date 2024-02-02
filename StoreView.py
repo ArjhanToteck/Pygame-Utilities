@@ -11,6 +11,8 @@ class StoreView:
 	# this is called when the scene is opened. creates all the components it needs.
 	@staticmethod
 	def start():
+		font = Engine.pygame.font.Font("Fonts/nokiafc22.ttf", 20)
+
 		# create player
 		player = Player()
 
@@ -34,7 +36,7 @@ class StoreView:
 		
 		# sales trigger
 		salesTrigger = Engine.Collider.RectangleCollider(parent = salesTable, size = salesTable.size + Engine.Vector2(0.5, 0.5), isTrigger = True)
-		textbox = Engine.Textbox(parent = salesTrigger, text = "hello world", size = Engine.Vector2(5, 1), layer = 99, alignment = Engine.Textbox.Alignment.Center, pivot = Engine.Vector2(0, 1), visible = False)
+		textbox = Engine.Textbox(parent = salesTrigger, text = "Press Space to interact", size = Engine.Vector2(5, 1), font = font, layer = 99, alignment = Engine.Textbox.Alignment.Center, pivot = Engine.Vector2(0, 1), visible = False)
 		textbox.move(Engine.Vector2(0, -1))
 		
 		def showTextbox(collision):
