@@ -9,50 +9,41 @@ class SpriteObject(Engine.RenderedComponent):
 
 		# set sprite
 		self.sprite = sprite
-		if sprite != None:
-			self.setSprite(sprite)
+		if self.sprite != None:
+			self.setSprite(self.sprite)
 
 		# set sprite with path
 		if spritePath != None:
-			self.updateSpriteByPath(spritePath)			
-
-		# set default for position (world units)
-		if position == None:
-			self.position = Engine.Vector2(0, 0)
-		else:
-			self.position = position
-
-		# sprite transformations
-
-		# make sure sprite was set
-		if self.sprite != None:
-
-			# set default for reflection
-			if reflection == None:
-				self.setReflection(Engine.Vector2Bool(False, False))
-			else:
-				self.setReflection(reflection)
-		
-			# set default for size (world units)
-			# while this can be set at instantiation, helper functions should be used to set the size of the object afterwards
-			if size == None:
-				# set size based on sprite
-				if self.sprite != None:
-					self.setSizePixels(Engine.Vector2(self.sprite.get_width(), self.sprite.get_height()))
-				else:
-					self.setSize(Engine.Vector2(1, 1))
-			else:
-				self.setSize(size)
-
-			# update sprite transofmrations
-			self.updateSpriteTransformations()
-
+			self.setSpriteByPath(spritePath)
+			
 		# set default for pivot (distance from center in percentage of total size)
 		if pivot == None:
 			self.pivot = Engine.Vector2(0, 0)
 		else:
 			self.pivot = pivot
-		
+
+		# sprite transformations
+
+		# set default for reflection
+		if reflection == None:
+			self.setReflection(Engine.Vector2Bool(False, False))
+		else:
+			self.setReflection(reflection)
+	
+		# set default for size (world units)
+		# while this can be set at instantiation, helper functions should be used to set the size of the object afterwards
+		if size == None:
+			# set size based on sprite
+			if self.sprite != None:
+				self.setSizePixels(Engine.Vector2(self.sprite.get_width(), self.sprite.get_height()))
+			else:
+				self.setSize(Engine.Vector2(1, 1))
+		else:
+			self.setSize(size)
+
+		# update sprite transofmrations
+		self.updateSpriteTransformations()
+
 	
 	def instantiate(self, parent = None, position = None):
 		clonePosition = position
@@ -95,7 +86,7 @@ class SpriteObject(Engine.RenderedComponent):
 		self.updateSpriteTransformations()
 
 
-	def updateSpriteByPath(self, spritePath):
+	def setSpriteByPath(self, spritePath):
 		self.setSprite(Engine.pygame.image.load(spritePath))
 
 

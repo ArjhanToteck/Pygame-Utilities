@@ -1,8 +1,9 @@
 import importlib
+from enum import Enum
 
 import Engine
+from Layers import Layers
 
-from enum import Enum
 
 # this is a default collider class not meant for actual use outside of being inherited by the real types of colliders
 # TODO: incorporate Component class into this
@@ -10,7 +11,7 @@ class Collider(Engine.RenderedComponent):
 
 	debugColor = (255, 0, 230)
 
-	def __init__(self, offset = None, enabled = True, isTrigger = False, enableCollisionEvents = True, visible = False, layer = 999, parent = None, position = None, size = None, pivot = None):
+	def __init__(self, offset = None, enabled = True, isTrigger = False, enableCollisionEvents = True, visible = False, layer = Layers.debug, parent = None, position = None, size = None, pivot = None):
 
 		super().__init__(visible, layer, parent, position, size, pivot)
 
@@ -33,12 +34,6 @@ class Collider(Engine.RenderedComponent):
 			self.offset = Engine.Vector2(0, 0)
 		else:
 			self.offset = offset
-
-		# default position
-		if position == None:
-			self.position = parent.position.clone()
-		else:
-			self.position = position
 			
 		# add self to global collider list
 		Engine.GameManager.colliders.append(self)

@@ -14,8 +14,6 @@ class StoreView:
 		# create player
 		player = Player()
 
-		textbox = Engine.Textbox(text = "hello world hello world hello world hello world hello world hello world", size = Engine.Vector2(5, 1), layer = 99, reflection = Engine.Vector2Bool(True, False), alignment = Engine.Textbox.Alignment.Center)
-
 		# store
 
 		# background
@@ -27,13 +25,22 @@ class StoreView:
 		Engine.Collider.RectangleCollider(parent = background, pivot = Engine.Vector2(0, 1), size = Engine.Vector2(background.size.x, 0.25), offset = Engine.Vector2(0, background.size.y / 2), enableCollisionEvents = False)
 
 		# sales table
-		salesTable = Engine.SpriteObject(spritePath = "Images/SalesTable.png", position = Engine.Vector2(0, 4), layer = Layers.furniture)
-		Engine.Collider.RectangleCollider(parent = salesTable, pivot = Engine.Vector2(-1, 0), size = Engine.Vector2(0.25, salesTable.size.y), offset = Engine.Vector2(-salesTable.size.x / 2, 0), enableCollisionEvents = False)
-		Engine.Collider.RectangleCollider(parent = salesTable, pivot = Engine.Vector2(0, 0), size = Engine.Vector2(0.5, salesTable.size.y), enableCollisionEvents = False)		
-		Engine.Collider.RectangleCollider(parent = salesTable, pivot = Engine.Vector2(1, 0), size = Engine.Vector2(0.25, salesTable.size.y), offset = Engine.Vector2(salesTable.size.x / 2, 0), enableCollisionEvents = False)
-		
 		shopkeep = Engine.SpriteObject(spritePath = "Images/Shopkeep.png", size = Engine.Vector2(3, 3), layer = Layers.characters, position = Engine.Vector2(0, 5))
 		
+		salesTable = Engine.SpriteObject(spritePath = "Images/SalesTable.png", position = Engine.Vector2(0, 4), layer = Layers.furniture)
+		Engine.Collider.RectangleCollider(parent = salesTable, pivot = Engine.Vector2(-1, 0), size = Engine.Vector2(0.25, salesTable.size.y), offset = Engine.Vector2(-salesTable.size.x / 2, 0), enableCollisionEvents = False)
+		Engine.Collider.RectangleCollider(parent = salesTable, size = Engine.Vector2(0.5, salesTable.size.y), enableCollisionEvents = False)		
+		Engine.Collider.RectangleCollider(parent = salesTable, pivot = Engine.Vector2(1, 0), size = Engine.Vector2(0.25, salesTable.size.y), offset = Engine.Vector2(salesTable.size.x / 2, 0), enableCollisionEvents = False)
+		
+		# sales trigger
+		salesTrigger = Engine.Collider.RectangleCollider(parent = salesTable, size = salesTable.size + Engine.Vector2(0.5, 0.5), isTrigger = True)
+		textbox = Engine.Textbox(parent = salesTrigger, text = "hello world", size = Engine.Vector2(5, 1), layer = 99, alignment = Engine.Textbox.Alignment.Center, pivot = Engine.Vector2(0, 1), visible = False)
+		textbox.move(Engine.Vector2(0, -1))
+
+		# TODO: make trigger show text
+		def showTextbox():
+			textbox.show()
+
 		clock = Engine.SpriteObject(spritePath = "Images/Clock.png", position = Engine.Vector2(5, 4), layer = Layers.furniture)
 		clockCollider = Engine.Collider.RectangleCollider(parent = clock, size = Engine.Vector2(clock.size.x - 0.35, 0.5), pivot = Engine.Vector2(0, -1), enableCollisionEvents = False)
 		clockCollider.position.y -= clock.size.y / 2

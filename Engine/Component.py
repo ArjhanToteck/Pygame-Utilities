@@ -8,10 +8,12 @@ class Component():
 		# track component in GameManager
 		Engine.GameManager.components.append(self)
 
-		# set default for position (world units)
+		# default position (world units)
 		if position == None:
-			# (0, 0) is center of world
-			self.position = Engine.Vector2(0, 0) 
+			if parent == None:
+				self.position = Engine.Vector2(0, 0)
+			else:
+				self.position = parent.position.clone()
 		else:
 			self.position = position
 

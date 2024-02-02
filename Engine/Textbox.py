@@ -1,6 +1,7 @@
 import Engine
 from Engine.GameManager import GameManager
 from Engine.Vector2 import Vector2
+from Layers import Layers
 
 from enum import Enum
 
@@ -12,8 +13,10 @@ class Textbox(Engine.SpriteObject):
 		Right = 2
 
 	
-	def __init__(self, text = "", font = None, color = (255, 255, 255), alignment = None, reflection = None, visible = True, layer = 1, parent = None, position = None, size = None, pivot = None):
-	
+	def __init__(self, text = "", font = None, color = (255, 255, 255), alignment = None, reflection = None, visible = True, layer = Layers.ui, parent = None, position = None, size = None, pivot = None):
+		# do regular sprite init
+		super().__init__(reflection, None, None, visible, layer, parent, position, size, pivot)
+
 		self.text = text
 		self.color = color
 		
@@ -27,11 +30,8 @@ class Textbox(Engine.SpriteObject):
 		else:
 			self.alignment = alignment
 					
-		# do regular sprite init
-		super().__init__(reflection, None, None, visible, layer, parent, position, size, pivot)
-
 		self.renderTextSprite()
-
+		
 
 	def renderTextSprite(self):
 		# TODO: allow for different alignments, ie left, right, center
@@ -57,7 +57,7 @@ class Textbox(Engine.SpriteObject):
 				totalSize.x = currentWidth	
 
 		# loop through words
-		for i in range(1, len(words)):
+		for i in range(1, len(words)):			
 			word = words[i]
 
 			lastLine = lines[-1]
@@ -104,6 +104,7 @@ class Textbox(Engine.SpriteObject):
 		# TODO: find a way to do this without having to change the size property. might need to make a custom onRender function
 		self.setSizePixels(totalSize)
 		self.setSprite(combinedSurface)
+		self.updateSpriteTransformations()
 
 
 	def setText(self, text = ""):
