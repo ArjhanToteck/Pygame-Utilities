@@ -248,6 +248,24 @@ class RectangleCollider(Collider):
 
 		# overwrite old collision array, but only if callEvents to not interfere with the game loop
 		if callEvents:
+			# check for collisions that stopped happening
+			for collision in self.currentCollisions:
+				matchFound = False
+
+				for i in range(len(collisions)):
+					otherCollider = collisions[i].otherCollider
+
+					# check if matches
+					if collision.otherCollider == otherCollider:
+						matchFound = True
+						break
+
+				if not matchFound:
+					if collision.collisionType == Collision.CollisionType.Trigger:
+						self.onTriggerExit(collision)
+					else:			
+						self.onCollisionExit(collision)
+
 			self.currentCollisions = collisions
 
 		# return collision array

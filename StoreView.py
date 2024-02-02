@@ -36,10 +36,18 @@ class StoreView:
 		salesTrigger = Engine.Collider.RectangleCollider(parent = salesTable, size = salesTable.size + Engine.Vector2(0.5, 0.5), isTrigger = True)
 		textbox = Engine.Textbox(parent = salesTrigger, text = "hello world", size = Engine.Vector2(5, 1), layer = 99, alignment = Engine.Textbox.Alignment.Center, pivot = Engine.Vector2(0, 1), visible = False)
 		textbox.move(Engine.Vector2(0, -1))
+		
+		def showTextbox(collision):
+			if collision.otherCollider.parent == player:
+				textbox.show()
 
-		# TODO: make trigger show text
-		def showTextbox():
-			textbox.show()
+		def hideTextbox(collision):
+			if collision.otherCollider.parent == player:
+				textbox.hide()
+			
+		salesTrigger.onTriggerEnter = showTextbox
+		salesTrigger.onTriggerExit = hideTextbox
+		# TODO: onTriggerExit is never called
 
 		clock = Engine.SpriteObject(spritePath = "Images/Clock.png", position = Engine.Vector2(5, 4), layer = Layers.furniture)
 		clockCollider = Engine.Collider.RectangleCollider(parent = clock, size = Engine.Vector2(clock.size.x - 0.35, 0.5), pivot = Engine.Vector2(0, -1), enableCollisionEvents = False)
