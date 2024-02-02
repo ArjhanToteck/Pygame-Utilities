@@ -14,8 +14,7 @@ class StoreView:
 		# create player
 		player = Player()
 
-
-		textbox = Engine.Textbox(text = "hello world hello world hello world hello world hello world hello world hello world hello world", size = Engine.Vector2(5, 1), layer = 99, reflection = Engine.Vector2Bool(True, False))
+		textbox = Engine.Textbox(text = "hello world hello world hello world hello world hello world hello world", size = Engine.Vector2(5, 1), layer = 99, reflection = Engine.Vector2Bool(True, False), alignment = Engine.Textbox.Alignment.Center)
 
 		# store
 

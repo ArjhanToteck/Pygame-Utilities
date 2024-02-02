@@ -72,6 +72,9 @@ class GameManager:
 			
 			# next frame
 			cls.deltaTime = cls.clock.tick() / 1000
+
+			# print fps
+			#print(1 / cls.deltaTime)
 			
 
 	@classmethod

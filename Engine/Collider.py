@@ -7,6 +7,7 @@ from enum import Enum
 # this is a default collider class not meant for actual use outside of being inherited by the real types of colliders
 # TODO: incorporate Component class into this
 class Collider(Engine.RenderedComponent):
+
 	debugColor = (255, 0, 230)
 
 	def __init__(self, offset = None, enabled = True, isTrigger = False, enableCollisionEvents = True, visible = False, layer = 999, parent = None, position = None, size = None, pivot = None):
