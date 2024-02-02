@@ -72,7 +72,10 @@ class SpriteObject(Engine.RenderedComponent):
 		return clone
 
 
-	def updateSpriteTransformations(self):		
+	def updateSpriteTransformations(self):
+		if self.sprite == None:
+			return
+
 		# account for size (might not be set yet)
 		if hasattr(self, "size"):
 			self.transformedSprite = Engine.pygame.transform.scale(self.sprite, (self.size * Engine.GameManager.worldUnitSize).toArray())
