@@ -13,7 +13,7 @@ class Textbox(Engine.SpriteObject):
 		Right = 2
 
 	
-	def __init__(self, text = "", font = None, color = (255, 255, 255), alignment = None, reflection = None, visible = True, layer = Layers.ui, parent = None, position = None, size = None, pivot = None):
+	def __init__(self, text = "", font = None, color = (255, 255, 255), alignment = None, textBoundarySize = None, reflection = None, visible = True, layer = Layers.ui, parent = None, position = None, size = None, pivot = None):
 		# do regular sprite init
 		super().__init__(reflection, None, None, visible, layer, parent, position, size, pivot)
 
@@ -29,6 +29,11 @@ class Textbox(Engine.SpriteObject):
 			self.alignment = Textbox.Alignment.Left
 		else:
 			self.alignment = alignment
+
+		if textBoundarySize == None:
+			self.textBoundarySize = size
+		else:
+			self.textBoundarySize = textBoundarySize
 					
 		self.renderTextSprite()
 		
@@ -65,7 +70,7 @@ class Textbox(Engine.SpriteObject):
 			testWidth = self.font.size(testLine)[0]
 
 			# break up into new line if needed
-			if testWidth <= self.size.x * GameManager.worldUnitSize.x:
+			if testWidth <= self.textBoundarySize.x * GameManager.worldUnitSize.x:
 				lines[-1] = testLine
 			else:
 				# start new line
@@ -101,7 +106,6 @@ class Textbox(Engine.SpriteObject):
 			currentHeight += renderedLine.get_height()
 			
 		# update sprite
-		# TODO: find a way to do this without having to change the size property. might need to make a custom onRender function
 		self.setSizePixels(totalSize)
 		self.setSprite(combinedSurface)
 		self.updateSpriteTransformations()

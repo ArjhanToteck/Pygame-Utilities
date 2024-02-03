@@ -11,7 +11,7 @@ class StoreView:
 	# this is called when the scene is opened. creates all the components it needs.
 	@staticmethod
 	def start():
-		font = Engine.pygame.font.Font("Fonts/nokiafc22.ttf", 20)
+		font = Engine.pygame.font.Font("Fonts/nokiafc22.ttf", 18)
 
 		# create player
 		player = Player()
