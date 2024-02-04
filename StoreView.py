@@ -13,6 +13,8 @@ class StoreView:
 	def start():
 		font = Engine.pygame.font.Font("Fonts/nokiafc22.ttf", 18)
 
+		salesTextbox = Engine.Textbox(text = "Test\nthis is the second line\ni hate the antichrist i hate the antichrist i hate the antichrist.\n\nok.\n<color='red'>red</color> text", size = Engine.Vector2(5, 1), font = font, layer = 99, alignment = Engine.Textbox.Alignment.Center)
+		
 		# create player
 		player = Player()
 
@@ -36,16 +38,16 @@ class StoreView:
 		
 		# sales trigger
 		salesTrigger = Engine.Collider.RectangleCollider(parent = salesTable, size = salesTable.size + Engine.Vector2(0.5, 0.5), isTrigger = True)
-		textbox = Engine.Textbox(parent = salesTrigger, text = "Press Space to interact", size = Engine.Vector2(5, 1), font = font, layer = 99, alignment = Engine.Textbox.Alignment.Center, pivot = Engine.Vector2(0, 1), visible = False)
-		textbox.move(Engine.Vector2(0, -1))
+		salesTextbox = Engine.Textbox(parent = salesTrigger, text = "Press Space to interact", size = Engine.Vector2(5, 1), font = font, layer = 99, alignment = Engine.Textbox.Alignment.Center, pivot = Engine.Vector2(0, 1), visible = False)
+		salesTextbox.move(Engine.Vector2(0, -1))
 		
 		def showTextbox(collision):
 			if collision.otherCollider.parent == player:
-				textbox.show()
+				salesTextbox.show()
 
 		def hideTextbox(collision):
 			if collision.otherCollider.parent == player:
-				textbox.hide()
+				salesTextbox.hide()
 			
 		salesTrigger.onTriggerEnter = showTextbox
 		salesTrigger.onTriggerExit = hideTextbox

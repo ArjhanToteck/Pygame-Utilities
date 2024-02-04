@@ -121,7 +121,7 @@ class Collision:
 
 
 class RectangleCollider(Collider):
-	def __init__(self, offset = None, enabled = True, isTrigger = False, enableCollisionEvents = True, visible = False, layer = 999, parent = None, position = None, size = None, pivot = None):
+	def __init__(self, offset = None, enabled = True, isTrigger = False, enableCollisionEvents = True, visible = False, layer = Layers.debug, parent = None, position = None, size = None, pivot = None):
 		
 		# call base init
 		super().__init__(offset, enabled, isTrigger, enableCollisionEvents, visible, layer, parent, position, size, pivot)

@@ -2,7 +2,8 @@
 
 class Layers:
 	background = 0
-	characters = 1
-	furniture = 2
-	debug = 3
-	ui = 4
+	default = 1
+	characters = 2
+	furniture = 3
+	debug = 4
+	ui = 5

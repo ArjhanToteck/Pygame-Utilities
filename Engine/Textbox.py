@@ -39,8 +39,8 @@ class Textbox(Engine.SpriteObject):
 		
 
 	def renderTextSprite(self):
-		# TODO: allow for different alignments, ie left, right, center
-		# TODO: allow for different text overflow settings, ie ellipses, vertical overflow, horizontal overflow, autosize
+		# TODO: allow for different text overflow settings, ie ellipses, vertical overflow, horizontal overflow, resizetext
+		# TODO: make some kind of tag system like css or unity rich text for color and stuff
 		
 		# split into lines with \n
 		preSplitLines = self.text.split("\n")
