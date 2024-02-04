@@ -312,14 +312,19 @@ class CircleCollider(Collider):
 	pass
 
 
-class ImageCollider(Collider):
+class SpriteCollider(Collider):
+	pass
+
+
+class PointCollider(Collider):
 	pass
 
 
 Collider.Collision = Collision
 Collider.RectangleCollider = RectangleCollider
 Collider.CircleCollider = CircleCollider
-Collider.ImageCollider = ImageCollider
+Collider.SpriteCollider = SpriteCollider
+Collider.PointCollider = PointCollider
 
 
 importlib.reload(Engine)

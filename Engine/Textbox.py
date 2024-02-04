@@ -41,11 +41,45 @@ class Textbox(Engine.SpriteObject):
 	def renderTextSprite(self):
 		# TODO: allow for different alignments, ie left, right, center
 		# TODO: allow for different text overflow settings, ie ellipses, vertical overflow, horizontal overflow, autosize
-		words = self.text.split(" ")
 		
-		lines = [words[0]]
+		# split into lines with \n
+		preSplitLines = self.text.split("\n")
+
+		# create new holder for the actual lines that will be drawn
+		lines = []
+
+		# hold rendered lines
 		renderedLines = []
-		totalSize = Vector2(0, 0)
+
+		# size in pixels of textbox
+		totalSizePixels = Vector2(0, 0)
+
+		# loop through already split \n lines
+		for i in range(len(preSplitLines)):
+			preSplitLine = preSplitLines[i]
+			
+			# divide line further into words
+			words = preSplitLine.split(" ")
+
+			# first word will always be a new line since there was a \n before it
+			lines.append(words[0])
+
+			# loop through words
+			for i in range(1, len(words)):
+				word = words[i]
+				
+				# test if we can fit the current word in the last line
+				lastLine = lines[-1]
+				testLine = lastLine + " " + word
+				testWidth = self.font.size(testLine)[0]
+
+				# break up into new line if needed
+				if testWidth <= self.textBoundarySize.x * GameManager.worldUnitSize.x:
+					lines[-1] = testLine
+				else:
+					# start new line
+					lines.append(word)
+
 
 		def renderLine(line):
 			# render last line
@@ -53,34 +87,20 @@ class Textbox(Engine.SpriteObject):
 			renderedLines.append(renderedLine)
 
 			# update dimensions
-			totalSize.y += renderedLine.get_height()
+			totalSizePixels.y += renderedLine.get_height()
 
 			currentWidth = renderedLine.get_width()
 
 			# replace total width of current line is wider
-			if currentWidth > totalSize.x:
-				totalSize.x = currentWidth	
-
-		# loop through words
-		for i in range(1, len(words)):			
-			word = words[i]
-
-			lastLine = lines[-1]
-			testLine = lastLine + " " + word
-			testWidth = self.font.size(testLine)[0]
-
-			# break up into new line if needed
-			if testWidth <= self.textBoundarySize.x * GameManager.worldUnitSize.x:
-				lines[-1] = testLine
-			else:
-				# start new line
-				lines.append(word)
+			if currentWidth > totalSizePixels.x:
+				totalSizePixels.x = currentWidth
+		
 
 		for line in lines:
 			renderLine(line)
 
 		# create combined surface
-		combinedSurface = Engine.pygame.Surface(totalSize.toTuple(), Engine.pygame.SRCALPHA)
+		combinedSurface = Engine.pygame.Surface(totalSizePixels.toTuple(), Engine.pygame.SRCALPHA)
 		
 		# place text onto combined surface
 		currentHeight = 0
@@ -90,10 +110,10 @@ class Textbox(Engine.SpriteObject):
 			# set x based on alignment
 			match self.alignment:
 				case Textbox.Alignment.Right:
-					xPosition = totalSize.x - (renderedLine.get_width())
+					xPosition = totalSizePixels.x - (renderedLine.get_width())
 
 				case Textbox.Alignment.Center:
-					xPosition = (totalSize.x / 2) - (renderedLine.get_width() / 2)
+					xPosition = (totalSizePixels.x / 2) - (renderedLine.get_width() / 2)
 
 				# left by default
 				case _:
@@ -106,7 +126,7 @@ class Textbox(Engine.SpriteObject):
 			currentHeight += renderedLine.get_height()
 			
 		# update sprite
-		self.setSizePixels(totalSize)
+		self.setSizePixels(totalSizePixels)
 		self.setSprite(combinedSurface)
 		self.updateSpriteTransformations()
 
