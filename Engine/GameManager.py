@@ -26,6 +26,18 @@ class GameManager:
 	# stores functions to render stuff here, the key being the render layer
 	renderQueue = {}
 	
+  
+	@classmethod
+	def updateScreenSizePixels(cls, size):
+		cls.screen = Engine.pygame.display.set_mode(size.toArray(), Engine.pygame.RESIZABLE)
+		cls.screenSizePixels = size.clone()
+		cls.screenSizeWorldUnits = size / cls.worldUnitSize
+  
+ 
+	@classmethod
+	def updateScreenSizeWorldUnits(cls, size):
+		cls.updateScreenSizePixels(size * cls.worldUnitSize)
+  
 	
 	@classmethod
 	def quit(cls):
@@ -46,6 +58,10 @@ class GameManager:
 				if event.type == Engine.pygame.QUIT:
 					cls.running = False
 					cls.quit()
+     
+				# resize window
+				if event.type == Engine.pygame.VIDEORESIZE:
+					cls.updateScreenSizePixels(Engine.Vector2(event.w, event.h))
 
 				# adds event to list for current frame
 				cls.pygameEvents.append(event)
@@ -81,7 +97,7 @@ class GameManager:
 	def setUpGame(cls, worldUnitSize = None, screenSizePixels = None):
 		# pygame setup
 		Engine.pygame.init()
-		cls.screen = Engine.pygame.display.set_mode(cls.screenSizePixels.toArray())
+		cls.updateScreenSizePixels(screenSizePixels)
 		cls.clock = Engine.pygame.time.Clock()
 		cls.running = True
 

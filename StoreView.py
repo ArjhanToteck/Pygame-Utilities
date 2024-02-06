@@ -55,7 +55,7 @@ class StoreView:
 				else:
 					if salesTrigger.spaceReleased != None and salesTrigger.spaceReleased == False:
 						salesTrigger.spaceReleased = True
-						print("open menu")
+						player.controlsEnabled = False
 			
 		salesTrigger.onTriggerEnter = showTextbox
 		salesTrigger.onTriggerExit = hideTextbox

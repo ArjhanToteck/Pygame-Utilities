@@ -31,6 +31,7 @@ class Player(Character):
 		# exclusive player properties
 		self.speed = speed
 
+		self.controlsEnabled = True
 		self.running = False
 		self.direction = Vector2.DOWN
 		self.animationController = AnimationController(6, 0.25)
@@ -64,31 +65,33 @@ class Player(Character):
 		# reset running and reflection
 		self.running = False
 		self.reflection = Vector2Bool(False, False)
+  
+		if self.controlsEnabled:
 
-		# movement
-		newDirection = Vector2.ZERO
+			# movement
+			newDirection = Vector2.ZERO
 
-		# get direction
-		if GameManager.keysDown[pygame.K_DOWN]: 
-			newDirection += Vector2.DOWN
+			# get direction
+			if GameManager.keysDown[pygame.K_DOWN]: 
+				newDirection += Vector2.DOWN
 
-		if GameManager.keysDown[pygame.K_UP]:
-			newDirection += Vector2.UP
+			if GameManager.keysDown[pygame.K_UP]:
+				newDirection += Vector2.UP
 
-		if GameManager.keysDown[pygame.K_LEFT]:
-			newDirection += Vector2.LEFT
+			if GameManager.keysDown[pygame.K_LEFT]:
+				newDirection += Vector2.LEFT
 
-		if GameManager.keysDown[pygame.K_RIGHT]:
-			newDirection += Vector2.RIGHT
-			
-		# check if there was movement
-		if newDirection != Vector2.ZERO:
-			# move in direction
-			self.direction = newDirection
-			self.move(self.direction * self.speed * GameManager.deltaTime)
+			if GameManager.keysDown[pygame.K_RIGHT]:
+				newDirection += Vector2.RIGHT
+				
+			# check if there was movement
+			if newDirection != Vector2.ZERO:
+				# move in direction
+				self.direction = newDirection
+				self.move(self.direction * self.speed * GameManager.deltaTime)
 
-			# mark as running
-			self.running = True
+				# mark as running
+				self.running = True
 
 		# animations
 		animationRow = ""
