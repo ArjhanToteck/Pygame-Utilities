@@ -13,8 +13,6 @@ class StoreView:
 	def start():
 		font = Engine.pygame.font.Font("Fonts/nokiafc22.ttf", 18)
 
-		salesTextbox = Engine.Textbox(text = "Test\nthis is the second line\ni hate the antichrist i hate the antichrist i hate the antichrist.\n\nok.\n<color='red'>red</color> text", size = Engine.Vector2(5, 1), font = font, layer = 99, alignment = Engine.Textbox.Alignment.Center)
-		
 		# create player
 		player = Player()
 
@@ -48,9 +46,22 @@ class StoreView:
 		def hideTextbox(collision):
 			if collision.otherCollider.parent == player:
 				salesTextbox.hide()
+
+		def salesTriggerKeyCheck(collision):
+			if collision.otherCollider.parent == player:
+				# check if space is down
+				if Engine.GameManager.keysDown[Engine.pygame.key.key_code("space")]:
+					salesTrigger.spaceReleased = False
+				else:
+					if salesTrigger.spaceReleased != None and salesTrigger.spaceReleased == False:
+						salesTrigger.spaceReleased = True
+						print("open menu")
 			
 		salesTrigger.onTriggerEnter = showTextbox
 		salesTrigger.onTriggerExit = hideTextbox
+		salesTrigger.onTriggerStay = salesTriggerKeyCheck
+		salesTrigger.spaceReleased = True
+
 		# TODO: onTriggerExit is never called
 
 		clock = Engine.SpriteObject(spritePath = "Images/Clock.png", position = Engine.Vector2(5, 4), layer = Layers.furniture)
