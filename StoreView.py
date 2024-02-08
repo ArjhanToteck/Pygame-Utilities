@@ -3,6 +3,7 @@ import Engine
 from Player import Player
 from Layers import Layers
 from Order import Order
+from StoreMenu import StoreMenu
 import Item
 
 # this class contains all the game objects and stuff for the scene
@@ -76,7 +77,7 @@ class StoreView:
 		rug = Engine.SpriteObject(spritePath = "Images/Rug.png", position = Engine.Vector2(0, -1), layer = Layers.background)
 		
 		# store menu
-		storeMenu = Engine.Shape.Rectangle(layer = Layers.ui, color = (139, 0, 0), size = StoreView.storeSize - Engine.Vector2(4, 4), visible = False)
+		storeMenu = StoreMenu(layer = Layers.ui, color = (139, 0, 0), size = StoreView.storeSize - Engine.Vector2(4, 4), visible = False)
 		storeMenu.open = False
 
 		storeMenuTitle = Engine.Textbox(parent = storeMenu, text = "Store", size = Engine.Vector2(5, 1), font = titleFont, layer = 99, position = Engine.Vector2(0, (storeMenu.size.y / 2) - 0.5), alignment = Engine.Textbox.Alignment.Center, pivot = Engine.Vector2(0, 1), visible = False)
@@ -125,7 +126,6 @@ class StoreView:
 		salesTrigger.onTriggerEnter = showTextbox
 		salesTrigger.onTriggerExit = hideTextbox
 		salesTrigger.onTriggerStay = salesTriggerKeyCheck
-		salesTrigger.spaceReleased = True
   
 		# show all colliders for testing
 		Engine.GameManager.showAllColliders()
