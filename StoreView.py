@@ -7,73 +7,28 @@ import Item
 
 # this class contains all the game objects and stuff for the scene
 class StoreView:
+	storeSize = Engine.Vector2(25.5, 14.5)
 
 	# this is called when the scene is opened. creates all the components it needs.
 	@staticmethod
 	def start():
 		font = Engine.pygame.font.Font("Fonts/nokiafc22.ttf", 18)
+		titleFont = Engine.pygame.font.Font("Fonts/nokiafc22.ttf", 25)
 
 		# create player
 		player = Player()
 
 		# store
+		print(Engine.GameManager.screenSizeWorldUnits)
 
 		# background
 		# TODO: figure out a way to do internal colliders
-		background = Engine.SpriteObject(spritePath = "Images/FloorAndWalls.png", size = Engine.GameManager.screenSizeWorldUnits, layer = Layers.background)		
+		background = Engine.SpriteObject(spritePath = "Images/FloorAndWalls.png", size = StoreView.storeSize, layer = Layers.background)		
 		Engine.Collider.RectangleCollider(parent = background, pivot = Engine.Vector2(-1, 0), size = Engine.Vector2(0.25, background.size.y), offset = Engine.Vector2(-background.size.x / 2, 0), enableCollisionEvents = False)
 		Engine.Collider.RectangleCollider(parent = background, pivot = Engine.Vector2(1, 0), size = Engine.Vector2(0.25, background.size.y), offset = Engine.Vector2(background.size.x / 2, 0), enableCollisionEvents = False)
 		Engine.Collider.RectangleCollider(parent = background, pivot = Engine.Vector2(0, -1), size = Engine.Vector2(background.size.x, 0.25), offset = Engine.Vector2(0, -background.size.y / 2), enableCollisionEvents = False)
 		Engine.Collider.RectangleCollider(parent = background, pivot = Engine.Vector2(0, 1), size = Engine.Vector2(background.size.x, 0.25), offset = Engine.Vector2(0, background.size.y / 2), enableCollisionEvents = False)
 
-		# sales table
-		shopkeep = Engine.SpriteObject(spritePath = "Images/Shopkeep.png", size = Engine.Vector2(3, 3), layer = Layers.characters, position = Engine.Vector2(0, 5))
-		
-		salesTable = Engine.SpriteObject(spritePath = "Images/SalesTable.png", position = Engine.Vector2(0, 4), layer = Layers.furniture)
-		Engine.Collider.RectangleCollider(parent = salesTable, pivot = Engine.Vector2(-1, 0), size = Engine.Vector2(0.25, salesTable.size.y), offset = Engine.Vector2(-salesTable.size.x / 2, 0), enableCollisionEvents = False)
-		Engine.Collider.RectangleCollider(parent = salesTable, size = Engine.Vector2(0.5, salesTable.size.y), enableCollisionEvents = False)		
-		Engine.Collider.RectangleCollider(parent = salesTable, pivot = Engine.Vector2(1, 0), size = Engine.Vector2(0.25, salesTable.size.y), offset = Engine.Vector2(salesTable.size.x / 2, 0), enableCollisionEvents = False)
-		
-		# sales trigger
-		salesTrigger = Engine.Collider.RectangleCollider(parent = salesTable, size = salesTable.size + Engine.Vector2(0.5, 0.5), isTrigger = True)
-		salesTextbox = Engine.Textbox(parent = salesTrigger, text = "Press Space to interact", size = Engine.Vector2(5, 1), font = font, layer = 99, alignment = Engine.Textbox.Alignment.Center, pivot = Engine.Vector2(0, 1), visible = False)
-		salesTextbox.move(Engine.Vector2(0, -1))
-		
-		def showTextbox(collision):
-			if collision.otherCollider.parent == player:
-				salesTextbox.show()
-
-		def hideTextbox(collision):
-			if collision.otherCollider.parent == player:
-				salesTextbox.hide()
-
-		def salesTriggerKeyCheck(collision):
-			if collision.otherCollider.parent == player:
-				# check if space is down
-				if Engine.GameManager.keysDown[Engine.pygame.key.key_code("space")]:
-					salesTrigger.spaceReleased = False
-				else:
-					if salesTrigger.spaceReleased != None and salesTrigger.spaceReleased == False:
-						salesTrigger.spaceReleased = True
-						player.controlsEnabled = False
-			
-		salesTrigger.onTriggerEnter = showTextbox
-		salesTrigger.onTriggerExit = hideTextbox
-		salesTrigger.onTriggerStay = salesTriggerKeyCheck
-		salesTrigger.spaceReleased = True
-
-		# TODO: onTriggerExit is never called
-
-		clock = Engine.SpriteObject(spritePath = "Images/Clock.png", position = Engine.Vector2(5, 4), layer = Layers.furniture)
-		clockCollider = Engine.Collider.RectangleCollider(parent = clock, size = Engine.Vector2(clock.size.x - 0.35, 0.5), pivot = Engine.Vector2(0, -1), enableCollisionEvents = False)
-		clockCollider.position.y -= clock.size.y / 2
-
-		lamp = Engine.SpriteObject(spritePath = "Images/Lamp.png", position = Engine.Vector2(-5, 4), layer = Layers.furniture)
-		lampCollider = Engine.Collider.RectangleCollider(parent = lamp, size = Engine.Vector2(lamp.size.x - 0.25, 0.4), pivot = Engine.Vector2(0, -1), enableCollisionEvents = False)
-		lampCollider.position.y -= lamp.size.y / 2
-
-		rug = Engine.SpriteObject(spritePath = "Images/Rug.png", position = Engine.Vector2(0, -1), layer = Layers.background)
-		
 		# couches
 
 		couch1 = Engine.SpriteObject(spritePath = "Images/Couch.png", position = Engine.Vector2(-12, 3), pivot = Engine.Vector2(-1, 1), layer = Layers.furniture)
@@ -96,7 +51,72 @@ class StoreView:
 		
 		tableAndChairs2 = tableAndChairs1.instantiate(position = Engine.Vector2(10.5, -2))
 		tableAndChairs2 = tableAndChairs1.instantiate(position = Engine.Vector2(10.5, -5))
+  
+  		# sales table
+		shopkeep = Engine.SpriteObject(spritePath = "Images/Shopkeep.png", size = Engine.Vector2(3, 3), layer = Layers.characters, position = Engine.Vector2(0, 5))
 		
+		salesTable = Engine.SpriteObject(spritePath = "Images/SalesTable.png", position = Engine.Vector2(0, 4), layer = Layers.furniture)
+		Engine.Collider.RectangleCollider(parent = salesTable, pivot = Engine.Vector2(-1, 0), size = Engine.Vector2(0.25, salesTable.size.y), offset = Engine.Vector2(-salesTable.size.x / 2, 0), enableCollisionEvents = False)
+		Engine.Collider.RectangleCollider(parent = salesTable, size = Engine.Vector2(0.5, salesTable.size.y), enableCollisionEvents = False)		
+		Engine.Collider.RectangleCollider(parent = salesTable, pivot = Engine.Vector2(1, 0), size = Engine.Vector2(0.25, salesTable.size.y), offset = Engine.Vector2(salesTable.size.x / 2, 0), enableCollisionEvents = False)
+		
+		# sales trigger
+		salesTrigger = Engine.Collider.RectangleCollider(parent = salesTable, size = salesTable.size + Engine.Vector2(0.5, 0.5), isTrigger = True)
+		salesTextbox = Engine.Textbox(parent = salesTrigger, text = "Press Space to interact", size = Engine.Vector2(5, 1), font = font, layer = 99, alignment = Engine.Textbox.Alignment.Center, pivot = Engine.Vector2(0, 1), visible = False)
+		salesTextbox.move(Engine.Vector2(0, -1))
+
+		clock = Engine.SpriteObject(spritePath = "Images/Clock.png", position = Engine.Vector2(5, 4), layer = Layers.furniture)
+		clockCollider = Engine.Collider.RectangleCollider(parent = clock, size = Engine.Vector2(clock.size.x - 0.35, 0.5), pivot = Engine.Vector2(0, -1), enableCollisionEvents = False)
+		clockCollider.position.y -= clock.size.y / 2
+
+		lamp = Engine.SpriteObject(spritePath = "Images/Lamp.png", position = Engine.Vector2(-5, 4), layer = Layers.furniture)
+		lampCollider = Engine.Collider.RectangleCollider(parent = lamp, size = Engine.Vector2(lamp.size.x - 0.25, 0.4), pivot = Engine.Vector2(0, -1), enableCollisionEvents = False)
+		lampCollider.position.y -= lamp.size.y / 2
+
+		rug = Engine.SpriteObject(spritePath = "Images/Rug.png", position = Engine.Vector2(0, -1), layer = Layers.background)
+		
+		# store menu
+		storeMenu = Engine.Shape.Rectangle(layer = Layers.ui, color = (139, 0, 0), size = StoreView.storeSize - Engine.Vector2(4, 4), visible = False)
+		storeMenuTitle = Engine.Textbox(parent = storeMenu, text = "Store", size = Engine.Vector2(5, 1), font = titleFont, layer = 99, position = Engine.Vector2(0, (storeMenu.size.y / 2) - 0.5), alignment = Engine.Textbox.Alignment.Center, pivot = Engine.Vector2(0, 1), visible = False)
+  
+		def showStoreMenu():
+			# TODO: make hiding the parent hide children and show parent show children
+			salesTextbox.hide()
+			storeMenu.show()
+			storeMenuTitle.show()
+   
+		def hideStoreMenu():
+			storeMenu.hide()
+			storeMenuTitle.hide()
+
+  		# events to open store menu
+		def showTextbox(collision):
+			if collision.otherCollider.parent == player:
+				salesTextbox.show()
+
+		def hideTextbox(collision):
+			if collision.otherCollider.parent == player:
+				salesTextbox.hide()
+				hideStoreMenu()
+
+		def salesTriggerKeyCheck(collision):
+			if collision.otherCollider.parent == player:
+				# check if space is down
+				# TODO: implement a way in the engine to check for key press rather than being down
+				if Engine.GameManager.keysDown[Engine.pygame.key.key_code("space")]:
+					salesTrigger.spaceReleased = False
+				else:
+					# check if released
+					if salesTrigger.spaceReleased != None and salesTrigger.spaceReleased == False:
+						salesTrigger.spaceReleased = True
+						showStoreMenu()
+
+
+		salesTrigger.onTriggerEnter = showTextbox
+		salesTrigger.onTriggerExit = hideTextbox
+		salesTrigger.onTriggerStay = salesTriggerKeyCheck
+		salesTrigger.spaceReleased = True
+  
 		# show all colliders for testing
 		Engine.GameManager.showAllColliders()
  

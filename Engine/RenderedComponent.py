@@ -4,6 +4,7 @@ from Layers import Layers
 
 # this class automatically handles the events for rendering something in GameManager's queue. For actually displaying images, SpriteObject is usually recommendable, though this can be useful for custom render functions.
 class RenderedComponent(Engine.Component):
+    
 	def __init__(self, visible = True, layer = Layers.default, parent = None, position = None, size = None, pivot = None):
 		super().__init__(parent, position, size, pivot)
 
