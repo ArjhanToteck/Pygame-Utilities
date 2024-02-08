@@ -21,11 +21,11 @@ class GameManager:
 
 	# stores pygame events on a given frame
 	pygameEvents = []
-	keysDown = []
+	keysDown = {}
+	keysPressed = {}
 
 	# stores functions to render stuff here, the key being the render layer
 	renderQueue = {}
-	
   
 	@classmethod
 	def updateScreenSizePixels(cls, size):
@@ -51,6 +51,7 @@ class GameManager:
 		while cls.running == True:
 			# clear events for this frame
 			cls.pygameEvents = []
+			cls.keysPressed = {}
 			
 			# event queue
 			for event in Engine.pygame.event.get():
@@ -58,15 +59,22 @@ class GameManager:
 				if event.type == Engine.pygame.QUIT:
 					cls.running = False
 					cls.quit()
-     
+
+
 				# resize window
 				if event.type == Engine.pygame.VIDEORESIZE:
 					cls.updateScreenSizePixels(Engine.Vector2(event.w, event.h))
+
+
+				if event.type == Engine.pygame.KEYUP:
+					cls.keysPressed[event.key] = True
+
 
 				# adds event to list for current frame
 				cls.pygameEvents.append(event)
 					
 			# get key presses
+			# TODO: better input system with its own class probably
 			cls.keysDown = Engine.pygame.key.get_pressed()
 
 			# update collisions

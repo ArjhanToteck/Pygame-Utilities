@@ -77,39 +77,49 @@ class StoreView:
 		
 		# store menu
 		storeMenu = Engine.Shape.Rectangle(layer = Layers.ui, color = (139, 0, 0), size = StoreView.storeSize - Engine.Vector2(4, 4), visible = False)
+		storeMenu.open = False
+
 		storeMenuTitle = Engine.Textbox(parent = storeMenu, text = "Store", size = Engine.Vector2(5, 1), font = titleFont, layer = 99, position = Engine.Vector2(0, (storeMenu.size.y / 2) - 0.5), alignment = Engine.Textbox.Alignment.Center, pivot = Engine.Vector2(0, 1), visible = False)
   
 		def showStoreMenu():
 			# TODO: make hiding the parent hide children and show parent show children
+			storeMenu.open = True
+			player.controlsEnabled = False
 			salesTextbox.hide()
 			storeMenu.show()
 			storeMenuTitle.show()
-   
+
+
 		def hideStoreMenu():
+			storeMenu.open = False
+			player.controlsEnabled = True
 			storeMenu.hide()
+			salesTextbox.show()
 			storeMenuTitle.hide()
+
 
   		# events to open store menu
 		def showTextbox(collision):
 			if collision.otherCollider.parent == player:
 				salesTextbox.show()
 
+
 		def hideTextbox(collision):
 			if collision.otherCollider.parent == player:
 				salesTextbox.hide()
-				hideStoreMenu()
+
 
 		def salesTriggerKeyCheck(collision):
 			if collision.otherCollider.parent == player:
 				# check if space is down
 				# TODO: implement a way in the engine to check for key press rather than being down
-				if Engine.GameManager.keysDown[Engine.pygame.key.key_code("space")]:
-					salesTrigger.spaceReleased = False
-				else:
-					# check if released
-					if salesTrigger.spaceReleased != None and salesTrigger.spaceReleased == False:
-						salesTrigger.spaceReleased = True
+				try:
+					if not storeMenu.open and Engine.GameManager.keysPressed[Engine.pygame.key.key_code("space")]:
 						showStoreMenu()
+					elif storeMenu.open and Engine.GameManager.keysPressed[Engine.pygame.key.key_code("escape")]:
+						hideStoreMenu()
+				except:
+					pass
 
 
 		salesTrigger.onTriggerEnter = showTextbox
