@@ -23,7 +23,11 @@ class Item(ABC):
 
 
 	def __str__ (self):
-		return f"{self.name} x{self.quantity}. Price per unit: {self.calculatePricePerItem()}, total cost: {self.calculateTotalPrice()}, total tax: {self.calculateTax() * self.quantity}"
+		return f"{self.name} x{self.quantity}.\nPrice per unit: {self.calculatePricePerItem()}\nTotal cost: {self.calculateTotalPrice()}\nTotal tax: {self.calculateTax() * self.quantity}"
+
+
+	def toString(self):
+		return self.__str__()
 
 
 	# TODO: implement this on everything

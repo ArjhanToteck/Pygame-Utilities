@@ -14,6 +14,52 @@ class Button(Engine.Component):
 		else:
 			self.collider = collider
 
+		self.hasMouse = False
+
 	def onUpdate(self):
+		# check if mouse raycast hit collider
 		if self.collider in Engine.GameManager.mouseRaycasts:
-			print("mouse hover")
+			# check if click
+			if Engine.GameManager.mousePressed:
+				# click
+				self.onClick()
+			else:
+
+				# check if we already had the mouse before
+				if self.hasMouse:
+					# mouse is remaining on button
+					self.onMouseHover()
+				else:
+					# mouse is just entering button this frame
+					self.onMouseEnter()
+
+			# mark as having the mouse
+			self.hasMouse = True
+
+		# check if we had the mouse last frame
+		elif self.hasMouse:
+			# mark as no longer having the mouse
+			self.hasMouse = False
+
+			# the mouse just exited the button
+			self.onMouseExit()
+
+
+	def onMouseEnter(self):
+		pass	
+
+
+	def onMouseHover(self):
+		pass
+	
+
+	def onMouseExit(self):
+		pass
+	
+
+	def onMouseClick(self):
+		pass
+
+
+	def onClick(self):
+		pass

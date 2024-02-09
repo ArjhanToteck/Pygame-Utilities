@@ -133,4 +133,4 @@ class Textbox(Engine.SpriteObject):
 
 	def setText(self, text = ""):
 		self.text = text
-		self.renderText()
+		self.renderTextSprite()

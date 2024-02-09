@@ -20,7 +20,7 @@ class Order(list):
 		result = ""
 
 		for item in self:
-			result += item + "\n"
+			result += item + "\n\n"
 
 	def add(self, __object):
 		super().append(__object)

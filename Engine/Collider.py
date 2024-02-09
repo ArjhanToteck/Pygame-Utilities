@@ -180,6 +180,10 @@ class RectangleCollider(Collider):
 			if otherCollider == self:
 				continue
 
+			# skip disabled colliders
+			if otherCollider.enabled == False:
+				continue
+
 			collision = None
 
 			# check if other rectangle collider
@@ -287,6 +291,9 @@ class RectangleCollider(Collider):
 
 
 	def checkRaycast(self, point):
+		if not self.enabled:
+			return False
+
 		# calculate pivot offsets
 		selfCalculatedPosition = self.position + self.offset + self.getPivotOffset(False) + self.parent.getPivotOffset(False)
 
@@ -300,6 +307,9 @@ class RectangleCollider(Collider):
 
 
 	def requestMovement(self, originalPosition, targetPosition):
+		if not self.enabled:
+			return targetPosition
+
 		# TODO: this kind of sucks. should probably fix.
 		
 		# this is a fake test collision, so we shouldn't call events and interfere with the game loop

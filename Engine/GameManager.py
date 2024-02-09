@@ -25,6 +25,7 @@ class GameManager:
 	pygameEvents = []
 	keysDown = {}
 	keysPressed = {}
+	mousePressed = False
 	mousePosition = Engine.Vector2(0, 0)
 	mouseRaycasts = []
 
@@ -56,6 +57,7 @@ class GameManager:
 			# clear events for this frame
 			cls.pygameEvents = []
 			cls.keysPressed = {}
+			cls.mousePressed = False
 			
 			# event queue
 			for event in Engine.pygame.event.get():
@@ -70,9 +72,13 @@ class GameManager:
 					cls.updateScreenSizePixels(Engine.Vector2(event.w, event.h))
 
 
+				# key press
 				if event.type == Engine.pygame.KEYUP:
 					cls.keysPressed[event.key] = True
 
+				# mouse press
+				if event.type == Engine.pygame.MOUSEBUTTONUP:
+					cls.mousePressed = True
 
 				# adds event to list for current frame
 				cls.pygameEvents.append(event)

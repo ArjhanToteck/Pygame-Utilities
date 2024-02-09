@@ -13,6 +13,7 @@ class StoreView:
 	# this is called when the scene is opened. creates all the components it needs.
 	@staticmethod
 	def start():
+		titleFont = Engine.pygame.font.Font("Fonts/nokiafc22.ttf", 25)
 		font = Engine.pygame.font.Font("Fonts/nokiafc22.ttf", 18)
 
 		# create player
@@ -75,7 +76,7 @@ class StoreView:
 		rug = Engine.SpriteObject(spritePath = "Images/Rug.png", position = Engine.Vector2(0, -1), layer = Layers.background)
 		
 		# store menu
-		storeMenu = StoreMenu(size = StoreView.storeSize - Engine.Vector2(4, 4), items = [
+		storeMenu = StoreMenu(font, titleFont, size = StoreView.storeSize - Engine.Vector2(4, 4), items = [
 			Item.Weapon("Fist of Ardor", 10, 5, 2, iconPath = "Images/FistOfArdor.png"),
 			Item.Weapon("Comically Large Spoon", 2, 10, iconPath = "Images/ComicallyLargeSpoon.png"),
 			Item.Consumable.HealthPotion("Health Potion", 2, 5, iconPath = "Images/HealthPotion.png"),
