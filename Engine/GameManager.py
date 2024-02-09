@@ -4,6 +4,8 @@ import sys
 
 import Engine
 
+# TODO: fps sucks now bc i rushed some stuff. look into optimizing stuff
+
 class GameManager:
 	# settings	
 	worldUnitSize = Engine.Vector2(50, 50) # number of pixels per world unit
@@ -23,6 +25,8 @@ class GameManager:
 	pygameEvents = []
 	keysDown = {}
 	keysPressed = {}
+	mousePosition = Engine.Vector2(0, 0)
+	mouseRaycasts = []
 
 	# stores functions to render stuff here, the key being the render layer
 	renderQueue = {}
@@ -76,6 +80,13 @@ class GameManager:
 			# get key presses
 			# TODO: better input system with its own class probably
 			cls.keysDown = Engine.pygame.key.get_pressed()
+
+			# get mouse position
+			mousePosition = Engine.pygame.mouse.get_pos()
+			mousePosition = Engine.Vector2(mousePosition[0], mousePosition[1])
+			cls.mousePosition = cls.screenToWorldPosition(mousePosition)
+			
+			cls.mouseRaycasts = Engine.Collider.raycast(cls.mousePosition)
 
 			# update collisions
 			for collider in GameManager.colliders:
@@ -180,13 +191,13 @@ class GameManager:
 				
 		# divide world units by size in pixels
 		worldPosition = screenPosition / cls.worldUnitSize
-		print("1", worldPosition)
 		
 		# add offset to account for center of screen
-		centerOffsetWorldUnits = Engine.Vector2(cls.screenSizeWorldUnits.x / 2, -cls.screenSizeWorldUnits.y / 2)
+		centerOffsetWorldUnits = Engine.Vector2(cls.screenSizeWorldUnits.x / 2, cls.screenSizeWorldUnits.y / 2)
 		worldPosition -= centerOffsetWorldUnits
-		print("2", worldPosition)
 
-		return
+		worldPosition.y *= -1
+
+		return worldPosition
 
 importlib.reload(Engine)

@@ -16,6 +16,12 @@ class Order(list):
 	def __next__(self):
 		return super().__next__()
 
+	def __str__(self):
+		result = ""
+
+		for item in self:
+			result += item + "\n"
+
 	def add(self, __object):
 		super().append(__object)
 

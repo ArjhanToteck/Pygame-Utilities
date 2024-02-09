@@ -10,6 +10,16 @@ from Layers import Layers
 class Collider(Engine.RenderedComponent):
 
 	debugColor = (255, 0, 230)
+	
+	@staticmethod
+	def raycast(point):
+		hits = []
+
+		for collider in Engine.GameManager.colliders:
+			if collider.checkRaycast(point):
+				hits.append(collider)
+
+		return hits
 
 	def __init__(self, offset = None, enabled = True, isTrigger = False, enableCollisionEvents = True, visible = False, layer = Layers.debug, parent = None, position = None, size = None, pivot = None):
 
@@ -66,6 +76,10 @@ class Collider(Engine.RenderedComponent):
 
 		# remove self from parent
 		self.parent.colliders.remove(self)
+
+
+	def checkRaycast(point):
+		return False
 
 
 	def updateCollisions(self):
@@ -270,6 +284,20 @@ class RectangleCollider(Collider):
 
 		# return collision array
 		return collisions
+
+
+	def checkRaycast(self, point):
+		# calculate pivot offsets
+		selfCalculatedPosition = self.position + self.offset + self.getPivotOffset(False) + self.parent.getPivotOffset(False)
+
+		# calculate adjusted positions of rectangles
+		selfLeft = selfCalculatedPosition.x - (self.size.x / 2)
+		selfRight = selfCalculatedPosition.x + (self.size.x / 2)
+		selfBottom = selfCalculatedPosition.y - (self.size.y / 2)
+		selfTop = selfCalculatedPosition.y + (self.size.y / 2)
+
+		return point.x > selfLeft and point.x < selfRight and point.y > selfBottom and point.y < selfTop
+
 
 	def requestMovement(self, originalPosition, targetPosition):
 		# TODO: this kind of sucks. should probably fix.

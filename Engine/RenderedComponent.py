@@ -1,3 +1,5 @@
+import warnings
+
 import Engine
 
 from Layers import Layers
@@ -14,6 +16,12 @@ class RenderedComponent(Engine.Component):
 
 		# while this can be set at instantiation, helper functions should be used to hide and show the object afterwards
 		self.visible = visible
+		self.hiddenByParent = False
+
+		# check if we have a parent and the parent is hidden, but self is not hidden
+		if hasattr(self, "parent") and self.parent != None and isinstance(self.parent, RenderedComponent) and not self.parent.visible:
+			self.hiddenByParent = True
+			self.visible = False
 
 		# show component if visible (in renderQueue, of course)
 		if self.visible:
@@ -23,14 +31,33 @@ class RenderedComponent(Engine.Component):
 		Engine.GameManager.components.append(self)
 
 
-	def show(self):
+	def show(self, overrideParentVisibility = False):
+		if self.hiddenByParent and not overrideParentVisibility:			
+			warnings.warn("Attempting to show an object hidden by parent.")
+			return
+		elif self.hiddenByParent and overrideParentVisibility:
+			self.hiddenByParent = False
+
 		self.visible = True
 		Engine.GameManager.addToRenderQueue(self.onRender, self.layer)
+		
+		for child in self.children:
+			if child.hiddenByParent == True:
+				child.hiddenByParent = False
+				child.show()
+
 
 	
-	def hide(self):
+	def hide(self, hiddenByParent = False):
 		self.visible = False
 		Engine.GameManager.removeFromRenderQueue(self.onRender, self.layer)
+		
+		self.hiddenByParent = hiddenByParent
+		
+		for child in self.children:
+			if child.visible == True:
+				child.hiddenByParent = True
+				child.hide(True)
 
 		
 	def onRender(self):
@@ -46,16 +73,10 @@ class RenderedComponent(Engine.Component):
 
 
 	def destroy(self):
-		# destroy colliders
-		if(self.colliders != None):
-			for collider in self.colliders:
-				collider.destroy()
-
-		# remove self from global record
-		Engine.GameManager.components.remove(self)
-
-		# make sure not to be rendered
 		self.hide()
+
+		super().destroy()
+
 
 	def instantiate(self, parent = None, position = None):
 		clonePosition = position

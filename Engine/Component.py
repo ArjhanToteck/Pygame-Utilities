@@ -49,10 +49,10 @@ class Component():
 
 
 	def destroy(self):		
-		# destroy colliders
-		if(self.colliders != None):
-			for collider in self.colliders:
-				collider.destroy()
+		# destroy children
+		if(self.children != None):
+			for children in self.children:
+				children.destroy()
 
 		# remove self from global record
 		Engine.GameManager.components.remove(self)
@@ -154,6 +154,5 @@ class Component():
 		return pivotOffset
 	
 	
-
 	def onUpdate(self):
 		pass

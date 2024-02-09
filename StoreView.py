@@ -14,13 +14,11 @@ class StoreView:
 	@staticmethod
 	def start():
 		font = Engine.pygame.font.Font("Fonts/nokiafc22.ttf", 18)
-		titleFont = Engine.pygame.font.Font("Fonts/nokiafc22.ttf", 25)
 
 		# create player
 		player = Player()
 
 		# store
-		print(Engine.GameManager.screenSizeWorldUnits)
 
 		# background
 		# TODO: figure out a way to do internal colliders
@@ -53,7 +51,7 @@ class StoreView:
 		tableAndChairs2 = tableAndChairs1.instantiate(position = Engine.Vector2(10.5, -2))
 		tableAndChairs2 = tableAndChairs1.instantiate(position = Engine.Vector2(10.5, -5))
   
-  		# sales table
+		# sales table
 		shopkeep = Engine.SpriteObject(spritePath = "Images/Shopkeep.png", size = Engine.Vector2(3, 3), layer = Layers.characters, position = Engine.Vector2(0, 5))
 		
 		salesTable = Engine.SpriteObject(spritePath = "Images/SalesTable.png", position = Engine.Vector2(0, 4), layer = Layers.furniture)
@@ -63,7 +61,7 @@ class StoreView:
 		
 		# sales trigger
 		salesTrigger = Engine.Collider.RectangleCollider(parent = salesTable, size = salesTable.size + Engine.Vector2(0.5, 0.5), isTrigger = True)
-		salesTextbox = Engine.Textbox(parent = salesTrigger, text = "Press Space to interact", size = Engine.Vector2(5, 1), font = font, layer = 99, alignment = Engine.Textbox.Alignment.Center, pivot = Engine.Vector2(0, 1), visible = False)
+		salesTextbox = Engine.Textbox(parent = salesTable, text = "Press Space to interact", size = Engine.Vector2(5, 1), font = font, layer = Layers.ui, alignment = Engine.Textbox.Alignment.Center, pivot = Engine.Vector2(0, 1), visible = False)
 		salesTextbox.move(Engine.Vector2(0, -1))
 
 		clock = Engine.SpriteObject(spritePath = "Images/Clock.png", position = Engine.Vector2(5, 4), layer = Layers.furniture)
@@ -77,29 +75,14 @@ class StoreView:
 		rug = Engine.SpriteObject(spritePath = "Images/Rug.png", position = Engine.Vector2(0, -1), layer = Layers.background)
 		
 		# store menu
-		storeMenu = StoreMenu(layer = Layers.ui, color = (139, 0, 0), size = StoreView.storeSize - Engine.Vector2(4, 4), visible = False)
-		storeMenu.open = False
+		storeMenu = StoreMenu(size = StoreView.storeSize - Engine.Vector2(4, 4), items = [
+			Item.Weapon("Fist of Ardor", 10, 5, 2, iconPath = "Images/FistOfArdor.png"),
+			Item.Weapon("Comically Large Spoon", 2, 10, iconPath = "Images/ComicallyLargeSpoon.png"),
+			Item.Consumable.HealthPotion("Health Potion", 2, 5, iconPath = "Images/HealthPotion.png"),
+			Item.Armor("Gold Armor", 8, iconPath = "Images/GoldArmor.png")
+		])
 
-		storeMenuTitle = Engine.Textbox(parent = storeMenu, text = "Store", size = Engine.Vector2(5, 1), font = titleFont, layer = 99, position = Engine.Vector2(0, (storeMenu.size.y / 2) - 0.5), alignment = Engine.Textbox.Alignment.Center, pivot = Engine.Vector2(0, 1), visible = False)
-  
-		def showStoreMenu():
-			# TODO: make hiding the parent hide children and show parent show children
-			storeMenu.open = True
-			player.controlsEnabled = False
-			salesTextbox.hide()
-			storeMenu.show()
-			storeMenuTitle.show()
-
-
-		def hideStoreMenu():
-			storeMenu.open = False
-			player.controlsEnabled = True
-			storeMenu.hide()
-			salesTextbox.show()
-			storeMenuTitle.hide()
-
-
-  		# events to open store menu
+		# events to open store menu
 		def showTextbox(collision):
 			if collision.otherCollider.parent == player:
 				salesTextbox.show()
@@ -115,10 +98,14 @@ class StoreView:
 				# check if space is down
 				# TODO: implement a way in the engine to check for key press rather than being down
 				try:
-					if not storeMenu.open and Engine.GameManager.keysPressed[Engine.pygame.key.key_code("space")]:
-						showStoreMenu()
-					elif storeMenu.open and Engine.GameManager.keysPressed[Engine.pygame.key.key_code("escape")]:
-						hideStoreMenu()
+					if not storeMenu.isOpen and Engine.GameManager.keysPressed[Engine.pygame.key.key_code("space")]:
+						salesTextbox.hide()
+						player.controlsEnabled = False
+						storeMenu.open()
+					elif storeMenu.isOpen and Engine.GameManager.keysPressed[Engine.pygame.key.key_code("escape")]:
+						salesTextbox.show()
+						storeMenu.close()
+						player.controlsEnabled = True
 				except:
 					pass
 
@@ -127,17 +114,5 @@ class StoreView:
 		salesTrigger.onTriggerExit = hideTextbox
 		salesTrigger.onTriggerStay = salesTriggerKeyCheck
   
-		# show all colliders for testing
+		# show all colliders for debug
 		Engine.GameManager.showAllColliders()
- 
-		# test for order class
-		order = Order()
-		order.add(Item.Weapon("+2 Longsword", 10, 5, 2))
-		order.add(Item.Weapon("Comically Large Spoon", 2, 10))
-		order.add(Item.Consumable.HealthPotion("Health Potion", 2, 5))
-		order.add(Item.Armor("Gold Armor", 8))
-
-		print("order items:", order.items)
-
-		for item in order:
-			print(item)

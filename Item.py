@@ -13,7 +13,8 @@ class Item(ABC):
 		# load icon from path if applicable
 		if iconPath != None:
 			self.icon = Engine.pygame.image.load(iconPath)
-		elif icon != None:
+
+		if icon != None:
 			self.icon = icon
 
 
@@ -46,8 +47,8 @@ class Item(ABC):
 
 # comsumables
 class Consumable(Item):
-	def __init__(self, name, quantity = 1):
-		super().__init__(name, quantity)
+	def __init__(self, name, quantity = 1, icon = None, iconPath = None):
+		super().__init__(name, quantity, icon, iconPath)
 
 
 	@abstractmethod
@@ -59,8 +60,8 @@ class _HealthPotion(Consumable):
 	BASE_PRICE = 5
 	PRICE_PER_HP = 2
 
-	def __init__(self, name = "Health Potion", health = 0, quantity = 1):
-		super().__init__(name, quantity)
+	def __init__(self, name = "Health Potion", health = 0, quantity = 1, icon = None, iconPath = None):
+		super().__init__(name, quantity, icon, iconPath)
 		self.health = health
 
 
@@ -86,8 +87,8 @@ class Weapon(Item):
 	PRICE_PER_ATTACK_MODIFIER = 5
 
 
-	def __init__(self, name, damage = 0, knockback = 0, attackModifier = 0, quantity = 1):
-		super().__init__(name, quantity)
+	def __init__(self, name, damage = 0, knockback = 0, attackModifier = 0, quantity = 1, icon = None, iconPath = None):
+		super().__init__(name, quantity, icon, iconPath)
 		self.damage = damage
 		self.knockback = knockback
 		self.attackModifier = attackModifier
@@ -108,8 +109,8 @@ class Armor(Item):
 	PRICE_PER_ARMOR_CLASS = 3
 
 
-	def __init__(self, name, armorClass = 0, quantity = 1):
-		super().__init__(name, quantity)
+	def __init__(self, name, armorClass = 0, quantity = 1, icon = None, iconPath = None):
+		super().__init__(name, quantity, icon, iconPath)
 
 		self.armorClass = armorClass
 
