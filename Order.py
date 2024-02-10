@@ -10,20 +10,39 @@ class Order(list):
 	def __len__(self):
 		return super().__len__()
 	
+
 	def __iter__(self):
 		return super().__iter__()
 	
+
 	def __next__(self):
 		return super().__next__()
+	
 
 	def __str__(self):
-		result = ""
+		result = f"Total: {self.calculatePrice()}\nTax: {self.calculateTax()}\n"
 
 		for item in self:
-			result += item + "\n\n"
+			result += item.toString() + "\n\n"
+
+		return result
+
+
+	def toString(self):
+		return self.__str__()
+
 
 	def add(self, __object):
 		super().append(__object)
+
+
+	def addItem(self, item):
+		for stack in self:
+			if stack.name == item.name:
+				stack.quantity += 1
+				return
+			
+		self.add(item)
 
 	def calculatePrice(self):
 		totalCost = 0
@@ -35,5 +54,5 @@ class Order(list):
 
 	# again, taxes in zelda is crazy, why do we need this function in two places its the same thing?
 	def calculateTax(self):
-		return self.calculateTax * Item.TAX_PERCENT
+		return self.calculatePrice() * Item.TAX_PERCENT
 			

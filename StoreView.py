@@ -101,12 +101,10 @@ class StoreView:
 				try:
 					if not storeMenu.isOpen and Engine.GameManager.keysPressed[Engine.pygame.key.key_code("space")]:
 						salesTextbox.hide()
-						player.controlsEnabled = False
 						storeMenu.open()
 					elif storeMenu.isOpen and Engine.GameManager.keysPressed[Engine.pygame.key.key_code("escape")]:
 						salesTextbox.show()
 						storeMenu.close()
-						player.controlsEnabled = True
 				except:
 					pass
 

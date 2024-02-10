@@ -18,6 +18,10 @@ class Item(ABC):
 			self.icon = icon
 
 
+	def clone(self):
+		return Item(self.name, self.quantity, self.icon)
+
+
 	def onUse(self, character):
 		pass
 
@@ -55,6 +59,10 @@ class Consumable(Item):
 		super().__init__(name, quantity, icon, iconPath)
 
 
+	def clone(self):
+		return Consumable(self.name, self.quantity, self.icon)
+	
+
 	@abstractmethod
 	def calculatePricePerItem(self):
 		pass
@@ -67,6 +75,14 @@ class _HealthPotion(Consumable):
 	def __init__(self, name = "Health Potion", health = 0, quantity = 1, icon = None, iconPath = None):
 		super().__init__(name, quantity, icon, iconPath)
 		self.health = health
+
+		
+	def clone(self):
+		return _HealthPotion(self.name, self.health, self.quantity, self.icon)
+	
+	
+	def __str__ (self):
+		return super().__str__() + f"\nHealth: {self.health}"
 
 
 	def onUse(self, character):
@@ -96,6 +112,14 @@ class Weapon(Item):
 		self.damage = damage
 		self.knockback = knockback
 		self.attackModifier = attackModifier
+				
+
+	def clone(self):
+		return Weapon(self.name, self.damage, self.knockback, self.attackModifier, self.quantity, self.icon)
+	
+	
+	def __str__ (self):
+		return super().__str__() + f"\nDamage: {self.damage}\nKnockback: {self.knockback}\nAttackModifier: {self.damage}"
 
 
 	def calculatePricePerItem(self):
@@ -117,6 +141,14 @@ class Armor(Item):
 		super().__init__(name, quantity, icon, iconPath)
 
 		self.armorClass = armorClass
+		
+		
+	def clone(self):
+		return Armor(self.name, self.armorClass, self.quantity, self.icon)
+	
+	
+	def __str__ (self):
+		return super().__str__() + f"\nArmor Class: {self.armorClass}"
 
 
 	def calculatePricePerItem(self):

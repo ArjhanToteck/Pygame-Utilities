@@ -31,7 +31,7 @@ class Textbox(Engine.SpriteObject):
 			self.alignment = alignment
 
 		if textBoundarySize == None:
-			self.textBoundarySize = size
+			self.textBoundarySize = self.size
 		else:
 			self.textBoundarySize = textBoundarySize
 					
