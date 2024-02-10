@@ -1,2 +1,8 @@
 __pycache__/
 .vs/
+.replit
+replit.nix
+.pythonlibs/
+.upm/
+poetry.lock
+pyproject.toml
