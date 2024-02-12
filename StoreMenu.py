@@ -12,6 +12,7 @@ class StoreMenu(Engine.Shape.Rectangle):
 		self.items = items
 		self.order = Order()
 		self.storeItemBlocks = []
+		self.orderItemBlocks = []
 
 		self.selectedBlock = None
 
@@ -85,22 +86,25 @@ class StoreMenu(Engine.Shape.Rectangle):
 	def open(self):
 		self.isOpen = True
 
+		# reset overview text
+		self.overview.setText("Add items to see order summary")
+
 		# show stuff
 		self.show()
 
 		self.checkOutCollider.enabled = True
-
-		# reset order
-		self.order = Order()
 		
 
 	def close(self):
+		# reset order
+		self.order = Order()
+		self.renderOrder()
+
 		self.isOpen = False
 
 		self.checkOutCollider.enabled = False
 
 		self.hide()
-
 
 	def createItemBlocks(self):
 		# display items
@@ -111,6 +115,13 @@ class StoreMenu(Engine.Shape.Rectangle):
 
 
 	def renderOrder(self):
+		# delete old item blocks
+		for itemBlock in self.orderItemBlocks:
+			itemBlock.destroy()
+		self.orderItemBlocks = []
+
+		# go and render all item blocks
 		for i in range(len(self.order)):
 			stack = self.order[i]
-			StoreMenu.ItemBlock(parent = self, item = stack, position = Engine.Vector2((i * 2) - 9.5, 0))
+			itemBlock = StoreMenu.ItemBlock(parent = self, item = stack, position = Engine.Vector2((i * 2) - 9.5, 0))
+			self.orderItemBlocks.append(itemBlock)
