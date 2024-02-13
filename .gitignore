@@ -4,5 +4,6 @@ __pycache__/
 replit.nix
 .pythonlibs/
 .upm/
+.vscode/
 poetry.lock
 pyproject.toml
