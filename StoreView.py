@@ -4,7 +4,10 @@ from Player import Player
 from Layers import Layers
 from Order import Order
 from StoreMenu import StoreMenu
-import Item
+
+from Item.Armor import Armor
+from Item.Weapon import Weapon
+from Item.HealthPotion import HealthPotion
 
 # this class contains all the game objects and stuff for the scene
 class StoreView:
@@ -77,10 +80,10 @@ class StoreView:
 		
 		# store menu
 		storeMenu = StoreMenu(font, titleFont, size = StoreView.storeSize - Engine.Vector2(4, 4), items = [
-			Item.Weapon("Fist of Ardor", 10, 5, 2, iconPath = "Images/FistOfArdor.png"),
-			Item.Weapon("Comically Large Spoon", 2, 10, iconPath = "Images/ComicallyLargeSpoon.png"),
-			Item.Consumable.HealthPotion("Health Potion", 2, 5, iconPath = "Images/HealthPotion.png"),
-			Item.Armor("Gold Armor", 8, iconPath = "Images/GoldArmor.png")
+			Weapon("Fist of Ardor", 10, 5, 2, iconPath = "Images/FistOfArdor.png"),
+			Weapon("Comically Large Spoon", 2, 10, iconPath = "Images/ComicallyLargeSpoon.png"),
+			HealthPotion("Health Potion", 2, 5, iconPath = "Images/HealthPotion.png"),
+			Armor("Gold Armor", 8, iconPath = "Images/GoldArmor.png")
 		])
 
 		# events to open store menu

@@ -1,4 +1,4 @@
-from Item import Item
+from Item.Item import Item
 
 # this is literally just a list wrapper why did we have to do a whole project about this
 class Order(list):

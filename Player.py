@@ -4,8 +4,6 @@ from Inventory import Inventory
 from Layers import Layers
 from Character import Character
 
-import Item
-
 # player class
 # TODO: make character class to inherit from
 class Player(Character):
@@ -35,9 +33,6 @@ class Player(Character):
 		self.running = False
 		self.direction = Vector2.DOWN
 		self.animationController = AnimationController(6, 0.25)
-
-		# add inventory
-		self.inventory = Inventory()
 		
 		# add collider to self
 		self.collider = Collider.RectangleCollider(parent = self, pivot = Vector2(0, 1), size = Vector2(self.size.x / 4, self.size.y / 3), offset = Vector2(0, -0.1))
